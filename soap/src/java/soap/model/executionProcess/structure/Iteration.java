@@ -64,7 +64,7 @@ public class Iteration extends EstimationElement implements IPackage
 	public boolean addTask (Task t)
 	{
 		if (mList.isEmpty())
-			mList.add(new ListTask(this.getProject().getName(), this.getProject().getName()));
+			mList.add(new ListTask(this.getProject().getName(), "Task List"));
 		if (! ((ListTask) mList.get(0)).containsTask(t))
 		{
 			((ListTask) mList.get(0)).addModelElement(t) ;

@@ -32,13 +32,13 @@ public class XMIInterpreter {
 	public static final String OBJ_COLLABORATIVE_TASK = "eltTacheCollaborative";
 	public static final String OBJ_ARTIFACT = "eltArtefact";
 //	public static final String OBJ_PROBLEM = "eltProbleme";
-	public static final String OBJ_PROJECT_ITERATION = "projetIteration";
-	public static final String OBJ_PROJECT_METRIC = "projetMetrique";
-	public static final String OBJ_PROJECT_RISK = "projetRisque";
-	public static final String OBJ_PROJECT_MEMBER = "projetMembre";
-	public static final String OBJ_ITERATION_TASK = "iterationTache";
+	public static final String OBJ_PROJECT_ITERATION = "ProjetIteration";
+	public static final String OBJ_PROJECT_METRIC = "ProjetMetrique";
+	public static final String OBJ_PROJECT_RISK = "ProjetRisque";
+	public static final String OBJ_PROJECT_MEMBER = "ProjetMembre";
+	public static final String OBJ_ITERATION_TASK = "IterationTache";
 	public static final String OBJ_MEMBER_ARTIFACT = "MembreArtefact";
-	public static final String OBJ_MEMBER_TASK = "membreTache";
+	public static final String OBJ_MEMBER_TASK = "MembreTache";
 	public static final String OBJ_COLLABORATIVE_TASK_INPUT_ARTIFACT = "TacheColArtefact_Entree";
 	public static final String OBJ_COLLABORATIVE_TASK_OUTPUT_ARTIFACT = "TacheColArtefact_Sortie";
 	public static final String OBJ_TASK_INPUT_ARTIFACT = "TacheArtefact_Entree";
@@ -351,7 +351,7 @@ public class XMIInterpreter {
 			return;
 		} // Case of an Artifact
 		if (target instanceof Artifact){
-			if (tag.equals(ATT_NUMBER))
+			if (tag.equals(ATT_NAME))
 				target.setName(value);
 			else if (tag.equals(ATT_DESCRIPTION))
 				target.setAttribute(EstimationElement.DESCRIPTION, value);

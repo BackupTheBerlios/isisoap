@@ -142,7 +142,7 @@ public class XMIContentHandler implements ContentHandler {
 	 * @throws XMIException
 	 */
 	private void treatTag(String tag) throws XMIException{
-		if (!zone.isEmpty())
+		if (tag.equals(XMIInterpreter.CTG_PROJECT_ELEMENT))
 			System.out.println((String) zone.get(zone.size() - 1) + zone.size());
 		if (zone.isEmpty()){
 			zone.add(ROOT);
