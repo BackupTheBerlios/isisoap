@@ -34,7 +34,16 @@ public abstract class EstimationElement extends SoapElement
     public static final int ELAPSED_HOURS = 3;
     public static final int REMAINED_HOURS_TO_FINISH = 4;
     
-    
+    public static final int BUDGET = 7;
+    public static final int DESCRIPTION = 8;
+
+    public static final int ESTIMATED_START_DATE = 9;
+    public static final int ESTIMATED_END_DATE = 10;
+    // Task
+    public static final int STATE = 11;
+    // Artifact
+    public static final int DELIVERABLE = 12;
+
     public EstimationElement(String projectName)
 	{
 		super(projectName);
