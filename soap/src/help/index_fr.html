@@ -1,0 +1,147 @@
+<html>
+<!-- Date de création: 17/01/2005 -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<title></title>
+<meta name="description" content="">
+<meta name="keywords" content="">
+<meta name="author" content="Usager non enregistré">
+<meta name="generator" content="WebExpert 5">
+<style>
+<!--
+h3           { text-decoration: underline; font-style: italic; font-weight: bold }
+-->
+</style>
+<script language="JavaScript">
+<!--
+function FP_preloadImgs() {//v1.0
+ var d=document,a=arguments; if(!d.FP_imgs) d.FP_imgs=new Array();
+ for(var i=0; i<a.length; i++) { d.FP_imgs[i]=new Image; d.FP_imgs[i].src=a[i]; }
+}
+
+function FP_swapImg() {//v1.0
+ var doc=document,args=arguments,elm,n; doc.$imgSwaps=new Array(); for(n=2; n<args.length;
+ n+=2) { elm=FP_getObjectByID(args[n]); if(elm) { doc.$imgSwaps[doc.$imgSwaps.length]=elm;
+ elm.$src=elm.src; elm.src=args[n+1]; } }
+}
+
+function FP_getObjectByID(id,o) {//v1.0
+ var c,el,els,f,m,n; if(!o)o=document; if(o.getElementById) el=o.getElementById(id);
+ else if(o.layers) c=o.layers; else if(o.all) el=o.all[id]; if(el) return el;
+ if(o.id==id || o.name==id) return o; if(o.childNodes) c=o.childNodes; if(c)
+ for(n=0; n<c.length; n++) { el=FP_getObjectByID(id,c[n]); if(el) return el; }
+ f=o.forms; if(f) for(n=0; n<f.length; n++) { els=f[n].elements;
+ for(m=0; m<els.length; m++){ el=FP_getObjectByID(id,els[n]); if(el) return el; } }
+ return null;
+}
+// -->
+</script>
+</head>
+<body bgcolor="white" onload="FP_preloadImgs(/*url*/'button5.jpg',/*url*/'button6.jpg')"> 
+<div align="center"><b><h1>Aide SOAP</b><br>
+	<img border="0" src="../icons/logo.GIF" width="130" height="135">
+</h1>
+<hr></div>
+<h2>Sommaire<a name="sommaire"></a><br>
+</h2>
+<h3><a href="#intro">I. Introduction</a><br>
+<br>
+<a href="#roles">II. Rôles</a><br>
+<br>
+
+<a href="#projet">III. Gestion de Projet</a></h3>
+<h4>&nbsp;&nbsp;&nbsp; <a href="#projet1">1.Créer un nouveau projet</a><br>
+&nbsp;&nbsp;&nbsp; <a href="#projet2">2.Importer un nouveau projet</a><br>
+&nbsp;&nbsp;&nbsp; <a href="#projet3">3.Mettre à jour les données du projet</a><br>
+	&nbsp;&nbsp;&nbsp;
+	<a href="#projet4">4.Ouvrir/Sauvegarder/Fermer un projet</a><br>
+&nbsp;&nbsp;&nbsp; <a href="#projet5">5.Gestion des lecteurs</a><br>
+&nbsp;&nbsp;&nbsp; <a href="#projet6">6.Gestion des superviseurs</a></h4>
+<h3><a href="#stats">IV. Statistiques</a></h3>
+<h3><a href="#consultations">V. Consultations</a></h3>
+<h4>&nbsp;&nbsp;&nbsp; 1.Les indicateurs<br>
+&nbsp;&nbsp;&nbsp; 2.Les membres<br>
+&nbsp;&nbsp;&nbsp; 3.Les problèmes/les risques</h4>
+<h3>VI. Préférences</h3>
+<h4>&nbsp;&nbsp;&nbsp; 1.Modifier la valeur d'un seuil<br>
+&nbsp;&nbsp;&nbsp; 2.Menu Préférences<br>
+	
+</h4>
+	
+<div align="center"><hr></div>
+<h3>I. Introduction<a name="intro"></a></h3>
+<p>SOAP est un outil d'aide à la supervision de projet. Son objectifs est de 
+présenter des comptes-rendus d'avancement, des chiffres, des statistiques sur 
+des projets suivis par le superviseur.</p>
+<p>Il est en relation avec d'autres outils de gestion de projet, dit des outils 
+de workflows, tels que SOUPEX ou OWEP. En effet, une communication se fait entre 
+les workflows et SOAP : réception par SOAP des données des workflows.</p>
+<p align="center"><a href="#sommaire">
+<img border="0" id="img1" src="button4.jpg" height="20" width="100" alt="Retour en haut" onmouseover="FP_swapImg(1,0,/*id*/'img1',/*url*/'button5.jpg')" onmouseout="FP_swapImg(0,0,/*id*/'img1',/*url*/'button4.jpg')" onmousedown="FP_swapImg(1,0,/*id*/'img1',/*url*/'button6.jpg')" onmouseup="FP_swapImg(0,0,/*id*/'img1',/*url*/'button5.jpg')" fp-style="fp-btn: Embossed Capsule 5" fp-title="Retour en haut"></a></p>
+	
+<div align="center"><hr width="300"></div>
+<h3>II. Rôles<a name="roles"></a></h3>
+<p>Par souci de confidentialité, des rôles sont attribués aux utilisateurs, il 
+en existe trois:</p>
+<ul>
+	<li>Directeur de projet:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; il peut créer 
+	des superviseurs de projet, consulter les projets suivis par ces 
+	superviseurs et générer des statistiques sur ces projets.</li>
+	<li>Superviseur de projet:&nbsp;&nbsp; il n'en existe qu'un seul superviseur 
+	par projet et possède tous les droits sur le projet ; de plus, il crée les 
+	lecteurs.</li>
+	<li>Lecteur:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+	il a le droit de lecture et de génération de statistiques sur les projets.<br>
+&nbsp;</li>
+</ul>
+<p align="center"><a href="#sommaire">
+<img border="0" id="img2" src="button4.jpg" height="20" width="100" alt="Retour en haut" onmouseover="FP_swapImg(1,0,/*id*/'img2',/*url*/'button5.jpg')" onmouseout="FP_swapImg(0,0,/*id*/'img2',/*url*/'button4.jpg')" onmousedown="FP_swapImg(1,0,/*id*/'img2',/*url*/'button6.jpg')" onmouseup="FP_swapImg(0,0,/*id*/'img2',/*url*/'button5.jpg')" fp-style="fp-btn: Embossed Capsule 5; fp-orig: 0" fp-title="Retour en haut"></a></p>
+	
+<div align="center"><hr width="300"></div>
+<h3>III. Gestion de projet<a name="projet"></a></h3>
+<h4>1.Créer un nouveau projet<a name="projet1"></a></h4>
+<p>Permission:&nbsp;&nbsp;&nbsp; superviseur</p>
+<p>Le superviseur de projet peut intégrer un nouveau projet en cliquant sur <u>Fichier/Nouveau</u>. <br>
+Une <b>identification</b> demandée par le serveur est requise : login + mot de passe.</b></p>
+<p>Si un problème survient lors de l'identification, vérifiez la connexion de votre ordinateur au serveur
+ou de vos identifiants.<br>
+(voir avec le directeur de projet qui vous a affecté ces identifiants)</p>
+<h4>2.Importer un nouveau projet<a name="projet2"></a></h4>
+<p>Permission:&nbsp;&nbsp;&nbsp; directeur/superviseur/lecteur</p>
+<h4>3.Mettre à jour les données du projet<a name="projet3"></a></h4>
+<p>Permission:&nbsp;&nbsp;&nbsp; directeur/superviseur/lecteur</p>
+<h4>4.Ouvrir/Sauvegarder/Fermer un projet<a name="projet4"></a></h4>
+<p>Permission :&nbsp;&nbsp;&nbsp; directeur/superviseur/lecteur</p>
+<h4>5.Gestion des lecteurs<a name="projet5"></a></h4>
+<p>Permission :&nbsp;&nbsp;&nbsp; superviseur</p>
+<h4>6.Gestion des superviseurs<a name="projet6"></a></h4>
+<p>Permission :&nbsp;&nbsp;&nbsp; directeur</p>
+<p align="center"><a href="#sommaire">
+<img border="0" id="img3" src="button4.jpg" height="20" width="100" alt="Retour en haut" onmouseover="FP_swapImg(1,0,/*id*/'img3',/*url*/'button5.jpg')" onmouseout="FP_swapImg(0,0,/*id*/'img3',/*url*/'button4.jpg')" onmousedown="FP_swapImg(1,0,/*id*/'img3',/*url*/'button6.jpg')" onmouseup="FP_swapImg(0,0,/*id*/'img3',/*url*/'button5.jpg')" fp-style="fp-btn: Embossed Capsule 5; fp-orig: 0" fp-title="Retour en haut"></a></p>
+	
+<div align="center"><hr width="300"></div>
+<h3>IV.Statistiques<a name="stats"></a></h3>
+<p align="center"><a href="#sommaire">
+<img border="0" id="img4" src="button4.jpg" height="20" width="100" alt="Retour en haut" onmouseover="FP_swapImg(1,0,/*id*/'img4',/*url*/'button5.jpg')" onmouseout="FP_swapImg(0,0,/*id*/'img4',/*url*/'button4.jpg')" onmousedown="FP_swapImg(1,0,/*id*/'img4',/*url*/'button6.jpg')" onmouseup="FP_swapImg(0,0,/*id*/'img4',/*url*/'button5.jpg')" fp-style="fp-btn: Embossed Capsule 5; fp-orig: 0" fp-title="Retour en haut"></a></p>
+	
+<div align="center"><hr width="300"></div>
+<h3>V. Consultations<a name="consultations"></a></h3>
+<h4>&nbsp;&nbsp;&nbsp; 1.Les indicateurs<br>
+&nbsp;&nbsp;&nbsp; 2.Les membres<br>
+&nbsp;&nbsp;&nbsp; 3.Les problèmes/les risques</h4>
+<p align="center"><a href="#sommaire">
+<img border="0" id="img5" src="button4.jpg" height="20" width="100" alt="Retour en haut" onmouseover="FP_swapImg(1,0,/*id*/'img5',/*url*/'button5.jpg')" onmouseout="FP_swapImg(0,0,/*id*/'img5',/*url*/'button4.jpg')" onmousedown="FP_swapImg(1,0,/*id*/'img5',/*url*/'button6.jpg')" onmouseup="FP_swapImg(0,0,/*id*/'img5',/*url*/'button5.jpg')" fp-style="fp-btn: Embossed Capsule 5; fp-orig: 0" fp-title="Retour en haut"></a></p>
+	
+<div align="center"><hr width="300"></div>
+<h3>VI. Préférences<a name="préférences"></a></h3>
+<h4>&nbsp;&nbsp;&nbsp; 1.Modifier la valeur d'un seuil<br>
+&nbsp;&nbsp;&nbsp; 2.Menu Préférences</h4>
+<p align="center"><a href="#sommaire">
+<img border="0" id="img6" src="button4.jpg" height="20" width="100" alt="Retour en haut" onmouseover="FP_swapImg(1,0,/*id*/'img6',/*url*/'button5.jpg')" onmouseout="FP_swapImg(0,0,/*id*/'img6',/*url*/'button4.jpg')" onmousedown="FP_swapImg(1,0,/*id*/'img6',/*url*/'button6.jpg')" onmouseup="FP_swapImg(0,0,/*id*/'img6',/*url*/'button5.jpg')" fp-style="fp-btn: Embossed Capsule 5; fp-orig: 0" fp-title="Retour en haut"></a></p>
+	
+<div align="center"><hr width="300"></div>
+<p>&nbsp;</p>
+<h4><br>
+</h4>
+</body>
+</html>

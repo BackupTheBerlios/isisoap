@@ -28,6 +28,7 @@ import soap.ui.SoapFrame;
 import soap.ui.actions.AboutAction;
 import soap.ui.actions.CloseProjectAction;
 import soap.ui.actions.GenerateStatsAction;
+import soap.ui.actions.HelpAction;
 import soap.ui.actions.NewProjectAction;
 import soap.ui.actions.OpenProjectAction;
 import soap.ui.actions.PreferencesAction;
@@ -148,7 +149,8 @@ public class SoapMain
 		context.registerAction("Quit", new QuitAction());
 		// project action
 		context.registerAction("ProjectProperties",new ProjectPropertiesAction());	
-		context.registerAction("Preferences",new PreferencesAction());	
+		context.registerAction("Preferences",new PreferencesAction());
+		context.registerAction("Help",new HelpAction());
 		context.registerAction("About", new AboutAction());
 
 		//Statistics
