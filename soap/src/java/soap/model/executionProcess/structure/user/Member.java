@@ -21,16 +21,26 @@
 
 package soap.model.executionProcess.structure.user;
 
+import java.util.ArrayList;
+
 import soap.model.ModelVisitor;
 import soap.model.core.ModelElement;
+import soap.model.executionProcess.structure.Artifact;
+import soap.model.executionProcess.structure.Task;
+import soap.parser.ID;
 
 public class Member extends ModelElement
 {
     private String mFirstName="" ;
     private String mLastName="" ;
     private String mEMail="";
+    private String mAddress="";
+    private String mTelephone="";
     private String mLogin="";
     private String mPassword="";
+    
+    private ArrayList mTasks = new ArrayList();
+	private ArrayList mArtifacts = new ArrayList();
     
     public Member()
     {
@@ -42,6 +52,11 @@ public class Member extends ModelElement
         mFirstName = firstName ;
         mLastName = lastName ;
     }
+    
+	public Member(ID id)
+	{
+		this.setID(id.toString());
+	}
     
     public String getFirstName()
     {
@@ -107,4 +122,56 @@ public class Member extends ModelElement
         // TODO Auto-generated method stub
         
     }
+	/**
+	 * @return Returns the mAddress.
+	 */
+	public String getAddress() {
+		return mAddress;
+	}
+	/**
+	 * @param address The mAddress to set.
+	 */
+	public void setAddress(String address) {
+		mAddress = address;
+	}
+	/**
+	 * @return Returns the mTelephone.
+	 */
+	public String getTelephone() {
+		return mTelephone;
+	}
+	/**
+	 * @param telephone The mTelephone to set.
+	 */
+	public void setTelephone(String telephone) {
+		mTelephone = telephone;
+	}
+	/**
+	 * @return
+	 */
+	public ArrayList getTasks() {
+		return mTasks;
+	}
+
+	/**
+	 * @param list
+	 */
+	public void addTask(Task task) {
+		mTasks.add(task);
+	}
+
+	/**
+	 * @return
+	 */
+	public ArrayList getArtifacts() {
+		return mArtifacts;
+	}
+
+	/**
+	 * @param list
+	 */
+	public void addArtifact(Artifact artifact) {
+		mArtifacts.add(artifact);
+	}
+
 }

@@ -21,16 +21,20 @@
 
 package soap.model.executionProcess.structure;
 
+import java.util.ArrayList;
 import java.util.Vector;
 
 import soap.model.ModelVisitor;
 import soap.model.core.SoapElement;
+import soap.model.executionProcess.structure.user.Member;
 import soap.model.process.structure.WorkProduct;
+import soap.parser.ID;
 
 public class Artifact extends SoapElement
 {
     private WorkProduct mWorkProduct ;
-    private Vector mListTask;
+    private Vector mListTask = new Vector();
+    private ArrayList mMembers = new ArrayList();
     //String mVersion  = "";
     
     public Artifact(String projectName)
@@ -42,6 +46,12 @@ public class Artifact extends SoapElement
     {
         super(projectName, name) ;
     }
+    
+	public Artifact(ID id)
+	{
+		super(id.toString());
+		this.setID(id.toString());
+	}
     
     public WorkProduct getWorkProduct()
     {
@@ -86,5 +96,19 @@ public class Artifact extends SoapElement
         // TODO Auto-generated method stub
 
     }
+
+	/**
+	 * @return
+	 */
+	public ArrayList getMembers() {
+		return mMembers;
+	}
+
+	/**
+	 * @param list
+	 */
+	public void addMember(Member member) {
+		mMembers.add(member);
+	}
 
 }

@@ -30,6 +30,7 @@ import soap.model.executionProcess.structure.user.Member;
 import soap.model.executionProcess.structure.user.Supervisor;
 import soap.model.extension.SoapProcess;
 import soap.model.modelmanagement.IPackage;
+import soap.parser.ID;
 
 public class Project extends EstimationElement implements IPackage
 {
@@ -49,6 +50,12 @@ public class Project extends EstimationElement implements IPackage
     {
         return mProcess ;
     }
+    
+	public Project(ID id)
+	{
+		super(id.toString(), id.toString());
+		this.setID(id.toString());
+	}
     
     public void setProcess(SoapProcess s)
     {
@@ -100,6 +107,9 @@ public class Project extends EstimationElement implements IPackage
         if (e instanceof Iteration)
         {
             return addIteration((Iteration)e) ;
+        } else if (e instanceof Member)
+        {
+        	return addMember((Member) e);
         }
         return false;
     }

@@ -28,6 +28,7 @@ import soap.model.core.EstimationElement;
 import soap.model.core.ModelElement;
 import soap.model.core.SoapElement;
 import soap.model.modelmanagement.IPackage;
+import soap.parser.ID;
 
 public class Iteration extends EstimationElement implements IPackage
 {
@@ -38,6 +39,12 @@ public class Iteration extends EstimationElement implements IPackage
     {
         super(projectName) ;
     }
+    
+	public Iteration(ID id)
+	{
+		super(id.toString());
+		this.setID(id.toString());
+	}
     
     public Iteration(String projectName, String name)
     {
@@ -54,6 +61,25 @@ public class Iteration extends EstimationElement implements IPackage
         return mProject ;
     }
     
+	public boolean addTask (Task t)
+	{
+		if (mList.isEmpty())
+			mList.add(new ListTask(this.getProject().getName()));
+		if (! ((ListTask) mList.get(0)).containsTask(t))
+		{
+			((ListTask) mList.get(0)).addModelElement(t) ;
+			t.setIteration(this) ;
+			return true ;
+		}
+		return false ;
+	}
+        
+	public boolean removeTask(Task t)
+	{
+		t.setParent(null);
+		return ((ListTask) mList.get(0)).removeModelElement(t) ;
+	}
+
     public boolean addListTask (ListTask listTask)
     {
         if (! mList.contains(listTask))

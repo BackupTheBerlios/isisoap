@@ -27,6 +27,7 @@ import soap.model.ModelVisitor;
 import soap.model.core.EstimationElement;
 import soap.model.executionProcess.structure.user.Member;
 import soap.model.process.structure.Activity;
+import soap.parser.ID;
 
 public class Task extends EstimationElement /*implements IPackage*/
 {
@@ -55,6 +56,12 @@ public class Task extends EstimationElement /*implements IPackage*/
         super(projectName) ;
         mActivity = a ;
     }
+    
+	public Task (ID id)
+	{
+		super(id.toString());
+		this.setID(id.toString());
+	}    
     
     public int getPriority()
     {
