@@ -22,9 +22,14 @@
 package soap.processing;
 
 
+import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.net.HttpURLConnection;
 
+import org.xml.sax.SAXException;
+
+import soap.parser.XMIParser;
 import soap.server.ConnectionManager;
 import soap.server.Request;
 import soap.ui.dialog.ProcessingTaskServerDialog;
@@ -51,7 +56,12 @@ public class ProcessingTaskServer extends MonitoredTaskBase
     
     protected Object processingTask()
     {
-        launch();
+        try {
+			launch();
+		} catch (SAXException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		return null;
     }
     
@@ -64,7 +74,7 @@ public class ProcessingTaskServer extends MonitoredTaskBase
      * start performing server task
      *
      */
-    protected void launch()
+    protected void launch() throws SAXException
 	{
         ConnectionManager con = ConnectionManager.getConnection() ;
         mRequest.sendRequest();
@@ -113,7 +123,7 @@ public class ProcessingTaskServer extends MonitoredTaskBase
 	 * 
 	 * @return the code associated 
 	 */
-    private boolean importXML()
+    private boolean importXML() throws SAXException
     {
         mStatus = false ;
         try
@@ -123,6 +133,16 @@ public class ProcessingTaskServer extends MonitoredTaskBase
     	        try
     	        {
     	            String xml = mRequest.getContent();
+    	            File tmp = File.createTempFile("import", "xmi");
+    	            
+    	            FileWriter filler = new FileWriter(tmp);
+    	            filler.write(xml);
+    	            filler.close();
+    	            
+    	            XMIParser parser = new XMIParser(tmp.toURI().toString());
+    	            
+    	            tmp.delete();
+    	            
     	            print("XML récupéré");
     	            
     	            print (xml);
