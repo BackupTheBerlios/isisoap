@@ -18,17 +18,17 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
-package soap.ui.tabbedPane;
 
-import soap.model.extension.SoapListProjects;
+package soap.ui.CentralPanel;
 
 
-public class SoapListProjectsTabbedPane extends SoapCentralTabbedPane 
+
+public class SoapProcessRolesCentralPanel extends SoapCentralPanel 
 {
 	
-	public SoapListProjectsTabbedPane(SoapListProjects listProjects)
+	/*public SoapProcessRolesTabbedPane(PackageProcessRole packProcessRole)
 	{
 		super();
-	}
+	}*/
 
 }

@@ -23,7 +23,9 @@ package soap.model.core;
 
 import utils.SoapDate;
 
-
+/** Base class for the elements of the model which can be estimated
+ * 
+ */
 public abstract class EstimationElement extends SoapElement 
 {
     public static final int START_DATE = 0;

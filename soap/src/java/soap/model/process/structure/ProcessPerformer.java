@@ -44,7 +44,6 @@ public class ProcessPerformer extends ModelElement
 
 	public void visit(ModelVisitor visitor)
 	{
-		visitor.visitProcessPerformer(this);
 	}
 	
 	

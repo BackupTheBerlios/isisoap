@@ -51,7 +51,6 @@ public class WorkProduct extends ModelElement
 
 	public void visit(ModelVisitor visitor)
 	{
-		visitor.visitProduct(this);
 	}
 	
 	public void setReferences( int references )

@@ -22,25 +22,32 @@
 package soap.processing;
 
 
+import java.io.IOException;
+
 import soap.server.ConnectionManager;
 import soap.server.TaskServerAttributes;
 import soap.server.ConnectionManager.ConnectionServer;
 import soap.ui.dialog.ProcessingTaskServerDialog;
 import utils.MonitoredTaskBase;
+import utils.ResourceManager;
+
+
+/**
+ * Monitor used to perform task beetween and the server
+ *
+ */
 
 public class ProcessingTaskServer extends MonitoredTaskBase 
 {  
     private ProcessingTaskServerDialog mTaskDialog = null;
     
     private TaskServerAttributes mTaskAttribute ;
-    private int mResult = 0 ;
+    private boolean mStatus;
             
     public ProcessingTaskServer (TaskServerAttributes taskAttr) 
     {
         mTaskAttribute = taskAttr ;
     }
-    
-    
     
     protected Object processingTask()
     {
@@ -53,8 +60,13 @@ public class ProcessingTaskServer extends MonitoredTaskBase
         mTaskDialog = taskDialog;
 	}
     
+    /**
+     * start performing server task
+     *
+     */
     protected void launch()
 	{
+        
 	    if(mTaskAttribute.getTypeOfTask().equals(ConnectionManager.CONNECTION))
 	    {
 	        connect() ;
@@ -69,103 +81,57 @@ public class ProcessingTaskServer extends MonitoredTaskBase
 		
 	}
     
-    private int connect()  
+    /**
+	 * connect to the the server with the attributes contained in the TaskServerAttributes.
+	 * 
+	 * @return the code associated 
+	 */
+    private boolean connect()  
     {	
-        mResult = ConnectionManager.NOT_CONNECTED ;
-        if (mTaskAttribute.getLogin().equals("go" ) && mTaskAttribute.getPassword().equals("go"))
+        mStatus = true;
+        if (mTaskAttribute.getLogin().equals("" ) && mTaskAttribute.getPassword().equals(""))
         {
-            mResult = ConnectionManager.CONNECTED ;
-            print("connected");
-            return ConnectionManager.CONNECTED ;
+            mStatus = true ;
+            print(ResourceManager.getInstance().getString("connectionEstablished"));
+            return true;
         }
         else
         {
-            return ConnectionManager.NOT_CONNECTED ;
+            mStatus = false ;
+            print(ResourceManager.getInstance().getString("loginMistaken"));
+            return false ;
         }
-        /*String urlString = "http://yanagiba/iup/index.php";
-        InputStream content = null ;        
-        try 
-        {
-            
-            mUrl  = new URL (urlString);
-            mUrlConnection = mUrl.openConnection();
-            String enc =  mLogin + ":" + mPassword ;
-            String encoding = new sun.misc.BASE64Encoder().encode(enc.getBytes());
-            mUrlConnection.setRequestProperty  ("Authorization", "Basic " + encoding);
-        } 
-        catch (MalformedURLException e) 
-        {
-            print("can't connect to the server");
-            return ConnectionManager.NOT_CONNECTED ;
-        } 
-        catch (IOException e) 
-        {
-            print("can't connect to the server");
-            return ConnectionManager.NOT_CONNECTED ;
-        }
-        
-        try
-        {
-            content = (InputStream)mUrlConnection.getInputStream();
-        }
-        catch(java.net.SocketException e)
-        {
-            print("can't connect to the server");
-            return ConnectionManager.NOT_CONNECTED ;
-        }
-        catch (IOException e) 
-        {
-            print("login or password incorrect");
-            return ConnectionManager.NOT_CONNECTED ;
-        }
-        
-        try
-        
-        {
-            if (content == null)
-            {
-                content = (InputStream)mUrlConnection.getInputStream();
-            }
-            BufferedReader in = new BufferedReader (new InputStreamReader (content));
-            String line;
-            while ((line = in.readLine()) != null) 
-            {
-              System.out.println (line);
-              print(line);
-            }
-         }
-         catch (IOException e) 
-         {
-             print(e.toString());
-             System.out.println(e.toString());
-             return ConnectionManager.NOT_CONNECTED ;
-         }
-         mResult = ConnectionManager.CONNECTED ;
-        return ConnectionManager.CONNECTED ;*/
     } 
     
-    
+    /**
+     * import the xml from the server.
+	 * 
+	 * @return the code associated 
+	 */
     private int importXML()
     {
-        mResult = 0 ;
-        print("ok");
-        for (int i = 0; i < 10; i++)
-        {
-            print("ok");
-        }
         return 0 ;
     }
     
-    public int createUsers()
+    /**
+     * create the user.
+	 * 
+	 * @return the code associated 
+	 */
+    public boolean createUsers()
     {
         
-        return 0 ;
+        return true ;
     }
      
-    
-    public int getResultTask()
+    /**
+     * get the result of the task.
+	 * 
+	 * @return return the result of the task
+	 */
+    public boolean getResultTask()
     {
-        return mResult ;
+        return mStatus ;
     }
     /**
 	 * Print a new message to the TaskMonitorDialog

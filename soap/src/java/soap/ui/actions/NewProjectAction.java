@@ -24,9 +24,14 @@ package soap.ui.actions;
 import java.awt.Event;
 import java.awt.event.ActionEvent;
 
+import javax.swing.JPanel;
+
 import soap.server.ConnectionManager;
 import soap.server.ConnectionManager.ConnectionServer;
-import soap.ui.dialog.NewProjectDialog;
+import soap.ui.dialog.SeveralStepsDialog;
+import soap.ui.panel.newProject.IndicatorsPanel;
+import soap.ui.panel.newProject.NewProjectPanel;
+import utils.ResourceManager;
 
 public class NewProjectAction extends SoapAction
 {    
@@ -45,8 +50,14 @@ public class NewProjectAction extends SoapAction
 	    ConnectionManager connectManager = ConnectionManager.getInstance() ;
 	    ConnectionServer con = connectManager.getConnection() ;
 	    if (con != null)
-	    {
-	        NewProjectDialog newProjDiag = new NewProjectDialog("Nouveau projet") ;
+	    { 
+	        SeveralStepsDialog cfgDialog = new SeveralStepsDialog (ResourceManager.getInstance().getString("newProject"),ResourceManager.getInstance().getString("createNewProject"),"icons/logoConfig.gif", "icons/NewProject.gif") ;
+	        JPanel panel = new NewProjectPanel(cfgDialog) ;
+	        cfgDialog.addCenterPanel(panel);
+	        
+	        panel = new IndicatorsPanel(cfgDialog);
+	        cfgDialog.addCenterPanel(panel);
+	        cfgDialog.setVisible(true);
 	    }
 	}
 }

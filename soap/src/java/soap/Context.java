@@ -29,6 +29,14 @@ import soap.adapters.SoapTreeAdapter;
 import soap.adapters.SoapTreeNode;
 import soap.model.frontend.SoapMediator;
 
+/**
+ * Application Context
+ *
+ * This class centralize the context of the running application.
+ * It is implemented as a singleton.
+ *
+ */ 
+
 public class Context
 {
     private static final Context mInstance = new Context();
@@ -47,12 +55,9 @@ public class Context
 	}
 	
 	/**
-	 * Set the current project the program
+	 * Set the list of the current open projects 
 	 *
-	 * It automatically close every internal frame and set the new project root
-	 *
-	 * @param project the new project to edit
-	 * @param filePath the file path or null if there is no file associated to this project
+	 * @param listProjects the list which contains all project 
 	 */
 	public void setListProjects(ListProjects listProjects)
 	{
@@ -69,9 +74,9 @@ public class Context
 	
 	
 	/**
-	 * Retrieve the projet currently opened in the program
+	 * Retrieve the list of the current open projects 
 	 *
-	 * @return the project
+	 * @return the list of the prjects
 	 */
 	public ListProjects getListProjects()
 	{

@@ -19,7 +19,7 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-package soap.ui.tabbedPane;
+package soap.ui.CentralPanel;
 
 import java.awt.BorderLayout;
 
@@ -29,10 +29,10 @@ import javax.swing.JScrollPane;
 import soap.model.executionProcess.structure.Iteration.ListTask;
 import soap.ui.SoapTasksTable;
 
-public class SoapTasksTabbedPane extends DefaultCentralTabbedPane
+public class SoapTasksCentralPanel extends DefaultCentralPanel
 {
     
-    public SoapTasksTabbedPane(ListTask listTask)
+    public SoapTasksCentralPanel(ListTask listTask)
     {
         SoapTasksTable table = new SoapTasksTable(listTask);
         JPanel tablePanel = new JPanel();

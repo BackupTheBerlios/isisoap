@@ -46,9 +46,14 @@ import soap.model.extension.SoapListProjects;
 import soap.model.extension.SoapProcess;
 import soap.model.frontend.SoapMediator;
 import soap.model.frontend.event.SoapEvent;
-import soap.ui.tabbedPane.SoapCentralTabbedPane;
+import soap.ui.CentralPanel.SoapCentralPanel;
 import utils.Debug;
 import utils.IconManager;
+
+/**
+ * This adapter allows to display the working project list in a JTree
+ *
+ */
 
 public class SoapTreeAdapter implements TreeModel, SoapMediator.Listener
 {
@@ -60,6 +65,11 @@ public class SoapTreeAdapter implements TreeModel, SoapMediator.Listener
         super();
     }
     
+    /**
+	 * Set the root of this tree model
+	 *
+	 * @param root the new root
+	 */
     public void setRoot(SoapListProjects root)
 	{
 		if( mRoot == null || mRoot.getUserObject() != root )
@@ -70,19 +80,13 @@ public class SoapTreeAdapter implements TreeModel, SoapMediator.Listener
 		}
 	}
     
-    public void setRoot(SoapProcess root)
-	{
-		if( mRoot == null || mRoot.getUserObject() != root )
-		{	
-			mRoot = new SoapTreeNode(root, false);
-			Object[] path = {mRoot};
-			fireTreeStructureChanged(this, path, null, null);
-		}
-	}
+
     
-    /* (non-Javadoc)
-     * @see javax.swing.tree.TreeModel#getRoot()
-     */
+    /**
+	 * Get the root of the tree model
+	 *
+	 * @return the root
+	 */
     public Object getRoot()
     {
         return mRoot;
@@ -218,20 +222,37 @@ public class SoapTreeAdapter implements TreeModel, SoapMediator.Listener
 	{
 		return findWithID(id, mRoot);
 	}
-		
+	
+	/**
+	 * execute the right action when the model changed
+	 * it can be after :
+	 * inserting
+	 * deleting
+	 * changing
+	 * an element
+	 * 
+	 * @param id the id of the element to find
+	 * @return the corresponding node or null
+	 */
 	public void modelChanged(SoapEvent e)
 	{
 	    Object source = e.getSource();
         Object[] inserted = e.getInserted();   	
         Object[] parents = e.getParents();
 	    Object[] removed = e.getRemoved();
-	    System.out.println("modelChanged : parent : "+parents[0]+" inserted : "+inserted[0]);
+	    //System.out.println("modelChanged : parent : "+parents[0]+" inserted : "+inserted[0]);
         Map extras = e.getAttributes();
         handleInsert(inserted,parents,extras ) ;
         
 	}
 	
-	
+	/**
+	 * Adds nodes in the tree
+	 * 
+	 * @param elements the nodes to insert
+	 * @param parents the parents of each nodes
+	 * @param extras 
+	 */
 	protected void handleInsert(Object[] elements,	Object[] parents,Map extras)
 	{
 	    if (elements.length < 1)
@@ -243,22 +264,22 @@ public class SoapTreeAdapter implements TreeModel, SoapMediator.Listener
 	    
 	    for (int i = 0; i < elements.length; i++)
         {
-	        node = (SoapTreeNode)findWithID(((Identity)elements[i]).getID());			
+	        // retrieve the node identify by his ID
+	        node = (SoapTreeNode)findWithID(((Identity)elements[i]).getID());	
+	        // retrieve his parents
 			parent = (SoapTreeNode)findWithID(((Identity)parents[i]).getID());
-			System.out.println("handleInsert : node : "+(node==null?"null":node.getName())+" parent :"+(parent==null?"null":(parent.getName()+parent.getID())));
+			//System.out.println("handleInsert : node : "+(node==null?"null":node.getName())+" parent :"+(parent==null?"null":(parent.getName()+parent.getID())));
+			// it is a new node 
 			if( node == null )
 			{
 				node = new SoapTreeNode( elements[i], true );
 			}
+			// test if the parent exists
 			if( parent != null )
 			{	
 				if( node.getParent() == null )
 				{
 					parent.add(node);
-				}
-				else
-				{
-				    System.out.println("parent du node : "+((SoapTreeNode)node.getParent()).getName());
 				}
 				// insert the element 
 				fireTreeNodesInserted( this, parent.getPath(), new int[]{ parent.getIndex(node) }, new Object[]{ node });
@@ -266,17 +287,29 @@ public class SoapTreeAdapter implements TreeModel, SoapMediator.Listener
 		}
 	}
 	
+	/**
+	 * remove nodes from the tree
+	 * 
+	 * @param elements the nodes to remove
+	 * @param parents the parents of each nodes
+	 * @param extras 
+	 */
 	protected void handleRemove(Object[] elements,	Object[] parents,Map extras)
 	{
-	    if (elements.length < 1)
-	        return ;
 	    SoapTreeNode node = null;
 		SoapTreeNode parent = null;
-	    if(elements == null || parents == null || elements.length != parents.length) return;
+		
+	    if (elements.length < 1)
+	        return ;
+	    
+	    if(elements == null || parents == null || elements.length != parents.length) 
+	        return;
 	    
 	    for (int i = 0; i < elements.length; i++)
         {
-	        node = (SoapTreeNode)findWithID(((Identity)elements[i]).getID());			
+	        //	      retrieve the node identify by his ID
+	        node = (SoapTreeNode)findWithID(((Identity)elements[i]).getID());
+	        //	      retrieve his parents
 			parent = (SoapTreeNode)findWithID(((Identity)parents[i]).getID());
 			
 			if( node == null )
@@ -325,8 +358,7 @@ public class SoapTreeAdapter implements TreeModel, SoapMediator.Listener
 		//for(int i=listeners.length-2; i>=0; i-=2)
 		for(int i=0; i<listeners.length-1; i+=2)
 		{
-			if (listeners[i]==TreeModelListener.class && listeners[i+1].getClass() ==  soap.ui.SoapProjectTree.class
-			        )
+			if (listeners[i]==TreeModelListener.class && listeners[i+1].getClass() ==  soap.ui.SoapProjectTree.class)
 		    {
 				if(e==null)
 				{
@@ -336,8 +368,8 @@ public class SoapTreeAdapter implements TreeModel, SoapMediator.Listener
 					}
 					catch(Throwable t){}
 				}
-				System.out.println("************* Listener [i]: "+listeners[i]);
-				System.out.println("************* Listener [i+1]: "+listeners[i+1]);
+				//System.out.println("************* Listener [i]: "+listeners[i]);
+				//System.out.println("************* Listener [i+1]: "+listeners[i+1]);
 				( (TreeModelListener) listeners[i+1]).treeNodesInserted(e);
 			}
 		}
@@ -427,13 +459,13 @@ public class SoapTreeAdapter implements TreeModel, SoapMediator.Listener
 	 * @param node the node to consider
 	 * @return a popup menu for the operations on this node
 	 */
-	public SoapCentralTabbedPane associatePanel(Object node)
+	public SoapCentralPanel associatePanel(Object node)
 	{
 		if(node instanceof SoapTreeNode)
 		{
 			Element e = (Element)((SoapTreeNode)node).getUserObject();
 			
-			PanelAssociater pa = new PanelAssociater();
+			CentralPanelAssociater pa = new CentralPanelAssociater();
 			e.visit(pa);
 			return pa.getCentralPanel();
 		}
@@ -509,41 +541,15 @@ public class SoapTreeAdapter implements TreeModel, SoapMediator.Listener
 		if(node instanceof SoapTreeNode)
 		{
 			Element e = (Element) ((SoapTreeNode)node).getUserObject();
-			//ActionEdit edit = new ActionEdit(e);
 			ActionAssociater aa = new ActionAssociater();
 			e.visit(aa);
-			//postEdit(edit);
 		}
 		else
 		{
 			if(Debug.enabled) Debug.print("elementAction : Something unknown in the SpemTreeAdapter");
 		}
 	}
-	
-	/**
-	 * Adds nodes in the tree
-	 * 
-	 * @param nodes the nodes to insert
-	 * @param parents the parents of each nodes
-	 */
-	public void insert( Object[] nodes, Object[] parentNodes )
-	{
-		//if(Debug.enabled) Debug.print("(A) -> SpemTreeAdapter::insert ");
 		
-		if(nodes == null || parentNodes == null || nodes.length != parentNodes.length)
-		    return;
-		
-        Object[] objects = new Object[nodes.length];
-        Object[] parents = new Object[nodes.length];
-        Map attr = new HashMap() ;
-	    for ( int i = 0; i < objects.length; i++ )
-        {
-            objects[i] = ((SoapTreeNode)nodes[i]).getUserObject();
-            parents[i] = ((SoapTreeNode)parentNodes[i]).getUserObject();
-        }
-		SoapMediator.getInstance().insertInModel(objects, parents, attr);
-	}
-	
 	public void close(SoapTreeNode node)
 	{
 	    SoapTreeNode parent = (SoapTreeNode) node.getParent() ;
@@ -555,23 +561,6 @@ public class SoapTreeAdapter implements TreeModel, SoapMediator.Listener
 	    fireTreeNodesRemoved( this, parent.getPath(), new int[]{ parent.getIndex(node) }, new Object[]{ node });
 	}
 	
-	/**
-	 * Removes nodes from the tree
-	 * 
-	 * @param nodes
-	 */
-	public void remove( Object[] nodes )
-	{
-	    //if(Debug.enabled) Debug.print("(A) -> SpemTreeAdapter::remove ");
-		
-        Object[] objects = new Object[nodes.length];
-        Map attr = new HashMap();
-	    for ( int i = 0; i < objects.length; i++ )
-        {
-            objects[i] = ((SoapTreeNode)nodes[i]).getUserObject();
-        }        
-	    SoapMediator.getInstance().removeFromModel(objects, attr);
-	}
 	
 	private class SoapTreeCellRenderer extends DefaultTreeCellRenderer
 	{

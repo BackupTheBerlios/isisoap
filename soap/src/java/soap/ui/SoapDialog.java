@@ -44,7 +44,7 @@ public class SoapDialog extends JDialog
     }
 
     
-    public void initUI()
+    protected void initUI()
     {
         this.setLocation(parent.getX()+(parent.getWidth()-this.getWidth())/2,parent.getY()+(parent.getHeight()-this.getHeight())/2);
         this.setResizable(false);

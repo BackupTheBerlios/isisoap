@@ -27,6 +27,9 @@ import java.util.Vector;
 
 import soap.model.modelmanagement.IPackage;
 
+/** Base class for the elements of the model
+ * 
+ */
 
 public abstract class ModelElement extends Element
 {
@@ -93,6 +96,7 @@ public abstract class ModelElement extends Element
 	{
 	    return mAttributes.get(new Integer(attributeType));
 	}
+	
 	public void setAttribute(int attributeType, Object attribute)
 	{
 	    mAttributes.put(new Integer(attributeType), attribute);

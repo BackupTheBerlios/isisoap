@@ -48,17 +48,17 @@ public class SoapFrame extends JFrame implements MainFrameInterface
     {
         	super(ResourceManager.getInstance().getString("Title"));
         	mTree = new SoapProjectTree();
-        	init();
+        	initUI();
     }
     
     public SoapFrame(JTree tree)
 	{
 		super(ResourceManager.getInstance().getString("Title"));
 		mTree = tree;
-		init();	
+		initUI();	
 	}
     
-    private void init()
+    private void initUI()
 	{
 		addWindowListener(new SoapFrameListener());
 		
@@ -66,15 +66,6 @@ public class SoapFrame extends JFrame implements MainFrameInterface
 		mFrame_split.setDividerLocation(150);		
 		mFrame_split.add(new JScrollPane(mTree), JSplitPane.LEFT);
 		JPanel welcomePanel = new JPanel() ;
-		/*{
-		    public void paint(Graphics g)
-		    {
-				 super.paint(g);
-				 Image Background = IconManager.getInstance().getImageResource("icons/logo.gif");
-				 g.drawImage(Background, 0, 0, this);
-				 repaint();
-			};
-		};*/
 		mFrame_split.add( welcomePanel, JSplitPane.RIGHT);
 		
 		this.setJMenuBar(new SoapMenuBar());
@@ -101,26 +92,7 @@ public class SoapFrame extends JFrame implements MainFrameInterface
     {
         return mTree ;
     }
-    
-    public String getFilePath()
-	{
-		return mFilePath;
-	}
 
-	public void setFilePath(String filePath)
-	{
-		mFilePath = filePath;
-		if(filePath == null || filePath.equals(""))
-		{
-			setTitle(ResourceManager.getInstance().getString("Title"));
-		}
-		else
-		{
-			setTitle(ResourceManager.getInstance().getString("Title")
-			+" - "+filePath);
-		}
-	}
-	
 	private class SoapFrameListener extends WindowAdapter
 	{
 		/**

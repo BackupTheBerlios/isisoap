@@ -28,13 +28,7 @@ import soap.model.executionProcess.structure.Project;
 import soap.model.executionProcess.structure.Task;
 import soap.model.executionProcess.structure.Iteration.ListTask;
 import soap.model.executionProcess.structure.user.Member;
-import soap.model.extension.SoapProcess;
 import soap.model.modelmanagement.IPackage;
-import soap.model.process.structure.Activity;
-import soap.model.process.structure.ProcessPerformer;
-import soap.model.process.structure.ProcessRole;
-import soap.model.process.structure.WorkDefinition;
-import soap.model.process.structure.WorkProduct;
 
 
 
@@ -91,55 +85,5 @@ public interface ModelVisitor
 	 */
 	public void visitMember(Member memb );
 	
-    //visit processElement
-	/**
-	 * Called when the visited element is a process
-	 *
-	 * @param sp the visited SoapProcess
-	 */
-	public void visitProcess(SoapProcess sp);
-	
-	/**
-	 * Called when the visited element is a work definition
-	 *
-	 * @param work the visited work definition
-	 */
-	public void visitWorkDefinition(WorkDefinition work);
-
-	/**
-	 * Called when the visited element is a process performer
-	 *
-	 * @param performer the visited process performer
-	 */
-	public void visitProcessPerformer(ProcessPerformer performer);
-
-
-	/**
-	 * Called when the visited element is a work product
-	 *
-	 * @param product the visited work product
-	 */
-	public void visitProduct(WorkProduct product);
-
-	/**
-	 * Called when the visited element is a process role
-	 *
-	 * @param role the visited process role
-	 */
-	public void visitRole(ProcessRole role);
-
-
-	/**
-	 * Called when the visited element is an activity
-	 *
-	 * @param activity the visited activity
-	 */
-	public void visitActivity(Activity activity);
-
-
     
-
-
-
-	
 }

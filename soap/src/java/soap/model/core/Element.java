@@ -27,7 +27,14 @@ import java.io.Serializable;
 import soap.Identity;
 import soap.model.ModelVisitor;
 
-
+/**
+ * Base class for all the elements : 
+ * - process
+ * - execution process
+ * 
+ * Specify an abstract method to allow visitors
+ * See the visitor design pattern for more informations
+ */
 public abstract class Element implements Serializable, Identity
 {
     private static int msNoNameCounter = 0;

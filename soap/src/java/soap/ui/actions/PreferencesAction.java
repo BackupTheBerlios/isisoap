@@ -28,7 +28,7 @@ public class PreferencesAction extends SoapAction
 {
 	public PreferencesAction()
 	{
-		super("displayPreferences", "icons/Empty.gif");
+		super("projectProperties", "icons/Empty.gif");
 	}
 	public void actionPerformed(ActionEvent e)
 	{

@@ -27,6 +27,12 @@ import javax.swing.tree.DefaultMutableTreeNode;
 
 import soap.Identity;
 
+/**
+ * class representing a node of a tree
+ *
+ */
+
+
 public class SoapTreeNode extends DefaultMutableTreeNode implements Identity, Serializable
 {
 	

@@ -117,7 +117,7 @@ public abstract class ProjectManagementAction extends SoapAction
 		catch(Throwable t)
 		{
 			t.printStackTrace();
-			ErrorManager.getInstance().display("errorTitleSaveProcess", "errorOpenProcess");
+			ErrorManager.getInstance().display("errorTitleSaveProject", "errorSaveProject");
 			return false;
 		}
 		return true;
@@ -139,7 +139,7 @@ public abstract class ProjectManagementAction extends SoapAction
 		{
 			if(chooser.getSelectedFile().isDirectory())
 			{
-				ErrorManager.getInstance().display("errorTitleSaveProcess", "errorWrongFileName");
+				ErrorManager.getInstance().display("errorTitleSaveProject", "errorWrongFileName");
 				return false;
 			}
 
@@ -162,7 +162,7 @@ public abstract class ProjectManagementAction extends SoapAction
 
 			if(!filter.accept(f))
 			{
-				ErrorManager.getInstance().display("errorTitleSaveProcess", "errorWrongFileName");
+				ErrorManager.getInstance().display("errorTitleSaveProject", "errorWrongFileName");
 				return false;
 			}
 			

@@ -39,6 +39,5 @@ public class ProcessRole extends ProcessPerformer
 	
 	public void visit(ModelVisitor visitor)
 	{
-		visitor.visitRole(this);
 	}
 }

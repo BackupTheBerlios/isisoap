@@ -53,11 +53,11 @@ public class ProcessingTaskServerDialog extends SoapDialog
 
 	private JProgressBar mProgressBar = new JProgressBar();
 	private JTextArea mTaskOutput = new JTextArea(5, 20);
-	private JButton mClose = new JButton("Close");
+	private JButton mClose = new JButton(ResourceManager.getInstance().getString("close"));
 	private Timer mTimer;
 	private MonitoredTaskBase mTask;
 	private String mLastMessage = null;
-	private PanelDescription mPanelDescription = new PanelDescription("connexion");
+	private PanelDescription mPanelDescription = new PanelDescription(ResourceManager.getInstance().getString("connexionDescription"));
 	
 
 
@@ -94,6 +94,11 @@ public class ProcessingTaskServerDialog extends SoapDialog
 		b.setBorder(BorderFactory.createEmptyBorder(10,10,10,10));
 		getContentPane().add(b, BorderLayout.SOUTH);
 		
+		this.setSize(300,200);
+	    this.setLocation(parent.getX()+(parent.getWidth()-this.getWidth())/2,parent.getY()+(parent.getHeight()-this.getHeight())/2);
+	    this.setResizable(false);
+		
+	    
 		mClose.addActionListener(new ActionListener()
 		{
 			public void actionPerformed(ActionEvent e)
@@ -101,7 +106,6 @@ public class ProcessingTaskServerDialog extends SoapDialog
 				dispose();
 			}
 		});
-		
 		mTimer = new Timer(MONITOR_DELAY, new ActionListener()
 		{
 			public void actionPerformed(ActionEvent e)
@@ -109,9 +113,7 @@ public class ProcessingTaskServerDialog extends SoapDialog
 				checkStates();
 			}
 		  });
-		
 		checkStates();
-		this.setSize(300,200);
 	}
 	
 	public void forceRefresh()
@@ -145,7 +147,7 @@ public class ProcessingTaskServerDialog extends SoapDialog
 			mClose.setEnabled(true);
 			setDefaultCloseOperation( DISPOSE_ON_CLOSE);
 			Toolkit.getDefaultToolkit().beep();
-			if (((ProcessingTaskServer)mTask).getResultTask() == ConnectionManager.CONNECTED)
+			if (((ProcessingTaskServer)mTask).getResultTask())
 			{
 			    this.dispose() ;
 			}
@@ -179,12 +181,11 @@ public class ProcessingTaskServerDialog extends SoapDialog
 		}
 	}
 	
-	public void show()
+	public void setVisible()
 	{
 		mTimer.start();
 		mTask.go();
-		super.show();
+		setVisible(true);
 	}
-	
 	
 }

@@ -27,11 +27,11 @@ import javax.swing.JPopupMenu;
 import soap.Context;
 import soap.model.DefaultSoapElementVisitor;
 import soap.model.executionProcess.structure.Project;
-import soap.model.extension.SoapProcess;
-import soap.model.process.structure.Activity;
-import soap.model.process.structure.ProcessRole;
-import soap.model.process.structure.WorkDefinition;
-import soap.model.process.structure.WorkProduct;
+
+/**
+ * This visitor associate an element with an his popupmenu.
+ *
+ */
 
 public class PopupMenuAssociater extends DefaultSoapElementVisitor
 {
@@ -50,61 +50,10 @@ public class PopupMenuAssociater extends DefaultSoapElementVisitor
 		return result;
 	}
 	
-/*	protected void visitElement(Element element) 
-	{
-	   // System.out.println("go");
-	    if (element instanceof SoapProcess)
-	        visitSoapProcess((SoapProcess)element) ;
-	}*/
 	
 	public void visitProject (Project p)
 	{
 	    mResult.add(msContext.getAction("CloseNoHotKey")) ;
-	}
-	
-	public void visitSoapProcess(SoapProcess process)
-	{
-	    mResult.add(msContext.getAction("ProjectProperties"));
-	}
-	
-		
-	public void visitProduct(WorkProduct product)
-	{
-		mResult.add(msContext.getAction("TreeAddWorkProductState"));
-		
-		super.visitProduct(product);
-	}
-	
-	public void visitRole(ProcessRole role)
-	{
-		super.visitRole(role);
-	}
-
-	public void visitActivity(Activity activity)
-	{
-		super.visitActivity(activity);
-	}
-		
-	public void visitWorkDefinition(WorkDefinition w)
-	{
-		if( w instanceof WorkDefinition )
-		{
-			WorkDefinition aw = (WorkDefinition) w;
-			mResult.add(msContext.getAction("TreeAddActivity"));
-			
-			/*if( aw.canAddActivityDiagram() )
-			{
-				mResult.add(msContext.getAction("TreeAddActivityDiagram"));
-			}
-			if( aw.canAddFlowDiagram() )
-			{
-				mResult.add(msContext.getAction("TreeAddFlowDiagram"));
-			}*/
-		}
-		
-		super.visitWorkDefinition(w);
-	}
-	
-	
+	}	
 	
 }

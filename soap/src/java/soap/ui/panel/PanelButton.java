@@ -21,8 +21,10 @@
 
 package soap.ui.panel;
 
+import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
+import java.awt.Insets;
 import java.awt.event.ActionListener;
 import java.util.HashMap;
 import java.util.Map;
@@ -30,12 +32,14 @@ import java.util.Vector;
 
 import javax.swing.Box;
 import javax.swing.JButton;
-import javax.swing.border.Border;
-import javax.swing.border.CompoundBorder;
 import javax.swing.border.EmptyBorder;
-import javax.swing.border.EtchedBorder;
 
 import utils.ResourceManager;
+
+/**
+ * a class helping users to create a panel containing button
+ *
+ */
 
 public class PanelButton extends SoapPanel
 {
@@ -46,85 +50,134 @@ public class PanelButton extends SoapPanel
     public static final String CENTER = "center" ;
     public static final String RIGHT = "right" ;
     
-    private JButton mApplyButton = new JButton (ResourceManager.getInstance().getString("apply"));
-    private JButton mCancelButton = new JButton (ResourceManager.getInstance().getString("cancel"));
-    private JButton mOkButton = new JButton (ResourceManager.getInstance().getString("ok")) ; ;
     private Map mMapButton = new HashMap() ;
     private Box mBox = Box.createHorizontalBox() ;
     private String mPosition = "center" ;
+    private int mButtonSize = 10;
     
     public PanelButton ()
     {
         mBox.add(Box.createHorizontalGlue());
     }
     
+    /**
+     * @param position of all the button in the panel
+     * RIGHT OR CENTER
+     *
+     */
+
     public PanelButton (String position)
     {
         this() ;
         mPosition = position ;
     }
     
+    /**
+     *
+     * @param type default Panelbutton containing 
+     * OK - APPLY - CANCEL 
+     *
+     */
     public PanelButton (int type)
     {
         this() ;
-    	mOkButton.setBounds(mCancelButton.getBounds()) ;
         if (type >= 1)
         {
-            mBox.add(mOkButton);
-            mMapButton.put(mOkButton.getName(),mOkButton) ;
+            addButton(ResourceManager.getInstance().getString("ok"));
         }
         if (type == 2 || type > 4)
         {
-            mBox.add(mCancelButton);
-            mMapButton.put(mCancelButton.getName(),mCancelButton) ;
+            addButton(ResourceManager.getInstance().getString("cancel"));
         }
         if (type == 3 || type > 4)
         {
-            mBox.add(mApplyButton);
-            mMapButton.put(mApplyButton.getName(),mApplyButton) ;
+            addButton(ResourceManager.getInstance().getString("apply"));
         }
         this.setLayout(new FlowLayout()) ;
         initUI() ;
+        
     }
     
+    /**
+     * @param position of all the button in the panel
+     * RIGHT OR CENTER
+     * @param type default Panelbutton containing 
+     * OK - APPLY - CANCEL 
+     * 
+     */
     public PanelButton (int type, String position)
     {
         this(type);
         mPosition = position ;
     }
-        
-        
+    
+    /**
+     * return the button ok
+     * @return return the ok button
+     *
+     */
     public JButton getOkButton()
     {
-        return mOkButton ;
+        return getButton(ResourceManager.getInstance().getString("ok")) ;
     }
     
+    /**
+     * return the button cancel
+     * @return return the cancel button
+     *
+     */
     public JButton getCancelButton()
     {
-        return mCancelButton ;
+        return getButton(ResourceManager.getInstance().getString("cancel")) ;
     }
     
+    /**
+     * return the button apply
+     * @return return the apply button
+     *
+     */
     public JButton getApplyButton()
     {
-        return mApplyButton ;
+        return getButton(ResourceManager.getInstance().getString("apply")) ;
     }
     
+    /**
+     * add a new button to the panel with the name given in parameter
+     * @param name the button name 
+     */
     public void addButton(String name)
     {
-        JButton butt = new JButton(name) ;
-        butt.setActionCommand(name.toLowerCase()) ;
-        mMapButton.put(name,butt);
-        mBox.add(butt);
-        initUI() ;
+        addButton(new JButton(name)) ;
     }
     
+    /**
+     * add a new button to the panel
+     * @param button the new button 
+     * 
+     */
     public void addButton(JButton button)
     {
+        button.setPreferredSize(new Dimension(85,30));
+        button.setMargin(new Insets(2,5,2,5));
+        button.setActionCommand(button.getText());
         mMapButton.put(button.getText(),button);
         mBox.add(button);
         initUI() ;
     }
     
+    /**
+     * add a space after the button int the panel
+     * 
+     */
+    public void addSpace()
+    {
+        mBox.add (Box.createRigidArea(new Dimension(10,0)));
+    }
+    
+    /**
+     * remove a  button from the panel
+     * @param button the button name to remove
+     */
     public void removeButton(String name)
     {
         mBox.remove(this.getButton(name));
@@ -132,32 +185,50 @@ public class PanelButton extends SoapPanel
         
     }
     
+    /**
+     * check if a button exist  
+     * @param name the button name
+     */
     public boolean existButton(String name)
     {
         return mMapButton.containsKey(name);
     }
     
+    /**
+     * get a button from the panel
+     * @param name the button name
+     */
     public JButton getButton(String name)
     {
         return (JButton)mMapButton.get(name) ;
     }
     
-    
+    /**
+     * set a button enable  
+     * @param name the button name
+     */
     public void setButtonEnable(String name)
     {
         getButton(name).setEnabled(true) ;
     }
     
+    /**
+     * set a button enable  
+     * @param name the button name
+     */
     public void setButtonDisable(String name)
     {
         getButton(name).setEnabled(false) ;
     }
     
-    public void initUI ()
+    /**
+     * initialize button interface
+     *
+     */
+
+    private void initUI ()
     {
-        Border border = new EtchedBorder() ;
-        Border margin = new EmptyBorder(10,10,10,10);
-        this.setBorder(new CompoundBorder(border, margin));
+        this.setBorder(new EmptyBorder(10,10,10,10));
         if (mPosition.equals(RIGHT))
         {
             this.setLayout(new GridLayout()) ;
@@ -165,6 +236,11 @@ public class PanelButton extends SoapPanel
         this.add(mBox) ;
     }
     
+    
+    /**
+     * add a listener to all the button conataining in the panel
+     * @param listener the listener 
+     */
     public void addButtonListener(ActionListener listener)
     {
         Vector v = new Vector (mMapButton.values()) ;
@@ -173,4 +249,5 @@ public class PanelButton extends SoapPanel
            ((JButton)v.get(i)).addActionListener(listener);
         }
     }
+
 }

@@ -22,7 +22,10 @@ package soap.model;
 
 import soap.model.extension.SoapListProjects;
 
-
+/**
+ * a default visitor for the soapElement
+ *
+ */
 public class DefaultSoapElementVisitor extends DefaultModelVisitor implements SoapElementVisitor
 {
 

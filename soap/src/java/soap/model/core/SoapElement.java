@@ -23,6 +23,10 @@ package soap.model.core;
 
 import soap.model.ModelVisitor;
 
+/** Base class for the elements of the model
+ *  
+ * 
+ */
 public abstract class SoapElement extends ModelElement
 {
     public SoapElement (String projectName)

@@ -22,8 +22,12 @@ package soap;
 
 import javax.swing.JTree;
 
+/**
+ * Interface required to be the main frame of the application
+ *
+ */
+
 public interface MainFrameInterface
 {
     public JTree getProjectTree();
-    public void setFilePath(String filePath);
 }

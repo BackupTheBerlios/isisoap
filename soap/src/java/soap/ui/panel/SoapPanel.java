@@ -23,7 +23,6 @@ package soap.ui.panel;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 
-import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
@@ -52,13 +51,6 @@ public class SoapPanel extends JPanel
         this.mName = name ;
 	}
     
-    protected void makeButton(String name, GridBagLayout gridbag,
-			  GridBagConstraints c) 
-	{
-        JButton button = new JButton(name);
-		gridbag.setConstraints(button, c);
-		//mPanel.add(button);
-	}
 	public static void  makeLabel(JPanel panel, String name,
 				  				GridBagLayout gridbag,
 				  					GridBagConstraints c) 

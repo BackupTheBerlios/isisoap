@@ -31,10 +31,14 @@ import java.util.zip.ZipOutputStream;
 import soap.Context;
 import soap.model.executionProcess.structure.Project;
 import utils.ErrorManager;
+import utils.IndicatorManager;
 import utils.ProjectManager;
 import JSX.ObjOut;
 
-
+/**
+ * Monitor used to save a project
+ *
+ */
 public class SaveProject
 {
 	private final static String IMAGE_PATH="images";
@@ -50,6 +54,7 @@ public class SaveProject
 	{
 	    saveProject();
 	    saveProjectProperties();
+	    saveIndicatorsValues();
 	    mZipFile.close();
 	}
 	
@@ -89,7 +94,7 @@ public class SaveProject
 		catch(Throwable t)
 		{
 			t.printStackTrace();
-			ErrorManager.getInstance().display("errorTitleSaveProcess", "errorOpenProcess");
+			ErrorManager.getInstance().display("errorTitleSaveProject", "errorSaveProject");
 		}
 	}
 	
@@ -121,6 +126,19 @@ public class SaveProject
 		BufferedOutputStream data =  new BufferedOutputStream(mZipFile );
 		
 		ProjectManager.getInstance().getProperties(currentProject.getName()).store(data,currentProject.getName());
+
+		mZipFile.closeEntry();	
+	}
+	
+	private void saveIndicatorsValues() throws IOException
+	{
+	    Project currentProject = Context.getInstance().getListProjects().getCurrentProject();
+		
+	    ZipEntry entryZip = new ZipEntry(currentProject.getName()+".indicators");
+		mZipFile.putNextEntry(entryZip);
+		BufferedOutputStream data =  new BufferedOutputStream(mZipFile );
+		if(IndicatorManager.getInstance().getProperties(currentProject.getName()) != null)
+		    IndicatorManager.getInstance().getProperties(currentProject.getName()).store(data,currentProject.getName());
 
 		mZipFile.closeEntry();	
 	}

@@ -22,6 +22,8 @@ package soap;
 import java.util.Locale;
 import java.util.Properties;
 
+import javax.swing.JPanel;
+
 import soap.ui.SoapFrame;
 import soap.ui.actions.AboutAction;
 import soap.ui.actions.CloseProjectAction;
@@ -34,13 +36,27 @@ import soap.ui.actions.ProjectPropertiesAction;
 import soap.ui.actions.QuitAction;
 import soap.ui.actions.SaveAsProjectAction;
 import soap.ui.actions.SaveProjectAction;
-import soap.ui.dialog.ConfigurationDialog;
+import soap.ui.dialog.SeveralStepsDialog;
+import soap.ui.panel.SoapTextPanel;
+import soap.ui.panel.configuration.ServerInformationPanel;
+import soap.ui.panel.configuration.UserInformationPanel;
 import utils.ConfigManager;
 import utils.ResourceManager;
+
+/**
+ * Main class of the project
+ *
+ *
+ */
 
 
 public class SoapMain 
 {
+    /**
+     * Create the default properties when the application is lauched for the first time
+     *
+     */
+    
     public static Properties createDefaultProperties()
 	{
 		ResourceManager resManager = ResourceManager.getInstance();
@@ -60,11 +76,34 @@ public class SoapMain
 		return properties;
 	}
 
+    /**
+     * Allow the user to configurate the application it is lauched for the first time
+     *
+     *
+     */
+    
 	public static void configurate()
 	{
-   		ConfigurationDialog cfgDialog = new ConfigurationDialog ("Configurationnnnn") ;
-    	cfgDialog.setVisible(true);
+   		SeveralStepsDialog cfgDialog = new SeveralStepsDialog ("Configuration","Configuration du logiciel SOAP","icons/logoConfig.gif") ;
+   		SoapTextPanel sp = new SoapTextPanel() ;
+        sp.setText("Cet assistant va vous permettre de configurer SOAP.\n" +
+        		"Ceci ne va vous prendre que quelques minutes.\n\n" +
+        		"Bonne utilisation du logiciel !!!") ;
+        cfgDialog.addCenterPanel(sp);
+        
+        JPanel panel = new UserInformationPanel(cfgDialog) ;
+        cfgDialog.addCenterPanel(panel);
+        
+        panel = new ServerInformationPanel(cfgDialog);
+        cfgDialog.addCenterPanel(panel);
+   		cfgDialog.setVisible(true);
 	}
+	
+	/**
+     * main
+     *
+     */
+
 	public static void main(String[] args) 
 	{
 	    boolean configurate = ConfigManager.isConfigurate() ;
@@ -76,19 +115,26 @@ public class SoapMain
 	    Context context = Context.getInstance();
 	    // initialize the actions
 		initActions(context);
-		//JFrame f1 = new URLPassword();
 		// initialize the main frame
 	    SoapFrame f = new SoapFrame();
 	    context.setTopLevelFrame(f);
 	    ListProjects listProjects = ListProjects.getInstance() ;
 	    context.setListProjects(listProjects) ;
-	    //Context.getInstance().getListProjects().addProject(new Project ("Soap"));
 		f.setVisible(false);
 	    if (!configurate)
 	    {
+	        // lauch the configuration wizard if the software is not configurate
 	        configurate() ;
 	    }
-	    f.setVisible(true);
+	    if(ConfigManager.isConfigurate())
+	    {
+	        f.setVisible(true);
+	    }
+	    else
+	    {
+	        // close the application when the user exit the configuration wizard 
+	        System.exit(0);
+	    }
 	}
 	public static void initActions(Context context)
 	{

@@ -26,6 +26,11 @@ import java.awt.BorderLayout;
 import javax.swing.BorderFactory;
 import javax.swing.JTextArea;
 
+
+/**
+ * a class helping users to create a panel which describe something
+ *
+ */
 public class SoapTextPanel extends SoapPanel
 {
     private JTextArea mText = new JTextArea();

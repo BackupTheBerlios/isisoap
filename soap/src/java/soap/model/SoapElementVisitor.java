@@ -22,6 +22,10 @@ package soap.model;
 
 import soap.model.extension.SoapListProjects;
 
+/**
+ * visitor for element of isisoap
+ *
+ */
 
 public interface SoapElementVisitor extends ModelVisitor
 {

@@ -46,7 +46,6 @@ public class WorkDefinition extends ModelElement
 	
 	public void visit(ModelVisitor visitor)
 	{
-		visitor.visitWorkDefinition(this);
 	}	
 	
 	public ProcessPerformer getOwner()

@@ -24,17 +24,23 @@ package soap.ui.panel;
 import java.awt.Component;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.Insets;
 
 import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 
+/**
+ * a class helping users to create a panel with a gridbaglayout
+ * more detail : see the the gridbaglayout 
+ *
+ */
 public class SoapGridbagPanel extends SoapPanel
 {
-    GridBagLayout mGridbag = new GridBagLayout();
-    GridBagConstraints mConstraint = new GridBagConstraints();
+    private GridBagLayout mGridbag = new GridBagLayout();
+    private GridBagConstraints mConstraint = new GridBagConstraints();
     
-    public static int RELATIVE = GridBagConstraints.RELATIVE ;
-    public static int END = GridBagConstraints.REMAINDER ;
+    public final static int RELATIVE = GridBagConstraints.RELATIVE ;
+    public final static int END = GridBagConstraints.REMAINDER ;
     
     public SoapGridbagPanel()
     {
@@ -42,33 +48,47 @@ public class SoapGridbagPanel extends SoapPanel
         initUI() ;
     }
     
-    public void initUI() 
+    private void initUI() 
     {
         this.setLayout(mGridbag);
-        this.setBorder(BorderFactory.createEmptyBorder(0,10,10,10));
+        this.setBorder(BorderFactory.createEmptyBorder(10,10,10,10));
     }
     
-    public void addComponent(Component comp, int position, int  weightx , int weighty)
+
+    public void addComponent(Component comp, int position, double  weightx , double weighty, int fill)
     {
         mConstraint.weightx = weightx;
         mConstraint.weighty = weighty;
 		mConstraint.gridwidth = position;
-		mConstraint.fill = GridBagConstraints.HORIZONTAL ;
+		mConstraint.fill = fill ;
 		mGridbag.setConstraints(comp, mConstraint);
 		this.add(comp) ;
     }
     
-    public void addComponent(Component comp, int position )
+    public void defaultAddComponent(Component comp, int position, double  weightx , double weighty)
     {
-        this.addComponent(comp,position,1,0);
+        int fill = GridBagConstraints.HORIZONTAL ;
+        addComponent (comp, position, weightx , weighty, fill);
+    }
+    
+    public void defaultAddComponent(Component comp, int position, double  weightx , double weighty, Insets insets)
+    {
+        int fill = GridBagConstraints.HORIZONTAL ;
+        mConstraint.insets = insets;
+        addComponent (comp, position, weightx , weighty, fill);
+    }
+    
+    public void defaultAddComponent(Component comp, int position )
+    {
+        this.defaultAddComponent(comp,position,1,0);
     }
     
     public void addSpace()
     {
-        this.addSpace(0);
+        this.addLine(0);
     }
     
-    public void addSpace(int weighty)
+    public void addLine(double weighty)
     {
         mConstraint.weightx = 1;
         mConstraint.weighty = weighty;
@@ -82,6 +102,16 @@ public class SoapGridbagPanel extends SoapPanel
     public void reset()
     {
         this.removeAll();
+    }
+    
+    public void setConstraint(GridBagConstraints constraint)
+    {
+        mConstraint = constraint;
+    }
+    
+    public GridBagConstraints getConstraint()
+    {
+        return mConstraint;
     }
     
 }

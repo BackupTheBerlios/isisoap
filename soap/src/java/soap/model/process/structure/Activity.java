@@ -42,7 +42,6 @@ public class Activity extends WorkDefinition
 	
 	public void visit(ModelVisitor visitor)
 	{
-		visitor.visitActivity(this);
 	}
 	
 	

@@ -49,6 +49,6 @@ public class CloseProjectAction extends SoapAction
 	public void closeProject()
 	{        
 	    ListProjects listProject = Context.getInstance().getListProjects() ;
-	    listProject.closeProject(listProject.getCurrentProject());
+	    listProject.removeProject(listProject.getCurrentProject());
 	}
 }

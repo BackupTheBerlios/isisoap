@@ -26,28 +26,33 @@ import soap.model.executionProcess.structure.Iteration;
 import soap.model.executionProcess.structure.Project;
 import soap.model.executionProcess.structure.Iteration.ListTask;
 import soap.model.extension.SoapListProjects;
-import soap.ui.tabbedPane.SoapCentralTabbedPane;
-import soap.ui.tabbedPane.SoapIterationTabbedPane;
-import soap.ui.tabbedPane.SoapListProjectsTabbedPane;
-import soap.ui.tabbedPane.SoapProjectTabbedPane;
-import soap.ui.tabbedPane.SoapTasksTabbedPane;
+import soap.ui.CentralPanel.SoapCentralPanel;
+import soap.ui.CentralPanel.SoapIterationCentralPanel;
+import soap.ui.CentralPanel.SoapListProjectsCentralPanel;
+import soap.ui.CentralPanel.SoapProjectCentralPanel;
+import soap.ui.CentralPanel.SoapTasksCentralPanel;
+
+/**
+ * This visitor associate an element with his CentralPanelAssociater
+ *
+ */
 
 
-public class PanelAssociater extends DefaultSoapElementVisitor
+public class CentralPanelAssociater extends DefaultSoapElementVisitor
 {
 
-	SoapCentralTabbedPane mCentralPanel = null;
+	SoapCentralPanel mCentralPanel = null;
 	
-	public PanelAssociater()
+	public CentralPanelAssociater()
 	{
 	}
 	
 	/**
 	 * Retrieve the central panel associated to the element during the visit
 	 */
-	public SoapCentralTabbedPane getCentralPanel()
+	public SoapCentralPanel getCentralPanel()
 	{
-		SoapCentralTabbedPane centralPanel = mCentralPanel;
+		SoapCentralPanel centralPanel = mCentralPanel;
 		
 		mCentralPanel = null;
 		
@@ -56,21 +61,21 @@ public class PanelAssociater extends DefaultSoapElementVisitor
 	
 	public void visitProject (Project p)
 	{
-		mCentralPanel = new SoapProjectTabbedPane(p);
+		mCentralPanel = new SoapProjectCentralPanel(p);
 	}	
 	
 	
 	public void visitSoapListProjects (SoapListProjects listProjects)
 	{
-	    mCentralPanel = new SoapListProjectsTabbedPane(listProjects);
+	    mCentralPanel = new SoapListProjectsCentralPanel(listProjects);
 	}
 	
 	public void visitIteration(Iteration i)
 	{
-		mCentralPanel = new SoapIterationTabbedPane(i);
+		mCentralPanel = new SoapIterationCentralPanel(i);
 	}
 	public void visitListTask(ListTask listTask)
     {
-	    mCentralPanel = new SoapTasksTabbedPane(listTask);
+	    mCentralPanel = new SoapTasksCentralPanel(listTask);
     }
 }

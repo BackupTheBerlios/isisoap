@@ -85,18 +85,6 @@ public class SoapMediator implements Serializable
 	    
 	}
 	
-	public Project getCurrentProject(ListProjects list)
-    {
-        SoapTreeNode node =(SoapTreeNode)Context.getInstance().getTopLevelFrame().getProjectTree().getLastSelectedPathComponent() ;
-         TreeNode tabTreeNode [] = node.getPath() ;
-         if (tabTreeNode.length >= 2)
-         {
-             return list.getProject(((SoapTreeNode)tabTreeNode[1]).getName()) ;
-         }
-        return null ;
-    }
-	
-	
 	/**
 	 * Create a new process
 	 * @param ap
@@ -445,7 +433,7 @@ public class SoapMediator implements Serializable
 
 	public boolean verifyInsertElementIntoPackage (ModelElement element, IPackage parent)
 	{    
-	    System.out.println("verifyInsertElementIntoPackage : "+element+" "+ parent);
+	    //System.out.println("verifyInsertElementIntoPackage : "+element+" "+ parent);
 	    if (!(element instanceof IPackage))
 	    {
 	        if (parent instanceof SoapListProjects && ! (element instanceof Project) ||

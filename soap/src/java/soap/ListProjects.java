@@ -28,51 +28,94 @@ import soap.model.extension.SoapListProjects;
 import soap.model.frontend.SoapMediator;
 import utils.ConfigManager;
 
+/**
+ * Class used to contains the list of all the projects
+ * It is implemented as a singleton.
+ * 
+ */
 
 public class ListProjects
 {
     private static final ListProjects mInstance = new ListProjects() ;
     private SoapListProjects mSoapListProjects = new SoapListProjects(ConfigManager.getInstance().getProperty("Project")) ;
     private Vector mlistAllProjects = new Vector();
+    private Project mCurrentProject = null;
     
-    public ListProjects()
-    {
-    }
+    public ListProjects(){};
     
+    /**
+	 * Allows to retrieve the ListProjects instance
+	 * @return the unique instance of ListProjects
+	 */
     public static ListProjects getInstance()
 	{
 		return mInstance ;
 	}
+    
     /**
-     * @return Returns the mSoapListProcess.
+     * Allows to retrieve the the working project list
+     * @return Returns the the working project lis.
+     * 
      */
     public SoapListProjects getListSoapProjects()
     {
         return mSoapListProjects;
     }
     
+    /**
+	 * Allows to add a  project to the list
+	 *
+	 */
     public void addProject(Project p)
     {
         mlistAllProjects.add(p) ;
         SoapMediator.getInstance().addProject(p) ;
     }
     
-    public void closeProject(Project p)
+    /**
+	 * Allows to remove a project from the list
+	 *
+	 */
+    public void removeProject(Project p)
     {
         mlistAllProjects.remove(p);
         SoapMediator.getInstance().closeProject(p) ;
     }
     
+    /**
+	 * Allows to get the current project selected
+	 * @return returns the current project
+	 *
+	 */
     public Project getCurrentProject()
     {
-        return SoapMediator.getInstance().getCurrentProject(this) ;
+        return mCurrentProject ;
     }
 	
+    /**
+	 * Allows to set the current project selected
+	 *
+	 */
+    public void setCurrentProject(Project p)
+    {
+        mCurrentProject = p;
+    }
+    
+    /**
+	 * Allows to get all the existing projects
+	 * @return returns the list of all existing project
+	 * 
+	 */
 	public Vector getListAllProjets()
 	{
 	    return mlistAllProjects ;
 	}
 	
+	 /**
+	 * Allows to get a project in the list of the working project
+	 * identify by his name
+	 *
+	 */
 	public Project getProject(String projectName)
 	{
 	    if ( existProject(projectName) )
@@ -89,12 +132,22 @@ public class ListProjects
 	    return null ;
 	}
 	
-	
+	/**
+     * Test if a project exists
+     * @return Returns true if the project exists
+     *
+     */
+
 	public boolean existProject(Project p)
 	{
 	    return mlistAllProjects.contains(p) ;
 	}
 	
+	/**
+     * Test if a project exists
+     * @return Returns true if the project exists
+     *
+     */
 	public boolean existProject(String projectName)
 	{	    
 	    for (int i = 0; i < mlistAllProjects.size(); i++) 
@@ -106,6 +159,7 @@ public class ListProjects
 	    }
 	    return false ;
 	}
+	
 	
 	public void setListeners()
 	{

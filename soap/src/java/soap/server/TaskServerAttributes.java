@@ -25,6 +25,11 @@ import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * class containing the attribute associated to a server task 
+ *
+ */
+
 public class TaskServerAttributes
 {
     Map mAttributes = new HashMap() ;
@@ -39,42 +44,79 @@ public class TaskServerAttributes
         mAttributes.put("TYPE_OF_TASK", typeOfTask) ;
     }
     
+    /**
+     * clear all the attributes
+     *
+     */
     public void clearAttributes ()
     {
         mAttributes.clear();
     }
     
+    /**
+     * set the type of the task
+     * @param typeOfTask the type of the task
+     */
     public void setTypeOfTask (String typeOfTask)
     {
         mAttributes.put("TYPE_OF_TASK", typeOfTask) ;
     }
     
+    /**
+     * get the type of the task
+     *
+     * @return the type of the task
+     */
     public String getTypeOfTask()
     {
         return (String)mAttributes.get("TYPE_OF_TASK");
     }
     
+    /**
+     * specify the attribute URL
+     * @param pUrl the URL associated to the task
+     */
     public void setUrl(URL pUrl)
     {
         mAttributes.put("URL", pUrl);
     }
     
+    /**
+     * get the URL associated to the task
+     *
+     * @return URL
+     */
     public URL getUrl ()
     {
         return (URL) mAttributes.get("URL");
     }
     
+    /**
+     * set the identity of a user
+     * @param login user's login
+     * @param password user's password
+     */
     public void setIdentificationAttribute (String login, String password)
     {
         mAttributes.put("LOGIN", login);
         mAttributes.put("PASS", password) ;
     }
     
+    /**
+     * get the user's login
+     *
+     * @return return user's login
+     */
     public String getLogin()
     {
         return (String)mAttributes.get("LOGIN");
     }
     
+    /**
+     * get user's password
+     *
+     * @return return user's password
+     */
     public String getPassword()
     {
         return (String)mAttributes.get("PASS");

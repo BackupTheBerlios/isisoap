@@ -31,6 +31,7 @@ import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.JButton;
 import javax.swing.JDialog;
@@ -39,11 +40,14 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.Timer;
 
+import soap.Context;
+import soap.ui.SoapFrame;
+
 
 /**
  * Open a new project in the application
  *
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class TaskMonitorDialog extends JDialog
 {
@@ -86,6 +90,7 @@ public class TaskMonitorDialog extends JDialog
 		setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
 		mTask = task;
 		mTaskOutput.setEditable(false);
+		mTaskOutput.setBorder(BorderFactory.createEmptyBorder(10,10,10,10)) ;
 		mClose.setEnabled(false);
 		
 		getContentPane().setLayout(new BorderLayout());
@@ -115,9 +120,13 @@ public class TaskMonitorDialog extends JDialog
 				checkStates();
 			}
 		  });
-		
+		SoapFrame parent = (SoapFrame)Context.getInstance().getTopLevelFrame();
+		this.setSize(350,250);
+		this.setLocation(parent.getX()+(parent.getWidth()-this.getWidth())/2,parent.getY()+(parent.getHeight()-this.getHeight())/2);
+		this.setResizable(false);
 		checkStates();
-		pack();
+		
+	    
 	}
 	
 	public void forceRefresh()

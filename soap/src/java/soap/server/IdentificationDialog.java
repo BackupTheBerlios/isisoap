@@ -39,17 +39,23 @@ import soap.ui.panel.PanelButton;
 import soap.ui.panel.PanelDescription;
 import utils.ResourceManager;
 
+/**
+ * display a dialog allowing a user to enter his login ans his password
+ *
+ */
+
 public class IdentificationDialog extends SoapDialog
 {
     public static final int CONNECT = 1 ;
     public static final int CANCEL = 0 ;
  
-    private PanelDescription mPanelDescription = new PanelDescription(ResourceManager.getInstance().getString("identification")) ;
+    private PanelDescription mPanelDescription = new PanelDescription(ResourceManager.getInstance().getString("identificationDescription")) ;
     private PanelButton mPanelButton = new PanelButton();
     private JTextField mLoginTF = new JTextField() ;
     private JPasswordField mPassTF = new JPasswordField() ;
     private ActionListener buttonListener = new ButtonListener() ;
     private int mButtonClick ;
+    private static ResourceManager resMan = ResourceManager.getInstance();
     
     public IdentificationDialog(String title)
     {
@@ -57,17 +63,23 @@ public class IdentificationDialog extends SoapDialog
         
     }  
   
-    public void initDialog()
+    
+    /**
+     * 
+     *
+     */
+    protected void initUI()
     {
         Container content = this.getContentPane();
         content.setLayout(new BorderLayout());
         content.add(mPanelDescription, BorderLayout.NORTH) ;
-        mPanelButton.addButton("connect") ;
-        mPanelButton.addButton("cancel");
+        mPanelButton.addButton(resMan.getString("ok")) ; 
+        getRootPane().setDefaultButton(mPanelButton.getButton(resMan.getString("ok")));
+        mPanelButton.addButton(resMan.getString("cancel"));
         mPanelButton.addButtonListener(buttonListener) ;
         JPanel identifyPanel = new JPanel() ;
-        JLabel logLabel = new JLabel("Login ");
-        JLabel passLabel = new JLabel("pass ");
+        JLabel logLabel = new JLabel(resMan.getString("login"));
+        JLabel passLabel = new JLabel(resMan.getString("password"));
         identifyPanel.setLayout(new GridLayout(4,1)) ;
         identifyPanel.add(logLabel) ;
         identifyPanel.add(mLoginTF) ;
@@ -83,7 +95,7 @@ public class IdentificationDialog extends SoapDialog
     
     public int showIdentificationDialog()
     {
-        initDialog() ;
+        initUI() ;
         return mButtonClick ;
     }
     
@@ -94,7 +106,7 @@ public class IdentificationDialog extends SoapDialog
     
     public String getPassword()
     {
-        return mPassTF.getText() ;
+        return String.valueOf(mPassTF.getPassword()) ;
     }
         
     private class ButtonListener implements ActionListener
@@ -105,13 +117,13 @@ public class IdentificationDialog extends SoapDialog
 	           Object o = event.getSource() ;
 	           if (o instanceof JButton)
 	           {
-	               if (((JButton)o).getLabel().equals("connect"))
+	               if (((JButton)o).getText().equals(resMan.getString("ok")))
 	               {
 	                   IdentificationDialog.this.mButtonClick = CONNECT ;
 	               }
 	               else
 	               {
-	                   if (((JButton)o).getLabel().equals("cancel"))
+	                   if (((JButton)o).getText().equals(resMan.getString("cancel")))
 	                   {
 	                       IdentificationDialog.this.mButtonClick = CANCEL;
 	                      

@@ -44,7 +44,8 @@ import javax.swing.tree.TreeSelectionModel;
 import soap.Context;
 import soap.adapters.SoapTreeAdapter;
 import soap.adapters.SoapTreeNode;
-import soap.ui.tabbedPane.SoapCentralTabbedPane;
+import soap.model.executionProcess.structure.Project;
+import soap.ui.CentralPanel.SoapCentralPanel;
 
 public class SoapProjectTree extends JTree implements  TreeModelListener
 {
@@ -68,9 +69,16 @@ public class SoapProjectTree extends JTree implements  TreeModelListener
 		{
 			public void mousePressed(MouseEvent e)
 			{
-				int selRow = getRowForLocation(e.getX(), e.getY());
+			    int selRow = getRowForLocation(e.getX(), e.getY());
 				TreePath selPath = getPathForLocation(e.getX(), e.getY());
-				
+				if(selRow != -1)
+				{
+				    Object tabTreeNode [] = selPath.getPath(); 
+				    if(tabTreeNode.length >= 2)
+				    {
+				        Context.getInstance().getListProjects().setCurrentProject((Project)((SoapTreeNode)tabTreeNode[1]).getUserObject());
+				    }
+				}
 				// the modifiers test is needed in order to make it work on OSes that don't correctly set the isPopupTrigger flag (swing sux0r)
 				if(selRow != -1 && (e.isPopupTrigger() || (e.getModifiers() & InputEvent.BUTTON3_MASK)!=0) )
 				{
@@ -85,7 +93,7 @@ public class SoapProjectTree extends JTree implements  TreeModelListener
 				else if(selRow != -1 && e.getClickCount()==1)
 				{
 					e.consume();
-					SoapCentralTabbedPane centralPanel = associatePanel(selPath.getLastPathComponent());
+					SoapCentralPanel centralPanel = associatePanel(selPath.getLastPathComponent());
 					((SoapFrame)Context.getInstance().getTopLevelFrame()).openCentralPanel(centralPanel);
 				}
 				else if(selRow != -1 && e.getClickCount()==2)
@@ -144,7 +152,7 @@ public class SoapProjectTree extends JTree implements  TreeModelListener
 		return ((SoapTreeAdapter)getModel()).associateMenu(value);
 	}
 
-	private SoapCentralTabbedPane associatePanel(Object value)
+	private SoapCentralPanel associatePanel(Object value)
 	{
 		return ((SoapTreeAdapter)getModel()).associatePanel(value);
 	}
@@ -217,23 +225,26 @@ public class SoapProjectTree extends JTree implements  TreeModelListener
 
     public void treeNodesInserted(TreeModelEvent event)
     {
-        // display the new project inserted 
-        TreePath childPath = event.getTreePath() ;
-        TreePath parentPath = childPath.getParentPath() ;
-        if (getRowForPath(parentPath)<= 0)
-        {
-            setSelectionPath(event.getTreePath());
-            SoapCentralTabbedPane centralTabbedPane = associatePanel(event.getTreePath().getLastPathComponent());
-    		((SoapFrame)Context.getInstance().getTopLevelFrame()).openCentralPanel(centralTabbedPane);
-    		Context.getInstance().getListProjects().getCurrentProject() ;
+          // display the new project inserted  
+         Object tabTreeNode [] = event.getTreePath().getPath(); 
+         if(tabTreeNode.length == 1)
+   		 {
+             if(event.getChildIndices() != null)
+             {
+                 SoapTreeNode inserted = (SoapTreeNode)getModel().getChild(tabTreeNode[0],event.getChildIndices()[event.getChildIndices().length-1]);
+                 SoapCentralPanel centralTabbedPane = associatePanel(inserted);
+         		((SoapFrame)Context.getInstance().getTopLevelFrame()).openCentralPanel(centralTabbedPane);
+         		Context.getInstance().getListProjects().setCurrentProject((Project)inserted.getUserObject());
+         		setSelectionPath(new TreePath(inserted.getPath()));
+             }
         }
-        updateUI(); 
+        updateUI();
     }
 
 
     public void treeNodesRemoved(TreeModelEvent event)
     {
-        SoapCentralTabbedPane centralTabbedPane ;
+        SoapCentralPanel centralTabbedPane ;
         
         // retrieve the parent node of the node removed
         TreePath parentPath = event.getTreePath() ;

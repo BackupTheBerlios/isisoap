@@ -47,7 +47,6 @@ public class SoapProcess extends ModelElement implements IPackage
 	
 	public void visit(ModelVisitor visitor) 
 	{
-			visitor.visitProcess(this);
 	}
 	
 	public boolean addModelElement(ModelElement e)

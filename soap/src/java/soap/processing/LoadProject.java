@@ -37,14 +37,17 @@ import org.xml.sax.SAXException;
 import soap.Context;
 import soap.ListProjects;
 import soap.model.executionProcess.structure.Project;
+import utils.IndicatorManager;
 import utils.MonitoredTaskBase;
 import utils.ProjectManager;
 import utils.ResourceManager;
 import utils.TaskMonitorDialog;
 import JSX.ObjIn;
 
-
-
+/**
+ * Monitor used to load a project
+ *
+ */
 public class LoadProject extends MonitoredTaskBase 
 {
 	private File mFile = null;
@@ -81,8 +84,9 @@ public class LoadProject extends MonitoredTaskBase
 			
 			ZipInputStream zipFile = new ZipInputStream( new FileInputStream(new File(mFile.getAbsolutePath())));
 			
-			if(loadProject( zipFile )  && loadProjectProperties(zipFile))
+			if(loadProject( zipFile ) && loadProjectProperties(zipFile) && loadIndicatorsValues(zipFile))
 			{
+			    Context.getInstance().getListProjects().addProject(mProject);
 			    print(mResource.getString("loadSuccess"));
 			}
 			else
@@ -108,7 +112,7 @@ public class LoadProject extends MonitoredTaskBase
 	 */
 	protected boolean loadProject(ZipInputStream projectZip) throws IOException, ClassNotFoundException
 	{
-	    print(mResource.getString("loadSearchProject"));
+	    //print(mResource.getString("loadSearchProject"));
 		
 		DataInputStream data = findData("Project.xml"); 	
 
@@ -119,7 +123,6 @@ public class LoadProject extends MonitoredTaskBase
 			mProject = (Project)in.readObject();
 			if(!Context.getInstance().getListProjects().existProject(mProject))
 			{
-			    Context.getInstance().getListProjects().addProject(mProject);
 				print(mResource.getString("loadProjectSuccess"));
 				return true;
 			}
@@ -144,7 +147,7 @@ public class LoadProject extends MonitoredTaskBase
 	 */
 	protected boolean loadProjectProperties(ZipInputStream projectZip) throws IOException
 	{
-	    print(mResource.getString("loadSearchProjectProperties"));
+	    //print(mResource.getString("loadSearchProjectProperties"));
 		
 		DataInputStream data = findData(mProject.getName()+".project"); 	
 		
@@ -155,7 +158,6 @@ public class LoadProject extends MonitoredTaskBase
 		    properties.load(data);
 		    ProjectManager.getInstance().initProject(mProject.getName(),properties);
 		    print(mResource.getString("loadProjectPropertiesSuccess"));
-			projectZip.close();
 		    return true;
 		}
 		print(mResource.getString("loadProjectPropertiesFailed"));
@@ -163,6 +165,33 @@ public class LoadProject extends MonitoredTaskBase
 		return false;
 	}
 	
+	/**
+	 * Load incators values in the zip given in parameter.
+	 * 
+	 * @param projectZip the zip containing the .project file
+	 * @return true if successfull, false otherwise
+	 * @throws IOException
+	 */
+	protected boolean loadIndicatorsValues(ZipInputStream projectZip) throws IOException
+	{
+	    //print(mResource.getString("loadSearchIndicatorsValues"));
+		
+		DataInputStream data = findData(mProject.getName()+".indicators"); 	
+		
+		if( data != null )
+		{
+		    Properties properties = new Properties ();
+		    print(mResource.getString("loadIndicatorsValues"));
+		    properties.load(data);
+		    IndicatorManager.getInstance().setIndicatorsValues(mProject.getName(),properties);
+		    print(mResource.getString("loadIndicatorsValuesSuccess"));
+			projectZip.close();
+		    return true;
+		}
+		print(mResource.getString("loadIndicatorsValuesFailed"));
+		projectZip.close();
+		return false;
+	}
 	/**
 	 * Search and open the file given by fileName in projectZip.
 	 * 

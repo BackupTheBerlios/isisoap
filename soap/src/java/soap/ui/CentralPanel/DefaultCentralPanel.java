@@ -1,19 +1,19 @@
 /*
  * Created on 13 nov. 2004
  */
-package soap.ui.tabbedPane;
+package soap.ui.CentralPanel;
 
 import javax.swing.JPanel;
 
 /**
- * @author yanagiba
+ *
  */
-public class DefaultCentralTabbedPane extends SoapCentralTabbedPane
+public class DefaultCentralPanel extends SoapCentralPanel
 {
     protected JPanel mDataPanel  = new JPanel() ;
 	protected JPanel mStatsPanel = new JPanel() ;
 		
-	public DefaultCentralTabbedPane()
+	public DefaultCentralPanel()
 	{
 	    addTab(resMan.getString("tabbedPaneData"),mDataPanel);
 		addTab(resMan.getString("tabbedPaneStats"),mStatsPanel);

@@ -71,7 +71,7 @@ public class OpenProjectAction extends SoapAction
 			{
 				if(!filter.accept(chooser.getSelectedFile()) || chooser.getSelectedFile().isDirectory())
 				{
-					ErrorManager.getInstance().display("errorTitleOpenProcess", "errorWrongFileName");
+					ErrorManager.getInstance().display("errorTitleOpenProject", "errorWrongFileName");
 					return;
 				}
 				mFile = chooser.getSelectedFile();
@@ -79,8 +79,7 @@ public class OpenProjectAction extends SoapAction
 				
 				SoapFrame parent = (SoapFrame)Context.getInstance().getTopLevelFrame();				
 				mTask = new TaskMonitorDialog(parent,mMonitor);
-				mTask.setName("Loading");
-				mTask.setLocation(parent.getWidth()/2-mTask.getWidth()/2,parent.getHeight()/2-mTask.getHeight()/2);	
+				mTask.setName("Loading");	
 				mMonitor.setTask(mTask);
 				mTask.show();
 			}
@@ -88,7 +87,7 @@ public class OpenProjectAction extends SoapAction
 		catch(Throwable t)
 		{
 			t.printStackTrace();
-			ErrorManager.getInstance().display("errorTitleOpenProcess", "errorOpenProcess");
+			ErrorManager.getInstance().display("errorTitleOpenProject", "errorOpenProject");
 		}
 	}
 }

@@ -19,16 +19,15 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-package soap.ui.tabbedPane;
+package soap.ui.CentralPanel;
+
+import soap.model.executionProcess.structure.Task;
 
 
+public class SoapTaskCentralPanel extends SoapCentralPanel {
 
-public class SoapProcessRolesTabbedPane extends SoapCentralTabbedPane 
-{
-	
-	/*public SoapProcessRolesTabbedPane(PackageProcessRole packProcessRole)
+	public SoapTaskCentralPanel(Task task)
 	{
 		super();
-	}*/
-
+	}
 }

@@ -18,30 +18,17 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
+package soap.ui.CentralPanel;
 
-package soap.ui.actions;
+import soap.model.extension.SoapListProjects;
 
-import java.awt.event.ActionEvent;
 
-import javax.swing.AbstractAction;
-
-import soap.Context;
-import soap.adapters.SoapTreeAdapter;
-import soap.adapters.SoapTreeNode;
-import utils.ResourceManager;
-
-public class RemoveFromModelAction extends AbstractAction
+public class SoapListProjectsCentralPanel extends SoapCentralPanel 
 {
-	public RemoveFromModelAction(String label)
+	
+	public SoapListProjectsCentralPanel(SoapListProjects listProjects)
 	{
-		super(ResourceManager.getInstance().getString(label));
+		super();
 	}
 
-	public void actionPerformed(ActionEvent e)
-	{
-	    SoapTreeNode selected = (SoapTreeNode) Context.getInstance().getTopLevelFrame().getProjectTree().getSelectionPath().getLastPathComponent();
-	    SoapTreeAdapter model = (SoapTreeAdapter) Context.getInstance().getTopLevelFrame().getProjectTree().getModel();
-		
-		model.remove( new Object[]{selected} );
-	}
 }

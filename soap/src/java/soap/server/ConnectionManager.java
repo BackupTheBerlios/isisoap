@@ -25,6 +25,13 @@ package soap.server;
 import soap.processing.ProcessingTaskServer;
 import soap.ui.SoapFrame;
 import soap.ui.dialog.ProcessingTaskServerDialog;
+import utils.ResourceManager;
+
+
+/**
+ * class using to retrieve the connection to the server
+ *
+ */
 
 public class ConnectionManager
 {
@@ -52,34 +59,38 @@ public class ConnectionManager
 		return mConnectionManager;
 	}
     
-    
+    /**
+     * return a connectionServer which the connection to the server
+     * 
+     * @return the connection to the server
+     */
     public ConnectionServer getConnection () 
     {
+       // test if the user is logged 
        if (mTaskAttr.getLogin() == null || mTaskAttr.getPassword()==null)
        {
-			IdentificationDialog identDialog = new IdentificationDialog("identification") ;
-			if (identDialog.showIdentificationDialog() == IdentificationDialog.CONNECT)
-			{
-			    mTaskAttr.setTypeOfTask(CONNECTION);
-			    mTaskAttr.setIdentificationAttribute(identDialog.getLogin(),identDialog.getPassword()) ;
-				mMonitor = new ProcessingTaskServer(mTaskAttr);  				
-				mTaskDialog = new ProcessingTaskServerDialog(parent,mMonitor);
-				mTaskDialog.setName("Loading");
-				mTaskDialog.setLocation(parent.getWidth()/2-mTaskDialog.getWidth()/2,parent.getHeight()/2-mTaskDialog.getHeight()/2);	
-				mMonitor.setTask(mTaskDialog);
-				mTaskDialog.show();
-				if (mMonitor.getResultTask() == CONNECTED)
-				{
-				    mTaskAttr.setIdentificationAttribute(identDialog.getLogin(),identDialog.getPassword()) ;
-				    mTaskDialog.dispose() ;
-				    mConnection = new ConnectionServer() ;
-				    return mConnection ;
-				}
-				else
-				{
-				    mTaskAttr.clearAttributes() ;
-				}
-				
+           // not connected, diplay the dialog which allows the user to enter the login and the password
+           IdentificationDialog identDialog = new IdentificationDialog(ResourceManager.getInstance().getString("identificationDialogTitle")) ;
+           if (identDialog.showIdentificationDialog() == IdentificationDialog.CONNECT)
+           {
+               mTaskAttr.setTypeOfTask(CONNECTION);
+               mTaskAttr.setIdentificationAttribute(identDialog.getLogin(),identDialog.getPassword()) ;
+               mMonitor = new ProcessingTaskServer(mTaskAttr);  				
+               mTaskDialog = new ProcessingTaskServerDialog(parent,mMonitor);
+               mTaskDialog.setName(ResourceManager.getInstance().getString("loading"));	
+               mMonitor.setTask(mTaskDialog);
+               mTaskDialog.setVisible();
+               // if the user is connected to the server
+               if (mMonitor.getResultTask())
+               {
+                   mTaskDialog.dispose() ;
+                   mConnection = new ConnectionServer() ;
+                   return mConnection ;
+               }
+               else
+               {
+                   mTaskAttr.clearAttributes() ;
+               }
 			}
 			else
 			{
@@ -90,6 +101,11 @@ public class ConnectionManager
        return mConnection ;
      }   
     
+    /**
+     * check if the user is connected to the server
+     * 
+     * @return the connection to the server
+     */
     public boolean isConnect()
     {
         if (mTaskAttr.getLogin() == null || mTaskAttr.getPassword()==null)
@@ -98,6 +114,11 @@ public class ConnectionManager
             return true ;
     }
     
+    /**
+     * class representing the connection to the server
+     *
+     */
+
     public class ConnectionServer
     {
         public final static String IMPORT = "IMPORT" ;
@@ -107,11 +128,14 @@ public class ConnectionManager
         private ProcessingTaskServer mMonitor  ;
         private TaskServerAttributes mTaskAttr ;
         
-        private ConnectionServer()
-        {   
-        }
+        private ConnectionServer(){};
         
-        public int importXML()
+        /**
+         * import the xml
+         * @return  true if it is succeeded
+         */
+
+        public boolean importXML()
         {
             mTaskAttr = new TaskServerAttributes(IMPORT);
             mMonitor = new ProcessingTaskServer(mTaskAttr) ;
@@ -119,7 +143,12 @@ public class ConnectionManager
             return mMonitor.getResultTask() ;
         }
         
-        public int createUsers()
+        /**
+         * create users
+         * 
+         * @return  true if it is succeeded
+         */
+        public boolean createUsers()
         {
             mTaskAttr = new TaskServerAttributes(CREATE_USERS);
             mMonitor = new ProcessingTaskServer(mTaskAttr) ;
@@ -127,13 +156,17 @@ public class ConnectionManager
             return mMonitor.getResultTask() ;
         }
         
+        /**
+         * lauch the monitor
+         * 
+         */
+
         private void process()
         {
     		mTaskDialog = new ProcessingTaskServerDialog(parent,mMonitor);
-    		mTaskDialog.setName("Loading");
-    		mTaskDialog.setLocation(parent.getWidth()/2-mTaskDialog.getWidth()/2,parent.getHeight()/2-mTaskDialog.getHeight()/2);	
+    		mTaskDialog.setName(ResourceManager.getInstance().getString("loading"));	
     		mMonitor.setTask(mTaskDialog);
-    		mTaskDialog.show();
+    		mTaskDialog.setVisible(true);
         }
     }
     

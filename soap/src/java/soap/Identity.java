@@ -21,9 +21,9 @@
 package soap;
 
 /**
- * 
+ * Interface used to retrieve the identity of an element
  *
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  *
  */
 public interface Identity
