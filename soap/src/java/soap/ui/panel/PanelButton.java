@@ -1,31 +1,42 @@
 /*
- * Created on 6 nov. 2004
+ * SOAP Supervising, Observing, Analysing Projects
+ * Copyright (C) 2003-2004 SOAPteam
+ * 
+ *
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
+
 package soap.ui.panel;
 
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
-import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Vector;
 
-import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.JButton;
-import javax.swing.JFileChooser;
+import javax.swing.border.Border;
+import javax.swing.border.CompoundBorder;
+import javax.swing.border.EmptyBorder;
+import javax.swing.border.EtchedBorder;
 
-import soap.Context;
-import soap.model.executionProcess.structure.Project;
-import soap.model.executionProcess.structure.user.Supervisor;
 import utils.ResourceManager;
-import utils.SmartChooser;
 
-/**
- * @author yanagiba
- */
 public class PanelButton extends SoapPanel
 {
     public static final int OK = 1 ;
@@ -81,8 +92,7 @@ public class PanelButton extends SoapPanel
         this(type);
         mPosition = position ;
     }
-    
-    
+        
         
     public JButton getOkButton()
     {
@@ -102,9 +112,29 @@ public class PanelButton extends SoapPanel
     public void addButton(String name)
     {
         JButton butt = new JButton(name) ;
+        butt.setActionCommand(name.toLowerCase()) ;
         mMapButton.put(name,butt);
         mBox.add(butt);
         initUI() ;
+    }
+    
+    public void addButton(JButton button)
+    {
+        mMapButton.put(button.getText(),button);
+        mBox.add(button);
+        initUI() ;
+    }
+    
+    public void removeButton(String name)
+    {
+        mBox.remove(this.getButton(name));
+        mMapButton.remove(name);
+        
+    }
+    
+    public boolean existButton(String name)
+    {
+        return mMapButton.containsKey(name);
     }
     
     public JButton getButton(String name)
@@ -112,9 +142,22 @@ public class PanelButton extends SoapPanel
         return (JButton)mMapButton.get(name) ;
     }
     
+    
+    public void setButtonEnable(String name)
+    {
+        getButton(name).setEnabled(true) ;
+    }
+    
+    public void setButtonDisable(String name)
+    {
+        getButton(name).setEnabled(false) ;
+    }
+    
     public void initUI ()
     {
-        this.setBorder(BorderFactory.createEmptyBorder(10,10,10,10)) ;
+        Border border = new EtchedBorder() ;
+        Border margin = new EmptyBorder(10,10,10,10);
+        this.setBorder(new CompoundBorder(border, margin));
         if (mPosition.equals(RIGHT))
         {
             this.setLayout(new GridLayout()) ;

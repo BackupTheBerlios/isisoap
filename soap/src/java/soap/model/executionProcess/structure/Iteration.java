@@ -1,6 +1,24 @@
 /*
- * Created on 8 nov. 2004
+ * SOAP Supervising, Observing, Analysing Projects
+ * Copyright (C) 2003-2004 SOAPteam
+ * 
+ *
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
+
 package soap.model.executionProcess.structure;
 
 import java.util.Vector;
@@ -8,25 +26,22 @@ import java.util.Vector;
 import soap.model.ModelVisitor;
 import soap.model.core.EstimationElement;
 import soap.model.core.ModelElement;
+import soap.model.core.SoapElement;
 import soap.model.modelmanagement.IPackage;
 
-
-/**
- * @author yanagiba
- */
 public class Iteration extends EstimationElement implements IPackage
 {
     private Project mProject ;
     private Vector mList = new Vector() ;
     
-    public Iteration()
+    public Iteration(String projectName)
     {
-        super() ;
+        super(projectName) ;
     }
     
-    public Iteration(String name)
+    public Iteration(String projectName, String name)
     {
-        super(name) ;
+        super(projectName, name) ;
     }
     
     public void setProject(Project p)
@@ -101,7 +116,7 @@ public class Iteration extends EstimationElement implements IPackage
 		{
 			return null;
 		}
-		return (Task) mList.get( i );
+		return (ListTask) mList.get( i );
     }
 
     
@@ -110,13 +125,18 @@ public class Iteration extends EstimationElement implements IPackage
         return mList.size() ;
     }
     
-    public class ListTask extends ModelElement implements IPackage
+    public class ListTask extends SoapElement implements IPackage
     {
         private Vector mListTask = new Vector() ;
         
-        public ListTask(String name)
+        public ListTask(String projectName)
         {
-            super(name);
+            super(projectName);
+        }
+        
+        public ListTask(String projectName, String name)
+        {
+            super(projectName, name);
         }
         
         public boolean addTask (Task t)

@@ -1,7 +1,7 @@
 /*
- * APES is a Process Engineering Software
- * Copyright (C) 2003-2004 IPSquad
- * team@ipsquad.tuxfamily.org
+ * SOAP Supervising, Observing, Analysing Projects
+ * Copyright (C) 2003-2004 SOAPteam
+ * 
  *
  *
  * This program is free software; you can redistribute it and/or
@@ -24,13 +24,6 @@ package soap.ui.actions;
 import java.awt.Event;
 import java.awt.event.ActionEvent;
 
-
-
-/**
- * Quit the application
- *
- * @version $Revision: 1.1 $
- */
 public class QuitAction extends ProjectManagementAction
 {
 	public QuitAction()

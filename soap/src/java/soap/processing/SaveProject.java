@@ -1,7 +1,7 @@
 /*
- * APES is a Process Engineering Software
- * Copyright (C) 2003-2004 IPSquad
- * team@ipsquad.tuxfamily.org
+ * SOAP Supervising, Observing, Analysing Projects
+ * Copyright (C) 2003-2004 SOAPteam
+ * 
  *
  *
  * This program is free software; you can redistribute it and/or
@@ -18,21 +18,21 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
+
 package soap.processing;
 
 
 import java.io.BufferedOutputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
-
-import java.util.Vector;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
-
-import JSX.ObjOut;
-
+import soap.Context;
+import soap.model.executionProcess.structure.Project;
 import utils.ErrorManager;
+import utils.ProjectManager;
+import JSX.ObjOut;
 
 
 public class SaveProject
@@ -48,8 +48,8 @@ public class SaveProject
 	
 	public void save() throws IOException
 	{
-	    //Project project = Context.getInstance().getProject();
-	    saveComponent();
+	    saveProject();
+	    saveProjectProperties();
 	    mZipFile.close();
 	}
 	
@@ -98,42 +98,30 @@ public class SaveProject
 		
 	}
 	
-	
-	
-	private void saveComponent() throws IOException
+	private void saveProject() throws IOException
 	{
-	    ZipEntry entryZip = new ZipEntry("Component.xml");
+	    ZipEntry entryZip = new ZipEntry("Project.xml");
 		mZipFile.putNextEntry(entryZip);
 		DataOutputStream data = new DataOutputStream( new BufferedOutputStream(mZipFile) );
 		ObjOut out = new ObjOut( data );
 		
-		//vector to save
-		//SoapListProcess listProcess = Context.getInstance().getListProjects() ;
-		
-		//for (int i = 0 ; i < listProcess.modelElementCount(); i++)
-		//{
-		    Vector  v = new Vector();
-		    //SoapProcess process =(SoapProcess) listProcess.getModelElement(0); 
+		//project to save
+		Project currentProject = Context.getInstance().getListProjects().getCurrentProject();
 		    
-		   // v.add(process) ;
-		    //v.add(process.getPackageRole());
-		    //out.writeObject(v);
-		   // mZipFile.closeEntry();
-		    /*process.getComponent().setParent( null );
-			//add the component at index 0
-			v.add(project.getProcess().getComponent());
-			//add the map of the diagrams at index 1 (diagrams and SpemGraphAdapter)
-			v.add(project.getDiagramMap());
-			//add the SpemTreeAdapter at index 2 (use to save the colors)
-			v.add(((SoapTreeAdapter)Context.getInstance().getTopLevelFrame().getTree().getModel()).getRoot());
-			//add an extra element to know the current max id
-			Activity a = new Activity();
-			v.add(new Activity());
-			
-			out.writeObject(v);
-			mZipFile.closeEntry();
-			
-			project.getProcess().getComponent().setParent( project.getProcess() );*/
-		//}		
+		out.writeObject(currentProject);
+		mZipFile.closeEntry();	
+	}
+	
+	private void saveProjectProperties() throws IOException
+	{
+		Project currentProject = Context.getInstance().getListProjects().getCurrentProject();
+		
+	    ZipEntry entryZip = new ZipEntry(currentProject.getName()+".project");
+		mZipFile.putNextEntry(entryZip);
+		BufferedOutputStream data =  new BufferedOutputStream(mZipFile );
+		
+		ProjectManager.getInstance().getProperties(currentProject.getName()).store(data,currentProject.getName());
+
+		mZipFile.closeEntry();	
 	}
 }

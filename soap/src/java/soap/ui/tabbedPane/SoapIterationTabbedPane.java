@@ -1,6 +1,24 @@
 /*
- * Created on 1 nov. 2004
+ * SOAP Supervising, Observing, Analysing Projects
+ * Copyright (C) 2003-2004 SOAPteam
+ * 
+ *
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
+
 package soap.ui.tabbedPane;
 
 import java.awt.BorderLayout;
@@ -12,28 +30,22 @@ import java.awt.Insets;
 import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JTable;
 import javax.swing.border.Border;
 import javax.swing.border.EtchedBorder;
 import javax.swing.border.TitledBorder;
-import javax.swing.table.JTableHeader;
 
-import soap.Context;
-import soap.adapters.SoapTasksTableSorter;
+import soap.model.core.EstimationElement;
 import soap.model.executionProcess.structure.Iteration;
-import soap.ui.SoapTasksTable;
 import soap.ui.panel.SoapPanel;
 
 
-/**
- * @author SCARAVETTI Florent
- */
 public class SoapIterationTabbedPane extends DefaultCentralTabbedPane 
 {
 	
 	public SoapIterationTabbedPane(Iteration it)
 	{
 		super();
+		
 		// Iteration information
 		JPanel iterationPanel = new JPanel() ;
 		iterationPanel.setBorder(BorderFactory.createEmptyBorder(8,10,10,10)) ;
@@ -41,9 +53,9 @@ public class SoapIterationTabbedPane extends DefaultCentralTabbedPane
 		iterationPanel.add(new JLabel("Nom de l'itération : "));
 		iterationPanel.add(new JLabel(it.getName()));
 		iterationPanel.add(new JLabel("Date de début : "));
-		iterationPanel.add(new JLabel(it.getStartDate().toString()));
+		iterationPanel.add(new JLabel(it.getAttribute(EstimationElement.START_DATE).toString()));
 		iterationPanel.add(new JLabel("Date de fin : "));
-		iterationPanel.add(new JLabel(it.getEndDate().toString()));
+		iterationPanel.add(new JLabel(it.getAttribute(EstimationElement.END_DATE).toString()));
 		
 		SoapPanel iterationInfoPanel = new SoapPanel();
 		Border loweredetched = BorderFactory.createEtchedBorder(EtchedBorder.LOWERED);
@@ -53,22 +65,21 @@ public class SoapIterationTabbedPane extends DefaultCentralTabbedPane
 		iterationInfoPanel.add(iterationPanel,BorderLayout.CENTER) ;
 		
 		// Iteration Realization information
-		float advancement = ((float)it.getElapsedHours()/(float)(it.getElapsedHours()+it.getRemainedHoursToFinish()))*100;
-		float consumedBudget = ((float)it.getElapsedHours()/(float)it.getEstimatedHours())*100;
-		System.out.println(it.getElapsedHours());
-		System.out.println(it.getEstimatedHours());
-		System.out.println(consumedBudget);
+		float consumedBudget = ((float)((Integer)it.getAttribute(EstimationElement.ESTIMATED_HOURS)).intValue()/(float)((Integer)it.getAttribute(EstimationElement.ESTIMATED_HOURS)).intValue())*100;
+		
+		//System.out.println(it.getEstimatedHours());
+		//System.out.println(consumedBudget);
 		JPanel realizationPanel = new JPanel() ;
 		realizationPanel.setBorder(BorderFactory.createEmptyBorder(8,10,10,10)) ;
 		realizationPanel.setLayout(new GridLayout(5,2));
 		realizationPanel.add(new JLabel("Charges prévues : "));
-		realizationPanel.add(new JLabel(it.getEstimatedHours()+" heures"));
+		realizationPanel.add(new JLabel(it.getAttribute(EstimationElement.ESTIMATED_HOURS)+" heures"));
 		realizationPanel.add(new JLabel("Charges passées : "));
-		realizationPanel.add(new JLabel(it.getElapsedHours()+" heures"));
+		realizationPanel.add(new JLabel(it.getAttribute(EstimationElement.ELAPSED_HOURS)+" heures"));
 		realizationPanel.add(new JLabel("Charges restantes pour finir : "));
-		realizationPanel.add(new JLabel(it.getRemainedHoursToFinish()+" heures"));
+		realizationPanel.add(new JLabel(it.getAttribute(EstimationElement.REMAINED_HOURS_TO_FINISH)+" heures"));
 		realizationPanel.add(new JLabel("Avancement : "));
-		realizationPanel.add(new JLabel(String.valueOf((int)advancement)+" %"));
+		realizationPanel.add(new JLabel(String.valueOf(it.getAdvancement())+" %"));
 		realizationPanel.add(new JLabel("Budget consommé : "));
 		realizationPanel.add(new JLabel(String.valueOf((int)consumedBudget)+" %"));
 		
@@ -100,11 +111,6 @@ public class SoapIterationTabbedPane extends DefaultCentralTabbedPane
 		
 		c.weighty = 2.0;
 		SoapPanel.makeLabel(mDataPanel, " ", gridbag, c);
-		
-		SoapTasksTable table = new SoapTasksTable(Context.getInstance().getListProjects().getListSoapProjects());
-		mStatsPanel.setLayout(new BorderLayout());
-		mStatsPanel.add(table.getTableHeader(),BorderLayout.NORTH);
-		mStatsPanel.add(table,BorderLayout.CENTER);
 		
 	}
 }

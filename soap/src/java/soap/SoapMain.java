@@ -1,12 +1,28 @@
 /*
- * Created on 26 oct. 2004
+ * SOAP Supervising, Observing, Analysing Projects
+ * Copyright (C) 2003-2004 SOAPteam
+ * 
+ *
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 package soap;
 import java.util.Locale;
 import java.util.Properties;
 
-import soap.Context;
-import soap.model.executionProcess.structure.Project;
+import soap.ui.SoapFrame;
 import soap.ui.actions.AboutAction;
 import soap.ui.actions.CloseProjectAction;
 import soap.ui.actions.GenerateStatsAction;
@@ -18,15 +34,11 @@ import soap.ui.actions.ProjectPropertiesAction;
 import soap.ui.actions.QuitAction;
 import soap.ui.actions.SaveAsProjectAction;
 import soap.ui.actions.SaveProjectAction;
-
+import soap.ui.dialog.ConfigurationDialog;
 import utils.ConfigManager;
 import utils.ResourceManager;
 
-import soap.ui.SoapFrame;
 
-/**
- * @author yanagiba
- */
 public class SoapMain 
 {
     public static Properties createDefaultProperties()
@@ -47,10 +59,17 @@ public class SoapMain
 
 		return properties;
 	}
+
+	public static void configurate()
+	{
+   		ConfigurationDialog cfgDialog = new ConfigurationDialog ("Configurationnnnn") ;
+    	cfgDialog.setVisible(true);
+	}
 	public static void main(String[] args) 
 	{
-	    
-	    ConfigManager.init(createDefaultProperties());
+	    boolean configurate = ConfigManager.isConfigurate() ;
+	  
+		ConfigManager.init(createDefaultProperties());
 	    Locale locale = new Locale(ConfigManager.getInstance().getProperty("Language"));
 	    ResourceManager.setResourceFile(ConfigManager.getInstance().getProperty("LocalFile"),locale);
 	    // initialize the context 
@@ -63,8 +82,13 @@ public class SoapMain
 	    context.setTopLevelFrame(f);
 	    ListProjects listProjects = ListProjects.getInstance() ;
 	    context.setListProjects(listProjects) ;
-	    Context.getInstance().getListProjects().addProject(new Project ("Soap"));
-		f.show();
+	    //Context.getInstance().getListProjects().addProject(new Project ("Soap"));
+		f.setVisible(false);
+	    if (!configurate)
+	    {
+	        configurate() ;
+	    }
+	    f.setVisible(true);
 	}
 	public static void initActions(Context context)
 	{
@@ -80,7 +104,7 @@ public class SoapMain
 		context.registerAction("ProjectProperties",new ProjectPropertiesAction());	
 		context.registerAction("Preferences",new PreferencesAction());	
 		context.registerAction("About", new AboutAction());
-		
+
 		//Statistics
 		context.registerAction("GenerateStatistics", new GenerateStatsAction());
 		context.registerAction("PrintStatistics", new PrintStatsAction());

@@ -1,7 +1,7 @@
 /*
- * APES is a Process Engineering Software
- * Copyright (C) 2003-2004 IPSquad
- * team@ipsquad.tuxfamily.org
+ * SOAP Supervising, Observing, Analysing Projects
+ * Copyright (C) 2003-2004 SOAPteam
+ * 
  *
  *
  * This program is free software; you can redistribute it and/or
@@ -18,6 +18,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
+
 package soap.processing;
 
 import java.io.BufferedInputStream;
@@ -25,41 +26,32 @@ import java.io.DataInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.util.Vector;
+import java.util.Properties;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
 import javax.xml.parsers.ParserConfigurationException;
 
-import soap.ListProjects;
-
-
-import utils.MonitoredTaskBase;
-import utils.ResourceManager;
-import utils.TaskMonitorDialog;
+import org.xml.sax.SAXException;
 
 import soap.Context;
-import soap.adapters.SoapTreeAdapter;
-
-import org.xml.sax.Attributes;
-import org.xml.sax.SAXException;
-import org.xml.sax.helpers.DefaultHandler;
-
+import soap.ListProjects;
+import soap.model.executionProcess.structure.Project;
+import utils.MonitoredTaskBase;
+import utils.ProjectManager;
+import utils.ResourceManager;
+import utils.TaskMonitorDialog;
 import JSX.ObjIn;
 
 
 
-/**
- *
- * @version $Revision: 1.1 $
- */
 public class LoadProject extends MonitoredTaskBase 
 {
 	private File mFile = null;
 	private TaskMonitorDialog mTask = null;
 	private ResourceManager mResource = ResourceManager.getInstance();
-	//private Project mProject = new Project("","",null);
 	private ListProjects mListProjects = Context.getInstance().getListProjects();
+	private Project mProject ;
 	
 	public LoadProject(File file)
 	{
@@ -88,20 +80,15 @@ public class LoadProject extends MonitoredTaskBase
 			boolean hasComponent = true;
 			
 			ZipInputStream zipFile = new ZipInputStream( new FileInputStream(new File(mFile.getAbsolutePath())));
-			loadComponent( zipFile ) ;
-			/*if( !loadComponent( zipFile ) )
+			
+			if(loadProject( zipFile )  && loadProjectProperties(zipFile))
 			{
-				loadInterfaces(zipFile, mProject.getProcess());
-				print(mResource.getString("loadRebuild"));
+			    print(mResource.getString("loadSuccess"));
 			}
 			else
-			{	
-				print(mResource.getString("loadRebuild"));
-				mProject.getProcess().buildInterfaces();
-			}*/
-			
-			//Context.getInstance().setProject(mProject, mFile.getAbsolutePath());
-			print(mResource.getString("loadSuccess"));
+			{
+			    print(mResource.getString("loadFailed"));
+			}
 		}
 		catch(Throwable t)
 		{
@@ -109,65 +96,72 @@ public class LoadProject extends MonitoredTaskBase
 			print(mResource.getString("loadFailed"));
 			t.printStackTrace();
 		}
-		//mProject = null;
 	}
 
 	/**
-	 * Load the component in the process giving in parameter.
+	 * Load the project in the zip given in parameter.
 	 * 
-	 * @param projectZip the zip containing the Component.xml file
-	 * @param p the project where to store the diagrams adapters
-	 * @param ap the process where to store the component
+	 * @param projectZip the zip containing the Project.xml file
 	 * @return true if successfull, false otherwise
 	 * @throws IOException
 	 * @throws ClassNotFoundException
 	 */
-	protected boolean loadComponent(ZipInputStream projectZip) throws IOException, ClassNotFoundException
+	protected boolean loadProject(ZipInputStream projectZip) throws IOException, ClassNotFoundException
 	{
-	    print(mResource.getString("loadSearchComponent"));
+	    print(mResource.getString("loadSearchProject"));
 		
-		DataInputStream data = findData("Component.xml");
-			
-		SoapTreeAdapter adapter = (SoapTreeAdapter)Context.getInstance().getTopLevelFrame().getProjectTree().getModel(); 	
+		DataInputStream data = findData("Project.xml"); 	
 
 		if( data != null )
 		{
-			print(mResource.getString("loadComponent"));
+			print(mResource.getString("loadProject"));
 			ObjIn in = new ObjIn(data);
-			Vector v = (Vector)in.readObject();
-			
-			if( v.size() == 1 )
-			{	
-			    //System.out.println(v.elementAt(0).getClass()) ; 
-			    //Project p = new Project( (SoapProcess) v.elementAt(0) ) ;
-			    //Context.getInstance().getListProjects().addProject(p) ;
-				/*adapter.setRoot((SoapTreeNode)v.get(2));
-				mProject.setProcess((SoapProcess)((SoapTreeNode)adapter.getRoot()).getUserObject());
-				mProject.getProcess().addModelElement((ProcessComponent)v.get(0));
-				mProject.setDiagramMap((HashMap)v.get(1));
-			
-				Activity a = new Activity();
-				int count = new Integer(a.getName().substring(6)).intValue();
-				int nb = new Integer(((Activity)v.get(3)).getName().substring(6)).intValue();
-				while( count++ < nb )
-				{
-					new Activity().resetName();
-				}	*/
-			
-				projectZip.close();
-				
-				print(mResource.getString("loadComponentSuccess"));
+			mProject = (Project)in.readObject();
+			if(!Context.getInstance().getListProjects().existProject(mProject))
+			{
+			    Context.getInstance().getListProjects().addProject(mProject);
+				print(mResource.getString("loadProjectSuccess"));
 				return true;
 			}
+			else
+			{
+			    print(mResource.getString("projectExisting"));
+				projectZip.close();
+				return false;
+			}	
 		}
-
-		print(mResource.getString("loadComponentFailed"));
+		print(mResource.getString("loadProjectFailed"));
 		projectZip.close();
 		return false;
 	}
 	
-	
-	
+	/**
+	 * Load the project properties in the zip given in parameter.
+	 * 
+	 * @param projectZip the zip containing the .project file
+	 * @return true if successfull, false otherwise
+	 * @throws IOException
+	 */
+	protected boolean loadProjectProperties(ZipInputStream projectZip) throws IOException
+	{
+	    print(mResource.getString("loadSearchProjectProperties"));
+		
+		DataInputStream data = findData(mProject.getName()+".project"); 	
+		
+		if( data != null )
+		{
+		    Properties properties = new Properties ();
+		    print(mResource.getString("loadProjectProperties"));
+		    properties.load(data);
+		    ProjectManager.getInstance().initProject(mProject.getName(),properties);
+		    print(mResource.getString("loadProjectPropertiesSuccess"));
+			projectZip.close();
+		    return true;
+		}
+		print(mResource.getString("loadProjectPropertiesFailed"));
+		projectZip.close();
+		return false;
+	}
 	
 	/**
 	 * Search and open the file given by fileName in projectZip.
@@ -215,47 +209,5 @@ public class LoadProject extends MonitoredTaskBase
 		{
 			mTask.forceRefresh();
 		}
-	}
-	
-	protected class InterfacesHandler extends DefaultHandler
-	{
-		private boolean mIsProvidedInterface = true;
-		private Vector mProvidedProductNames = new Vector();
-		private Vector mRequiredProductNames = new Vector();
-		
-		public InterfacesHandler()
-		{
-			super();
-		}
-		
-		public Vector getProvidedProductNames()
-		{
-			return mProvidedProductNames;
-		}
-		
-		public Vector getRequiredProductNames()
-		{
-			return mRequiredProductNames;
-		}
-		
-		public void startElement (String uri, String localName,
-								  String qName, Attributes attributes) throws SAXException
-		{
-			if(qName=="RequiredInterface")
-			{	
-				mIsProvidedInterface = false;
-			}
-			else if(qName=="WorkProduct")
-			{
-				if( mIsProvidedInterface )
-				{	
-					mProvidedProductNames.add(attributes.getValue(0));
-				}
-				else
-				{
-					mRequiredProductNames.add(attributes.getValue(0));
-				}
-			}
-		}	
 	}
 }

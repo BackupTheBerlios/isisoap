@@ -1,7 +1,7 @@
 /*
- * APES is a Process Engineering Software
- * Copyright (C) 2003-2004 IPSquad
- * team@ipsquad.tuxfamily.org
+ * SOAP Supervising, Observing, Analysing Projects
+ * Copyright (C) 2003-2004 SOAPteam
+ * 
  *
  *
  * This program is free software; you can redistribute it and/or
@@ -33,11 +33,6 @@ import soap.model.process.structure.ProcessRole;
 import soap.model.process.structure.WorkDefinition;
 import soap.model.process.structure.WorkProduct;
 
-/**
- * This visitor associates an element with a popup menu.
- *
- * @version $Revision: 1.1 $
- */
 public class PopupMenuAssociater extends DefaultSoapElementVisitor
 {
 	private static final Context msContext = Context.getInstance();

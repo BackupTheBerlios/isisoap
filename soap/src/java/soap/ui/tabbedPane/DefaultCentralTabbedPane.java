@@ -5,8 +5,6 @@ package soap.ui.tabbedPane;
 
 import javax.swing.JPanel;
 
-import utils.ResourceManager;
-
 /**
  * @author yanagiba
  */
@@ -17,8 +15,8 @@ public class DefaultCentralTabbedPane extends SoapCentralTabbedPane
 		
 	public DefaultCentralTabbedPane()
 	{
-	    addTab(ResourceManager.getInstance().getString("tabbedPaneData"),mDataPanel);
-		addTab(ResourceManager.getInstance().getString("tabbedPaneStats"),mStatsPanel);
+	    addTab(resMan.getString("tabbedPaneData"),mDataPanel);
+		addTab(resMan.getString("tabbedPaneStats"),mStatsPanel);
 	}
 	
 }

@@ -1,7 +1,7 @@
 /*
- * APES is a Process Engineering Software
- * Copyright (C) 2003-2004 IPSquad
- * team@ipsquad.tuxfamily.org
+ * SOAP Supervising, Observing, Analysing Projects
+ * Copyright (C) 2003-2004 SOAPteam
+ * 
  *
  *
  * This program is free software; you can redistribute it and/or
@@ -23,27 +23,18 @@
 package soap.model.core;
 
 import java.io.Serializable;
-import java.util.HashMap;
 
 import soap.Identity;
 import soap.model.ModelVisitor;
 
-/**
- * Base class for all the SPEM elements
- *
- * Specify an abstract method to allow visitors
- * See the visitor design pattern for more informations
- *
- * @version $Revision: 1.1 $
- */
+
 public abstract class Element implements Serializable, Identity
 {
     private static int msNoNameCounter = 0;
-	private static int mNoID = 0;
-	private HashMap mAttributes = new HashMap() ;
+	protected static int mNoID = 0;
 
 	private String mName;
-	private int mID;
+	private String mID;
 	
 	/**
 	 * Create a new element
@@ -53,7 +44,7 @@ public abstract class Element implements Serializable, Identity
 	public Element(String name)
 	{
 		mName = name;
-		mID=mNoID++;
+		mID=String.valueOf(mNoID++);
 	}
 
 
@@ -63,7 +54,7 @@ public abstract class Element implements Serializable, Identity
 	public Element()
 	{
 		this("noname"+msNoNameCounter++);
-		mID=mNoID++;
+		mID=String.valueOf(mNoID++);
 	}
 
 	public void resetName()
@@ -105,14 +96,14 @@ public abstract class Element implements Serializable, Identity
 	 *
 	 * @return the ID of the element
 	 */
-	public int getID()
+	public String getID()
 	{
 		return mID;
 	}
 
-	private void setID()
+	protected void setID(String id)
 	{
-		mID=mNoID++;
+		mID=id;
 	}
 
 	/**
@@ -124,15 +115,5 @@ public abstract class Element implements Serializable, Identity
 	{
 		return mName;
 	}
-	
-	public void addAttribute (String key, Object attribute)
-    {
-        mAttributes.put(key, attribute) ;
-    }
-    
-    public Object getAttribute (String key)
-    {
-        return mAttributes.get(key) ;
-    }
 
 };

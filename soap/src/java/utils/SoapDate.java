@@ -78,6 +78,18 @@ public class SoapDate extends Date
 	
 	public String toString()
 	{
-		return getDay()+"/"+getMonth()+"/"+getYear();
+		SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+		return dateFormat.format(this);
+	}
+	
+	public int compareTo(Date date)
+	{
+	   if(getTime() == date.getTime())
+	       return 0;
+	   else
+	       if(getTime() < date.getTime())
+	           return -1;
+	       else
+	           return 1;
 	}
 }

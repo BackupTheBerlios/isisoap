@@ -1,11 +1,27 @@
 /*
- * Created on 30 oct. 2004
+ * SOAP Supervising, Observing, Analysing Projects
+ * Copyright (C) 2003-2004 SOAPteam
+ * 
+ *
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 package soap.adapters;
 
 
 import java.awt.Component;
-
 import java.util.HashMap;
 import java.util.Map;
 
@@ -25,24 +41,15 @@ import javax.swing.tree.TreeNode;
 import javax.swing.tree.TreePath;
 
 import soap.Identity;
-import soap.model.frontend.SoapMediator;
-
-import soap.adapters.SoapTreeNode;
-import soap.model.frontend.event.SoapEvent;
-
 import soap.model.core.Element;
 import soap.model.extension.SoapListProjects;
-
-import soap.adapters.ActionAssociater;
-import soap.adapters.PopupMenuAssociater;
-import soap.adapters.IconAssociater;
+import soap.model.extension.SoapProcess;
+import soap.model.frontend.SoapMediator;
+import soap.model.frontend.event.SoapEvent;
 import soap.ui.tabbedPane.SoapCentralTabbedPane;
 import utils.Debug;
 import utils.IconManager;
 
-/**
- * @author yanagiba
- */
 public class SoapTreeAdapter implements TreeModel, SoapMediator.Listener
 {
     private EventListenerList mListenerList = new EventListenerList();
@@ -62,7 +69,16 @@ public class SoapTreeAdapter implements TreeModel, SoapMediator.Listener
 			fireTreeNodesInserted(this, path, null, null);
 		}
 	}
-  
+    
+    public void setRoot(SoapProcess root)
+	{
+		if( mRoot == null || mRoot.getUserObject() != root )
+		{	
+			mRoot = new SoapTreeNode(root, false);
+			Object[] path = {mRoot};
+			fireTreeStructureChanged(this, path, null, null);
+		}
+	}
     
     /* (non-Javadoc)
      * @see javax.swing.tree.TreeModel#getRoot()
@@ -170,9 +186,9 @@ public class SoapTreeAdapter implements TreeModel, SoapMediator.Listener
 	 * @param current the current node
 	 * @return the corresponding node or null
 	 */
-	private SoapTreeNode findWithID(int id, SoapTreeNode current)
+	private SoapTreeNode findWithID(String id, SoapTreeNode current)
 	{
-		if( current instanceof Identity && ((Identity)current).getID() == id )
+		if( current instanceof Identity && ((Identity)current).getID().equals(id) )
 		{
 			return current;
 		}
@@ -198,7 +214,7 @@ public class SoapTreeAdapter implements TreeModel, SoapMediator.Listener
 	 * @param id the id of the element to find
 	 * @return the corresponding node or null
 	 */
-	public SoapTreeNode findWithID(int id)
+	public SoapTreeNode findWithID(String id)
 	{
 		return findWithID(id, mRoot);
 	}
@@ -206,9 +222,10 @@ public class SoapTreeAdapter implements TreeModel, SoapMediator.Listener
 	public void modelChanged(SoapEvent e)
 	{
 	    Object source = e.getSource();
-        Object[] inserted = e.getInserted();
+        Object[] inserted = e.getInserted();   	
         Object[] parents = e.getParents();
 	    Object[] removed = e.getRemoved();
+	    System.out.println("modelChanged : parent : "+parents[0]+" inserted : "+inserted[0]);
         Map extras = e.getAttributes();
         handleInsert(inserted,parents,extras ) ;
         
@@ -222,14 +239,13 @@ public class SoapTreeAdapter implements TreeModel, SoapMediator.Listener
 		//System.out.println("tree insert ");
 	    SoapTreeNode node = null;
 		SoapTreeNode parent = null;
-	    if(elements == null || parents == null || elements.length != parents.length) 
-	        return;
+	    if(elements == null || parents == null || elements.length != parents.length) return;
 	    
 	    for (int i = 0; i < elements.length; i++)
         {
 	        node = (SoapTreeNode)findWithID(((Identity)elements[i]).getID());			
 			parent = (SoapTreeNode)findWithID(((Identity)parents[i]).getID());
-			
+			System.out.println("handleInsert : node : "+(node==null?"null":node.getName())+" parent :"+(parent==null?"null":(parent.getName()+parent.getID())));
 			if( node == null )
 			{
 				node = new SoapTreeNode( elements[i], true );
@@ -240,9 +256,13 @@ public class SoapTreeAdapter implements TreeModel, SoapMediator.Listener
 				{
 					parent.add(node);
 				}
+				else
+				{
+				    System.out.println("parent du node : "+((SoapTreeNode)node.getParent()).getName());
+				}
 				// insert the element 
 				fireTreeNodesInserted( this, parent.getPath(), new int[]{ parent.getIndex(node) }, new Object[]{ node });
-			}
+			}	    
 		}
 	}
 	
@@ -284,10 +304,12 @@ public class SoapTreeAdapter implements TreeModel, SoapMediator.Listener
 		Object[] listeners = mListenerList.getListenerList();
 		TreeModelEvent e = null;
 		
-		for(int i=listeners.length-2; i>=0; i-=2)
+		/*//for(int i=listeners.length-2; i>=0; i-=2)
+		for(int i=0; i<listeners.length; i++)
 		{
-			if (listeners[i]==TreeModelListener.class)
-			{
+			//if (listeners[i]==TreeModelListener.class)
+		    if (listeners[i] instanceof TreeModelListener)
+		    {
 				if(e==null)
 				{
 					try
@@ -296,6 +318,26 @@ public class SoapTreeAdapter implements TreeModel, SoapMediator.Listener
 					}
 					catch(Throwable t){}
 				}
+				( (TreeModelListener) listeners[i/*i+1*//*]).treeNodesInserted(e);
+			}
+		}*/
+		
+		//for(int i=listeners.length-2; i>=0; i-=2)
+		for(int i=0; i<listeners.length-1; i+=2)
+		{
+			if (listeners[i]==TreeModelListener.class && listeners[i+1].getClass() ==  soap.ui.SoapProjectTree.class
+			        )
+		    {
+				if(e==null)
+				{
+					try
+					{
+						e=new TreeModelEvent(source, path, childIndices, children);
+					}
+					catch(Throwable t){}
+				}
+				System.out.println("************* Listener [i]: "+listeners[i]);
+				System.out.println("************* Listener [i+1]: "+listeners[i+1]);
 				( (TreeModelListener) listeners[i+1]).treeNodesInserted(e);
 			}
 		}

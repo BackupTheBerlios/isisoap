@@ -1,7 +1,7 @@
 /*
- * APES is a Process Engineering Software
- * Copyright (C) 2003-2004 IPSquad
- * team@ipsquad.tuxfamily.org
+ * SOAP Supervising, Observing, Analysing Projects
+ * Copyright (C) 2003-2004 SOAPteam
+ * 
  *
  *
  * This program is free software; you can redistribute it and/or
@@ -26,15 +26,10 @@ import java.awt.event.ActionEvent;
 import javax.swing.AbstractAction;
 
 import soap.Context;
-import soap.adapters.SoapTreeNode;
 import soap.adapters.SoapTreeAdapter;
+import soap.adapters.SoapTreeNode;
 import utils.ResourceManager;
 
-/**
- * Remove the currently selected element from the tree
- *
- * @version $Revision: 1.1 $
- */
 public class RemoveFromModelAction extends AbstractAction
 {
 	public RemoveFromModelAction(String label)

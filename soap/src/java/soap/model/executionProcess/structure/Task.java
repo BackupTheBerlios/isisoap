@@ -1,6 +1,24 @@
 /*
- * Created on 8 nov. 2004
+ * SOAP Supervising, Observing, Analysing Projects
+ * Copyright (C) 2003-2004 SOAPteam
+ * 
+ *
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
+
 package soap.model.executionProcess.structure;
 
 import java.util.Vector;
@@ -10,34 +28,42 @@ import soap.model.core.EstimationElement;
 import soap.model.executionProcess.structure.user.Member;
 import soap.model.process.structure.Activity;
 
-/**
- * @author yanagiba
- */
 public class Task extends EstimationElement /*implements IPackage*/
 {
     private Vector mListArtifactInput = new Vector() ;
     private Vector mListArtifactOutput = new Vector() ;
     private Activity mActivity ;
     private Iteration mIteration ;
+    private int mPriority;
     private Member mMember = new Member() ;
     
     private String mState ;
     
-    public Task ()
+    public Task (String projectName)
     {
-        super() ;
+        super(projectName) ;
     }
     
     
-    public Task(String name)
+    public Task(String projectName, String name)
     {
-        super(name) ;
+        super(projectName, name) ;
     }
     
-    public Task (Activity a)
+    public Task (String projectName, Activity a)
     {
-        super() ;
+        super(projectName) ;
         mActivity = a ;
+    }
+    
+    public int getPriority()
+    {
+        return mPriority;
+    }
+    
+    public void setPriority(int priority)
+    {
+        mPriority = priority;
     }
     
     public Activity getActivity()
@@ -72,7 +98,7 @@ public class Task extends EstimationElement /*implements IPackage*/
     
     public boolean addInputArtifact (Artifact a)
     {
-        if (containsInputArtifact(a))
+        if (!containsInputArtifact(a))
         {
             mListArtifactInput.add(a) ;
             //a.setParent(this);
@@ -85,6 +111,7 @@ public class Task extends EstimationElement /*implements IPackage*/
     {
         if (containsInputArtifact(a))
         {
+            mListArtifactInput.remove(a) ;
             //a.setParent(null);
             return true ;
         }
@@ -98,7 +125,7 @@ public class Task extends EstimationElement /*implements IPackage*/
     
     public boolean addOutputArtifact (Artifact a)
     {
-        if (containsOutputArtifact(a))
+        if (!containsOutputArtifact(a))
         {
             mListArtifactOutput.add(a);
             //a.setParent(this) ;
@@ -121,6 +148,11 @@ public class Task extends EstimationElement /*implements IPackage*/
     public boolean containsOutputArtifact (Artifact a)
     {
         return mListArtifactOutput.contains(a);
+    }
+    
+    public boolean equals(Object task)
+    {
+        return getID() == ((Task)task).getID();
     }
     
     /* (non-Javadoc)

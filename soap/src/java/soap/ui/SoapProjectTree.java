@@ -1,7 +1,7 @@
 /*
- * APES is a Process Engineering Software
- * Copyright (C) 2003-2004 IPSquad
- * team@ipsquad.tuxfamily.org
+ * SOAP Supervising, Observing, Analysing Projects
+ * Copyright (C) 2003-2004 SOAPteam
+ * 
  *
  *
  * This program is free software; you can redistribute it and/or
@@ -18,7 +18,6 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
-
 
 package soap.ui;
 
@@ -43,15 +42,10 @@ import javax.swing.tree.TreePath;
 import javax.swing.tree.TreeSelectionModel;
 
 import soap.Context;
-import soap.adapters.SoapTreeNode;
 import soap.adapters.SoapTreeAdapter;
+import soap.adapters.SoapTreeNode;
 import soap.ui.tabbedPane.SoapCentralTabbedPane;
 
-/**
- * Application tree view
- *
- * @version $Revision: 1.1 $
- */
 public class SoapProjectTree extends JTree implements  TreeModelListener
 {
 	

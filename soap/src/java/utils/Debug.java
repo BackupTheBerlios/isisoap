@@ -3,7 +3,7 @@
  * Copyright (C) 2003-2004 IPSquad
  * team@ipsquad.tuxfamily.org
  *
- *
+
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
@@ -34,7 +34,7 @@ import java.io.PrintStream;
  *
  * Compilers automatically optimize the code if Debug.enabled is set to false
  *
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class Debug
 {

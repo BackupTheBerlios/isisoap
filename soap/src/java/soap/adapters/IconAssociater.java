@@ -1,7 +1,7 @@
 /*
- * APES is a Process Engineering Software
- * Copyright (C) 2003-2004 IPSquad
- * team@ipsquad.tuxfamily.org
+ * SOAP Supervising, Observing, Analysing Projects
+ * Copyright (C) 2003-2004 SOAPteam
+ * 
  *
  *
  * This program is free software; you can redistribute it and/or
@@ -19,7 +19,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-
 package soap.adapters;
 
 import javax.swing.Icon;
@@ -32,12 +31,6 @@ import soap.model.process.structure.WorkDefinition;
 import soap.model.process.structure.WorkProduct;
 import utils.IconManager;
 
-
-/**
- * This visitor associate an element with an Icon.
- *
- * @version $Revision: 1.1 $
- */
 public class IconAssociater extends DefaultModelVisitor
 {
 	Icon mResult = null;

@@ -1,7 +1,7 @@
 /*
- * APES is a Process Engineering Software
- * Copyright (C) 2003-2004 IPSquad
- * team@ipsquad.tuxfamily.org
+ * SOAP Supervising, Observing, Analysing Projects
+ * Copyright (C) 2003-2004 SOAPteam
+ * 
  *
  *
  * This program is free software; you can redistribute it and/or
@@ -26,11 +26,7 @@ import java.awt.event.ActionEvent;
 
 import soap.Context;
 import soap.ListProjects;
-/**
- * Close the current project
- *
- * @version $Revision: 1.1 $
- */
+
 public class CloseProjectAction extends SoapAction
 {
     public static int NO_HOT_KEY = 0 ;

@@ -1,9 +1,12 @@
 /*
  * APES is a Process Engineering Software
+ * 
  * Copyright (C) 2003-2004 IPSquad
  * team@ipsquad.tuxfamily.org
  *
- *
+ * SOAP Supervising, Observing, Analysing Projects
+ * Copyright (C) 2003-2004 SOAPteam
+ * 
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
@@ -29,7 +32,7 @@ import java.util.Properties;
 
 /**
  *
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class ConfigManager
 {
@@ -43,11 +46,10 @@ public class ConfigManager
 	{
 		String home = System.getProperty("user.home");
 		String filesep = System.getProperty("file.separator");
-		
 		File cfg_dir = new File(home+filesep+msConfigDir+filesep);
 		if(!cfg_dir.exists())
 		{
-			cfg_dir.mkdir();
+		    cfg_dir.mkdir();
 		}
 	}
 	
@@ -173,5 +175,15 @@ public class ConfigManager
 	public double getPropertyDouble(String key)
 	{
 		return Double.parseDouble(mProperties.getProperty(key));
+	}
+	
+	public static boolean isConfigurate()
+	{
+	    String home = System.getProperty("user.home");
+		String filesep = System.getProperty("file.separator");
+		
+	    File cfg_dir = new File(home+filesep+msConfigDir+filesep);
+		return cfg_dir.exists() ;
+
 	}
 }

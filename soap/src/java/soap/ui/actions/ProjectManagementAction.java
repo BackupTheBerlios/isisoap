@@ -1,7 +1,7 @@
 /*
- * APES is a Process Engineering Software
- * Copyright (C) 2003-2004 IPSquad
- * team@ipsquad.tuxfamily.org
+ * SOAP Supervising, Observing, Analysing Projects
+ * Copyright (C) 2003-2004 SOAPteam
+ * 
  *
  *
  * This program is free software; you can redistribute it and/or
@@ -38,12 +38,6 @@ import utils.SimpleFileFilter;
 import utils.SmartChooser;
 
 
-
-/**
- * Base class for action that needs to manage the current project
- *
- * @version $Revision: 1.1 $
- */
 public abstract class ProjectManagementAction extends SoapAction
 {
 	protected SimpleFileFilter filter = new SimpleFileFilter(ResourceManager.getInstance().getString("soapFileExtension"),

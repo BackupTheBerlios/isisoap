@@ -1,7 +1,7 @@
 /*
- * APES is a Process Engineering Software
- * Copyright (C) 2003-2004 IPSquad
- * team@ipsquad.tuxfamily.org
+ * SOAP Supervising, Observing, Analysing Projects
+ * Copyright (C) 2003-2004 SOAPteam
+ * 
  *
  *
  * This program is free software; you can redistribute it and/or
@@ -19,16 +19,13 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-
 package soap.model.process.structure;
 
 import java.util.Vector;
 
 import soap.model.ModelVisitor;
 import soap.model.core.ModelElement;
-/**
- * @version $Revision: 1.1 $
- */
+
 public class WorkProduct extends ModelElement 
 {
 	public static final int NO_REFERENCES = 0;

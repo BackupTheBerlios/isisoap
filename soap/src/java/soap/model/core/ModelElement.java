@@ -1,7 +1,7 @@
 /*
- * APES is a Process Engineering Software
- * Copyright (C) 2003-2004 IPSquad
- * team@ipsquad.tuxfamily.org
+ * SOAP Supervising, Observing, Analysing Projects
+ * Copyright (C) 2003-2004 SOAPteam
+ * 
  *
  *
  * This program is free software; you can redistribute it and/or
@@ -22,20 +22,18 @@
 
 package soap.model.core;
 
+import java.util.HashMap;
 import java.util.Vector;
 
 import soap.model.modelmanagement.IPackage;
 
 
-/**
- * Base class for the elements of the model
- *
- * @version $Revision: 1.1 $
- */
 public abstract class ModelElement extends Element
 {
     private IPackage mParent;
     private Vector mBehavior = new Vector();
+    
+    private HashMap mAttributes = new HashMap();
 
 	public ModelElement(String name)
 	{
@@ -91,6 +89,13 @@ public abstract class ModelElement extends Element
 	{
 	    return this.getName().equals(((ModelElement)o).getName());
 	}
-	
+	public Object getAttribute(int attributeType)
+	{
+	    return mAttributes.get(new Integer(attributeType));
+	}
+	public void setAttribute(int attributeType, Object attribute)
+	{
+	    mAttributes.put(new Integer(attributeType), attribute);
+	}
 	
 }

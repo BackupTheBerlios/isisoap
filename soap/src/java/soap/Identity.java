@@ -1,7 +1,7 @@
 /*
- * APES is a Process Engineering Software
- * Copyright (C) 2003-2004 IPSquad
- * team@ipsquad.tuxfamily.org
+ * SOAP Supervising, Observing, Analysing Projects
+ * Copyright (C) 2003-2004 SOAPteam
+ * 
  *
  *
  * This program is free software; you can redistribute it and/or
@@ -23,10 +23,10 @@ package soap;
 /**
  * 
  *
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  *
  */
 public interface Identity
 {
-	public int getID();
+	public String getID();
 }

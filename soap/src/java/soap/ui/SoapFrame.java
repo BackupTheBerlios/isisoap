@@ -1,11 +1,27 @@
 /*
- * Created on 26 oct. 2004
+ * SOAP Supervising, Observing, Analysing Projects
+ * Copyright (C) 2003-2004 SOAPteam
+ * 
+ *
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
+
 package soap.ui;
 
 import java.awt.BorderLayout;
-import java.awt.Graphics;
-import java.awt.Image;
 import java.awt.Rectangle;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
@@ -17,20 +33,10 @@ import javax.swing.JSplitPane;
 import javax.swing.JTabbedPane;
 import javax.swing.JTree;
 
-
-
-import soap.ui.SoapMenuBar;
-//import soap.ui.SoapToolBar;
-import soap.ui.SoapProjectTree;
-
-import utils.IconManager;
+import soap.MainFrameInterface;
 import utils.ResourceManager;
 
-import soap.MainFrameInterface;
 
-/**
- * @author yanagiba
- */
 public class SoapFrame extends JFrame implements MainFrameInterface
 {
 	private JTree mTree;
@@ -75,7 +81,9 @@ public class SoapFrame extends JFrame implements MainFrameInterface
 		getContentPane().add(new SoapToolBar(), BorderLayout.NORTH);
 		getContentPane().add(mFrame_split, BorderLayout.CENTER);
 		Rectangle r = getGraphicsConfiguration().getBounds();
-		setBounds(r.x+10, r.y+10, r.width*5/6, r.height*5/6);
+        Double x = new Double (r.getX()+(r.getWidth()-r.width*5/6)/2) ;
+        Double y = new Double (r.getY()+(r.getHeight()- r.height*5/6)/2) ;
+		setBounds(x.intValue(), y.intValue(), r.width*5/6, r.height*5/6);
 	}
     
     public void setWelcomePanel()

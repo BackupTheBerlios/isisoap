@@ -1,6 +1,24 @@
 /*
- * Created on 5 nov. 2004
+ * SOAP Supervising, Observing, Analysing Projects
+ * Copyright (C) 2003-2004 SOAPteam
+ * 
+ *
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
+
 package soap.ui.panel;
 
 
@@ -11,7 +29,6 @@ import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
-
 
 import javax.swing.BorderFactory;
 import javax.swing.ButtonGroup;
@@ -32,13 +49,11 @@ import soap.model.executionProcess.structure.Project;
 import soap.model.executionProcess.structure.user.Supervisor;
 import soap.ui.dialog.NewProjectDialog;
 import utils.ConfigManager;
+import utils.ProjectManager;
 import utils.ResourceManager;
 import utils.SmartChooser;
 
 
-/**
- * @author yanagiba
- */
 public class NewProjectPanel extends SoapPanel
 {   
     protected String separator = System.getProperty("file.separator") ;
@@ -90,8 +105,12 @@ public class NewProjectPanel extends SoapPanel
         // supervisor
         JLabel supervisorName = new JLabel(resMan.getString("supervisorLastName")) ;
         supervisorNameTF = new JTextField(30) ;
+        supervisorNameTF.setText("Aubry") ;
+        supervisorNameTF.setEditable(false) ;
         JLabel supervisorFirstName = new JLabel(resMan.getString("supervisorFirstName")) ;
         supervisorFirstNameTF = new JTextField(30) ;
+        supervisorFirstNameTF.setText("Claude");
+        supervisorFirstNameTF.setEditable(false);
         // server
         JTextField servorTextField = new JTextField() ;
         
@@ -132,6 +151,22 @@ public class NewProjectPanel extends SoapPanel
 		locationPanel.add(mDefaultLocation) ;
 		locationPanel.add(mExternalLocation) ;
 		locationPanel.add(directoryPanel) ;   		
+		
+		
+		
+		/******indicators*****/
+		/*// border
+		JPanel indicatorsPanel = new JPanel() ;
+        indicatorsPanel.setLayout(new GridLayout(3,1));
+        Border border = BorderFactory.createEtchedBorder(EtchedBorder.LOWERED);
+		TitledBorder titleStyleIndicators = BorderFactory.createTitledBorder( border, "Indicateurs");
+		indicatorsPanel.setBorder(titleStyleIndicators);
+		
+		// Indicators to display*/
+		
+		
+		
+		
 		
 		/******add******/
 		//c.gridy = GridBagConstraints.
@@ -220,8 +255,9 @@ public class NewProjectPanel extends SoapPanel
                             Supervisor supervisor = new Supervisor(supervisorFirstNameTF.getText(),supervisorNameTF.getText()) ;
                             Project project = new Project(mNameProjectTF.getText());
                             project.setSupervisor(supervisor) ;
-                            project.addAttribute("DirectoryPath", mDirectoryPath.getText()) ;
+                            //project.addAttribute("DirectoryPath", mDirectoryPath.getText()) ;
                             Context.getInstance().getListProjects().addProject(project);
+                            ProjectManager.getInstance().initProject(project.getName(),ProjectManager.getInstance().getDefaultProjectProperties());
                             File project_dir = new File(mDirectoryPath.getText()) ;
                             //project_dir.mkdir() ;
                     	    NewProjectPanel.this.mSoapDialog.dispose();
@@ -232,8 +268,8 @@ public class NewProjectPanel extends SoapPanel
                         }
                     }
                 }
-            }           
-        }       
+            }  
+        } 
     }
 
     

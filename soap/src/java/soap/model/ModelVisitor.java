@@ -1,7 +1,7 @@
 /*
- * APES is a Process Engineering Software
- * Copyright (C) 2003-2004 IPSquad
- * team@ipsquad.tuxfamily.org
+ * SOAP Supervising, Observing, Analysing Projects
+ * Copyright (C) 2003-2004 SOAPteam
+ * 
  *
  *
  * This program is free software; you can redistribute it and/or
@@ -38,12 +38,6 @@ import soap.model.process.structure.WorkProduct;
 
 
 
-/**
- * Interface for visiting SPEM models
- * For more details see the visitor design pattern
- *
- * @version $Revision: 1.1 $
- */
 public interface ModelVisitor
 {
     /**

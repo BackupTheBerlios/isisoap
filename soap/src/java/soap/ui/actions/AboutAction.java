@@ -28,7 +28,7 @@ import java.awt.event.ActionEvent;
 /**
  * Displays the about box
  *
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class AboutAction extends SoapAction
 {

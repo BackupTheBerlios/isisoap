@@ -1,87 +1,59 @@
 /*
- * Created on 12 nov. 2004
+ * SOAP Supervising, Observing, Analysing Projects
+ * Copyright (C) 2003-2004 SOAPteam
+ * 
  *
- * TODO To change the template for this generated file go to
- * Window - Preferences - Java - Code Style - Code Templates
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
+
 package soap.model.core;
 
 import utils.SoapDate;
 
 
-/**
- * @author SCARAVETTI Florent
- *
- * TODO To change the template for this generated type comment go to
- * Window - Preferences - Java - Code Style - Code Templates
- */
-public abstract class EstimationElement extends ModelElement 
+public abstract class EstimationElement extends SoapElement 
 {
-
-	private SoapDate mStartDate;
-	private SoapDate mEndDate;
-	private int mEstimatedHours ;
-	private int mElapsedHours ;
-	private int mRemainedHoursToFinish;
-	
-	public EstimationElement(String name)
+    public static final int START_DATE = 0;
+    public static final int END_DATE = 1;
+    public static final int ESTIMATED_HOURS = 2;
+    public static final int ELAPSED_HOURS = 3;
+    public static final int REMAINED_HOURS_TO_FINISH = 4;
+    
+    
+    public EstimationElement(String projectName)
 	{
-		super(name);
+		super(projectName);
 	}
-
-	public EstimationElement()
+    
+	public EstimationElement(String projectName, String name)
 	{
+		super(projectName, name);
+	}
+	
+	public EstimationElement(String projectName, String name, SoapDate startDate, SoapDate endDate)
+	{
+	    super(projectName, name);
+	    setAttribute(START_DATE,startDate);
+	    setAttribute(END_DATE,endDate);
+	}
+	
+	public int getAdvancement()
+	{
+	    int totalHours = ((Integer)getAttribute(ELAPSED_HOURS)).intValue()+((Integer)getAttribute(REMAINED_HOURS_TO_FINISH)).intValue();
+	    return ((Integer)getAttribute(ELAPSED_HOURS)).intValue()*100/totalHours;
 		
 	}
-	
-	public SoapDate getStartDate()
-	{
-		return mStartDate;
-	}
-	
-	public SoapDate getEndDate()
-	{
-		return mEndDate;
-	}
-	
-	public void setStartDate(SoapDate startDate)
-	{
-		mStartDate = startDate;
-	}
-	
-	public void setEndDate(SoapDate endDate)
-	{
-		mEndDate = endDate;
-	}
-	
-	public int getEstimatedHours()
-	{
-		return mEstimatedHours ;
-	}
-		
-	public void setEstimatedHours(int hours) 
-	{
-		mEstimatedHours = hours ;
-	}
-	    
-	public int getElapsedHours()
-	{
-		return mElapsedHours ;
-	}
-	    
-	public void setElapsedHours(int hours) 
-	{
-		mElapsedHours = hours ;
-	}
-	
-	public int getRemainedHoursToFinish()
-	{
-		return mRemainedHoursToFinish;
-	}
-	
-	public void setRemainedHoursToFinish(int hours)
-	{
-		mRemainedHoursToFinish = hours;
-	}
-	
 }

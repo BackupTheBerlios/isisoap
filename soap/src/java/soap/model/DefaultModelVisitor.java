@@ -1,7 +1,7 @@
 /*
- * APES is a Process Engineering Software
- * Copyright (C) 2003-2004 IPSquad
- * team@ipsquad.tuxfamily.org
+ * SOAP Supervising, Observing, Analysing Projects
+ * Copyright (C) 2003-2004 SOAPteam
+ * 
  *
  *
  * This program is free software; you can redistribute it and/or
@@ -24,9 +24,9 @@ import soap.model.core.Element;
 import soap.model.core.ModelElement;
 import soap.model.executionProcess.structure.Artifact;
 import soap.model.executionProcess.structure.Iteration;
-import soap.model.executionProcess.structure.Iteration.ListTask;
 import soap.model.executionProcess.structure.Project;
 import soap.model.executionProcess.structure.Task;
+import soap.model.executionProcess.structure.Iteration.ListTask;
 import soap.model.executionProcess.structure.user.Member;
 import soap.model.extension.SoapProcess;
 import soap.model.modelmanagement.IPackage;
@@ -38,13 +38,6 @@ import soap.model.process.structure.WorkProduct;
 
 
 
-
-/**
- * Default visitor implementation that does nothing.
- * Its only work is to follow the inheritance tree.
- *
- * @version $Revision: 1.1 $
- */
 public class DefaultModelVisitor implements ModelVisitor
 {
 	/**

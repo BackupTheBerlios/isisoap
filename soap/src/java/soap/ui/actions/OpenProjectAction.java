@@ -1,6 +1,24 @@
 /*
- * Created on 26 oct. 2004
+ * SOAP Supervising, Observing, Analysing Projects
+ * Copyright (C) 2003-2004 SOAPteam
+ * 
+ *
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
+
 package soap.ui.actions;
 
 import java.awt.Event;
@@ -9,25 +27,17 @@ import java.io.File;
 
 import javax.swing.JFileChooser;
 
-import utils.SimpleFileFilter;
-
 import soap.Context;
 import soap.processing.LoadProject;
 import soap.ui.SoapFrame;
 import utils.ConfigManager;
 import utils.ErrorManager;
 import utils.ResourceManager;
+import utils.SimpleFileFilter;
 import utils.SmartChooser;
 import utils.TaskMonitorDialog;
 
-//import soap.apes.processing.LoadProject;
-//import soap.apes.ui.ApesFrame;
 
-
-
-/**
- * @author yanagiba
- */
 public class OpenProjectAction extends SoapAction
 {
     private LoadProject mMonitor = null;
