@@ -27,7 +27,6 @@ import java.awt.event.ActionEvent;
 import javax.swing.JPanel;
 
 import soap.server.ConnectionManager;
-import soap.server.ConnectionManager.ConnectionServer;
 import soap.ui.dialog.SeveralStepsDialog;
 import soap.ui.panel.newProject.IndicatorsPanel;
 import soap.ui.panel.newProject.NewProjectPanel;
@@ -47,10 +46,9 @@ public class NewProjectAction extends SoapAction
 	
 	public void newProject()
 	{
-	    ConnectionManager connectManager = ConnectionManager.getInstance() ;
-	    ConnectionServer con = connectManager.getConnection() ;
-	    if (con != null)
-	    { 
+	    ConnectionManager connectManager = ConnectionManager.getConnection() ;
+	    if(connectManager.identify())
+	    {
 	        SeveralStepsDialog cfgDialog = new SeveralStepsDialog (ResourceManager.getInstance().getString("newProject"),ResourceManager.getInstance().getString("createNewProject"),"icons/logoConfig.gif", "icons/NewProject.gif") ;
 	        JPanel panel = new NewProjectPanel(cfgDialog) ;
 	        cfgDialog.addCenterPanel(panel);

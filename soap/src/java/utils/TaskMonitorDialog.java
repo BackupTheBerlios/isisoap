@@ -47,7 +47,7 @@ import soap.ui.SoapFrame;
 /**
  * Open a new project in the application
  *
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class TaskMonitorDialog extends JDialog
 {
@@ -189,10 +189,10 @@ public class TaskMonitorDialog extends JDialog
 		}
 	}
 	
-	public void show()
+	public void setVisible()
 	{
 		mTimer.start();
 		mTask.go();
-		super.show();
+		super.setVisible(true);
 	}
 }

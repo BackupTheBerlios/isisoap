@@ -51,11 +51,4 @@ public abstract class EstimationElement extends SoapElement
 	    setAttribute(START_DATE,startDate);
 	    setAttribute(END_DATE,endDate);
 	}
-	
-	public int getAdvancement()
-	{
-	    int totalHours = ((Integer)getAttribute(ELAPSED_HOURS)).intValue()+((Integer)getAttribute(REMAINED_HOURS_TO_FINISH)).intValue();
-	    return ((Integer)getAttribute(ELAPSED_HOURS)).intValue()*100/totalHours;
-		
-	}
 }

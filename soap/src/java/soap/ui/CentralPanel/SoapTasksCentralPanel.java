@@ -39,7 +39,9 @@ public class SoapTasksCentralPanel extends DefaultCentralPanel
 		tablePanel.setLayout(new BorderLayout());
 		tablePanel.add(table.getTableHeader(),BorderLayout.NORTH);
 		tablePanel.add(table,BorderLayout.CENTER);
-		mDataPanel.setLayout(new BorderLayout());
-		mDataPanel.add(new JScrollPane(tablePanel), BorderLayout.CENTER);
+		JPanel dataPanel = new JPanel();
+		dataPanel.setLayout(new BorderLayout());
+		dataPanel.add(tablePanel, BorderLayout.CENTER);
+		addTab(resMan.getString("tabbedPaneData"),new JScrollPane(dataPanel));
     }
 }

@@ -26,7 +26,7 @@ import soap.adapters.SoapTreeAdapter;
 import soap.model.executionProcess.structure.Project;
 import soap.model.extension.SoapListProjects;
 import soap.model.frontend.SoapMediator;
-import utils.ConfigManager;
+import utils.ResourceManager;
 
 /**
  * Class used to contains the list of all the projects
@@ -37,7 +37,7 @@ import utils.ConfigManager;
 public class ListProjects
 {
     private static final ListProjects mInstance = new ListProjects() ;
-    private SoapListProjects mSoapListProjects = new SoapListProjects(ConfigManager.getInstance().getProperty("Project")) ;
+    private SoapListProjects mSoapListProjects = new SoapListProjects(ResourceManager.getInstance().getString("project")) ;
     private Vector mlistAllProjects = new Vector();
     private Project mCurrentProject = null;
     
@@ -78,7 +78,6 @@ public class ListProjects
 	 */
     public void removeProject(Project p)
     {
-        mlistAllProjects.remove(p);
         SoapMediator.getInstance().closeProject(p) ;
     }
     
@@ -99,6 +98,15 @@ public class ListProjects
     public void setCurrentProject(Project p)
     {
         mCurrentProject = p;
+    }
+    
+    /**
+	 * Test if a project is opened
+	 *
+	 */
+    public boolean isProjectOpened(Project p)
+    {
+        return mSoapListProjects.containsModelElement(p);
     }
     
     /**

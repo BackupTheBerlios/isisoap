@@ -25,6 +25,7 @@ package soap.processing;
 import java.io.BufferedOutputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
@@ -33,7 +34,6 @@ import soap.model.executionProcess.structure.Project;
 import utils.ErrorManager;
 import utils.IndicatorManager;
 import utils.ProjectManager;
-import JSX.ObjOut;
 
 /**
  * Monitor used to save a project
@@ -105,14 +105,14 @@ public class SaveProject
 	
 	private void saveProject() throws IOException
 	{
-	    ZipEntry entryZip = new ZipEntry("Project.xml");
+	    ZipEntry entryZip = new ZipEntry("Project.save");
 		mZipFile.putNextEntry(entryZip);
-		DataOutputStream data = new DataOutputStream( new BufferedOutputStream(mZipFile) );
-		ObjOut out = new ObjOut( data );
 		
 		//project to save
 		Project currentProject = Context.getInstance().getListProjects().getCurrentProject();
-		    
+		
+		DataOutputStream data = new DataOutputStream(mZipFile);
+		ObjectOutputStream out = new ObjectOutputStream(data);   
 		out.writeObject(currentProject);
 		mZipFile.closeEntry();	
 	}

@@ -51,6 +51,7 @@ public class SoapGridbagPanel extends SoapPanel
     private void initUI() 
     {
         this.setLayout(mGridbag);
+        //mConstraint.insets = new Insets(10,10,10,10);
         this.setBorder(BorderFactory.createEmptyBorder(10,10,10,10));
     }
     

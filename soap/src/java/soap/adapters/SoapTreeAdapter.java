@@ -22,7 +22,6 @@ package soap.adapters;
 
 
 import java.awt.Component;
-import java.util.HashMap;
 import java.util.Map;
 
 import javax.swing.Icon;
@@ -43,12 +42,12 @@ import javax.swing.tree.TreePath;
 import soap.Identity;
 import soap.model.core.Element;
 import soap.model.extension.SoapListProjects;
-import soap.model.extension.SoapProcess;
 import soap.model.frontend.SoapMediator;
 import soap.model.frontend.event.SoapEvent;
 import soap.ui.CentralPanel.SoapCentralPanel;
 import utils.Debug;
 import utils.IconManager;
+import utils.ResourceManager;
 
 /**
  * This adapter allows to display the working project list in a JTree
@@ -58,7 +57,7 @@ import utils.IconManager;
 public class SoapTreeAdapter implements TreeModel, SoapMediator.Listener
 {
     private EventListenerList mListenerList = new EventListenerList();
-    private SoapTreeNode mRoot = new SoapTreeNode(new SoapListProjects("Project"), false);
+    private SoapTreeNode mRoot = new SoapTreeNode(new SoapListProjects(ResourceManager.getInstance().getString("project")), false);
     
     public SoapTreeAdapter()
     {
@@ -242,7 +241,17 @@ public class SoapTreeAdapter implements TreeModel, SoapMediator.Listener
 	    Object[] removed = e.getRemoved();
 	    //System.out.println("modelChanged : parent : "+parents[0]+" inserted : "+inserted[0]);
         Map extras = e.getAttributes();
-        handleInsert(inserted,parents,extras ) ;
+        if(inserted != null)
+        {    
+            handleInsert(inserted,parents,extras ) ;
+        }
+        else
+        {
+            if(removed != null)
+            {
+                handleRemove(removed,parents,extras);
+            }
+        }
         
 	}
 	
@@ -337,40 +346,21 @@ public class SoapTreeAdapter implements TreeModel, SoapMediator.Listener
 		Object[] listeners = mListenerList.getListenerList();
 		TreeModelEvent e = null;
 		
-		/*//for(int i=listeners.length-2; i>=0; i-=2)
-		for(int i=0; i<listeners.length; i++)
-		{
-			//if (listeners[i]==TreeModelListener.class)
-		    if (listeners[i] instanceof TreeModelListener)
-		    {
-				if(e==null)
-				{
-					try
-					{
-						e=new TreeModelEvent(source, path, childIndices, children);
-					}
-					catch(Throwable t){}
-				}
-				( (TreeModelListener) listeners[i/*i+1*//*]).treeNodesInserted(e);
-			}
-		}*/
-		
+		for(int i=0; i<listeners.length; i+=2)
 		//for(int i=listeners.length-2; i>=0; i-=2)
-		for(int i=0; i<listeners.length-1; i+=2)
 		{
-			if (listeners[i]==TreeModelListener.class && listeners[i+1].getClass() ==  soap.ui.SoapProjectTree.class)
-		    {
+			if (listeners[i]==TreeModelListener.class)
+			{
 				if(e==null)
 				{
-					try
-					{
-						e=new TreeModelEvent(source, path, childIndices, children);
-					}
-					catch(Throwable t){}
+					try{
+					e=new TreeModelEvent(source, path, childIndices, children);
+					}catch(Throwable t){}
 				}
-				//System.out.println("************* Listener [i]: "+listeners[i]);
-				//System.out.println("************* Listener [i+1]: "+listeners[i+1]);
-				( (TreeModelListener) listeners[i+1]).treeNodesInserted(e);
+				if ((TreeModelListener)listeners[i+1] != null)
+				{
+				    ((TreeModelListener)listeners[i+1]).treeNodesInserted(e);
+				}
 			}
 		}
 	}
@@ -549,18 +539,6 @@ public class SoapTreeAdapter implements TreeModel, SoapMediator.Listener
 			if(Debug.enabled) Debug.print("elementAction : Something unknown in the SpemTreeAdapter");
 		}
 	}
-		
-	public void close(SoapTreeNode node)
-	{
-	    SoapTreeNode parent = (SoapTreeNode) node.getParent() ;
-	    if (parent == null)
-	    {
-	        return ;
-	    }
-	    parent.remove(node) ;
-	    fireTreeNodesRemoved( this, parent.getPath(), new int[]{ parent.getIndex(node) }, new Object[]{ node });
-	}
-	
 	
 	private class SoapTreeCellRenderer extends DefaultTreeCellRenderer
 	{

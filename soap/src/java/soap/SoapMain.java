@@ -27,7 +27,6 @@ import javax.swing.JPanel;
 import soap.ui.SoapFrame;
 import soap.ui.actions.AboutAction;
 import soap.ui.actions.CloseProjectAction;
-import soap.ui.actions.GenerateStatsAction;
 import soap.ui.actions.HelpAction;
 import soap.ui.actions.NewProjectAction;
 import soap.ui.actions.OpenProjectAction;
@@ -37,6 +36,7 @@ import soap.ui.actions.ProjectPropertiesAction;
 import soap.ui.actions.QuitAction;
 import soap.ui.actions.SaveAsProjectAction;
 import soap.ui.actions.SaveProjectAction;
+import soap.ui.actions.UpdateProjectAction;
 import soap.ui.dialog.SeveralStepsDialog;
 import soap.ui.panel.SoapTextPanel;
 import soap.ui.panel.configuration.ServerInformationPanel;
@@ -73,6 +73,7 @@ public class SoapMain
 		String language = Locale.getDefault().getLanguage() ;
 		properties.setProperty("Language",language);
 		properties.setProperty("LocalFile","resources/Soap_"+language) ;
+		properties.setProperty("HelpFile","help/index_"+language+".html") ;
 
 		return properties;
 	}
@@ -85,11 +86,9 @@ public class SoapMain
     
 	public static void configurate()
 	{
-   		SeveralStepsDialog cfgDialog = new SeveralStepsDialog ("Configuration","Configuration du logiciel SOAP","icons/logoConfig.gif") ;
+	    SeveralStepsDialog cfgDialog = new SeveralStepsDialog (ResourceManager.getInstance().getString("configurationTitle"),ResourceManager.getInstance().getString("configurationDescription"),"icons/logoConfig.gif") ;
    		SoapTextPanel sp = new SoapTextPanel() ;
-        sp.setText("Cet assistant va vous permettre de configurer SOAP.\n" +
-        		"Ceci ne va vous prendre que quelques minutes.\n\n" +
-        		"Bonne utilisation du logiciel !!!") ;
+        sp.setText(ResourceManager.getInstance().getString("configurationHeader")) ;
         cfgDialog.addCenterPanel(sp);
         
         JPanel panel = new UserInformationPanel(cfgDialog) ;
@@ -119,6 +118,7 @@ public class SoapMain
 		// initialize the main frame
 	    SoapFrame f = new SoapFrame();
 	    context.setTopLevelFrame(f);
+	    ((UpdateProjectAction)context.getAction("UpdateProject")).setListener();
 	    ListProjects listProjects = ListProjects.getInstance() ;
 	    context.setListProjects(listProjects) ;
 		f.setVisible(false);
@@ -149,13 +149,18 @@ public class SoapMain
 		context.registerAction("Quit", new QuitAction());
 		// project action
 		context.registerAction("ProjectProperties",new ProjectPropertiesAction());	
-		context.registerAction("Preferences",new PreferencesAction());
-		context.registerAction("Help",new HelpAction());
+		context.registerAction("UpdateProject",new UpdateProjectAction());
+		context.registerAction("Preferences",new PreferencesAction());	
+		
+		// help action
 		context.registerAction("About", new AboutAction());
+		context.registerAction("Help",new HelpAction());
+
 
 		//Statistics
-		context.registerAction("GenerateStatistics", new GenerateStatsAction());
 		context.registerAction("PrintStatistics", new PrintStatsAction());
+		
+		
 		//tree action
 		//context.registerAction("TreeProjectProperties", new AddToModelAction("treeAddPackage", new SoapTreeNode(new SPackage(""), true)));
 		

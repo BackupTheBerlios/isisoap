@@ -32,26 +32,6 @@ public class SaveAsProjectAction extends ProjectManagementAction
 
 	public void actionPerformed(ActionEvent e)
 	{
-		/*boolean save = true;
-		long time =  Context.getInstance().getProject().getProcess().getComponent().getValidate();
-		if( time == 0 || time < Context.getInstance().getUndoManager().getLastActionTime())
-		{
-			int choice=JOptionPane.showInternalConfirmDialog(
-
-			((ApesFrame)Context.getInstance().getTopLevelFrame()).getContentPane(),
-			ResourceManager.getInstance().getString("msgSaveWithoutValidateConfirm"),
-			ResourceManager.getInstance().getString("msgTitleSaveConfirm"),
-			JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE);
-
-			if(choice!=JOptionPane.YES_OPTION)
-			{
-				save = false;
-			}
-		}
-		
-		if(save)
-		{
-			saveProjectAs();
-		}*/
+		saveProjectAs();
 	}
 }

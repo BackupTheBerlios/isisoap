@@ -27,7 +27,6 @@ import java.awt.GridLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.File;
 
 import javax.swing.BorderFactory;
 import javax.swing.ButtonGroup;
@@ -44,8 +43,6 @@ import javax.swing.event.CaretEvent;
 import javax.swing.event.CaretListener;
 
 import soap.Context;
-import soap.model.executionProcess.structure.Project;
-import soap.model.executionProcess.structure.user.Supervisor;
 import soap.ui.dialog.SeveralStepsDialog;
 import soap.ui.dialog.SeveralStepsDialog.StepsValidator;
 import soap.ui.panel.SoapGridbagPanel;

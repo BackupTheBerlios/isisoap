@@ -25,12 +25,7 @@ import java.io.Serializable;
 import java.util.Map;
 import java.util.Vector;
 
-import javax.swing.tree.TreeNode;
-
 import soap.Context;
-import soap.ListProjects;
-import soap.adapters.SoapTreeAdapter;
-import soap.adapters.SoapTreeNode;
 import soap.model.core.ModelElement;
 import soap.model.executionProcess.structure.Artifact;
 import soap.model.executionProcess.structure.Iteration;
@@ -55,8 +50,8 @@ public class SoapMediator implements Serializable
 	private SoapMediator() { }
 	
 	/**
-	 * Return the unique instance of the ApesMediator
-	 * @return the unique instance of the ApesMediator
+	 * Return the unique instance of the SoapMediator
+	 * @return the unique instance of the SoapMediator
 	 */
 	public static SoapMediator getInstance()
 	{
@@ -75,14 +70,7 @@ public class SoapMediator implements Serializable
 	
 	public void closeProject(Project p)
 	{
-	    SoapTreeNode selected = (SoapTreeNode) Context.getInstance().getTopLevelFrame().getProjectTree().getSelectionPath().getLastPathComponent();
-	    
-	    if (selected.getUserObject() == p)
-	    {
-	        SoapTreeAdapter treeAdapt = (SoapTreeAdapter) Context.getInstance().getTopLevelFrame().getProjectTree().getModel();
-		    treeAdapt.close(selected) ;
-	    }
-	    
+	    removeFromModel(new Object [] {p} , null);
 	}
 	
 	/**
@@ -92,29 +80,56 @@ public class SoapMediator implements Serializable
 	private void initNewProject(Project p )
 	{
 	    SoapListProjects listProjects = Context.getInstance().getListProjects().getListSoapProjects() ;
-	    /*String name = mConfig.getProperty("PackageRole");
+	   /* String name = mConfig.getProperty("PackageRole");
 	    p.setAttribute(EstimationElement.START_DATE,new SoapDate("22/10/2004"));
 	   // p.setStartDate(new SoapDate(22,10,2004));
 	    p.setAttribute(EstimationElement.END_DATE,new SoapDate("14/03/2004"));
 		p.setSupervisor(new Supervisor("Bernard","Cherbonneau"));
+		p.setAttribute(EstimationElement.ESTIMATED_HOURS, new Integer(400));
+		p.setAttribute(Project.ESTIMATED_FUNCTIONALITIES, new Integer(25));
 		Iteration it1 = new Iteration(p.getName(),"Itération 1") ;
 		it1.setAttribute(EstimationElement.START_DATE,new SoapDate(22,10,2004));
 		it1.setAttribute(EstimationElement.END_DATE,new SoapDate(05,11,2004));
 		it1.setAttribute(EstimationElement.ELAPSED_HOURS, new Integer(40));
 		it1.setAttribute(EstimationElement.ESTIMATED_HOURS, new Integer(47));
 		it1.setAttribute(EstimationElement.REMAINED_HOURS_TO_FINISH, new Integer(0));
+		it1.setAttribute(Project.ESTIMATED_FUNCTIONALITIES, new Integer(2));
+		it1.setAttribute(Project.REALIZED_FUNCTIONALITIES, new Integer(2));
 		Iteration it2 = new Iteration(p.getName(),"Itération 2") ;
 		it2.setAttribute(EstimationElement.START_DATE,new SoapDate(05,11,2004));
 		it2.setAttribute(EstimationElement.END_DATE, new SoapDate(19,11,2004));
 		it2.setAttribute(EstimationElement.ELAPSED_HOURS, new Integer(60));
 		it2.setAttribute(EstimationElement.ESTIMATED_HOURS, new Integer(55));
 		it2.setAttribute(EstimationElement.REMAINED_HOURS_TO_FINISH, new Integer(0));
+		it2.setAttribute(Project.ESTIMATED_FUNCTIONALITIES, new Integer(3));
+		it2.setAttribute(Project.REALIZED_FUNCTIONALITIES, new Integer(3));
 		Iteration it3 = new Iteration(p.getName(),"Itération 3") ;
 		it3.setAttribute(EstimationElement.START_DATE,new SoapDate(19,11,2004));
 		it3.setAttribute(EstimationElement.END_DATE, new SoapDate(10,12,2004));
 		it3.setAttribute(EstimationElement.ELAPSED_HOURS, new Integer(55));
 		it3.setAttribute(EstimationElement.ESTIMATED_HOURS, new Integer(50));
 		it3.setAttribute(EstimationElement.REMAINED_HOURS_TO_FINISH, new Integer(0));
+		it3.setAttribute(Project.ESTIMATED_FUNCTIONALITIES, new Integer(4));
+		it3.setAttribute(Project.REALIZED_FUNCTIONALITIES, new Integer(3));
+		
+		Iteration it4 = new Iteration(p.getName(),"Itération 4") ;
+		it4.setAttribute(EstimationElement.START_DATE,new SoapDate(11,12,2004));
+		it4.setAttribute(EstimationElement.END_DATE, new SoapDate(4,01,2005));
+		it4.setAttribute(EstimationElement.ELAPSED_HOURS, new Integer(53));
+		it4.setAttribute(EstimationElement.ESTIMATED_HOURS, new Integer(55));
+		it4.setAttribute(EstimationElement.REMAINED_HOURS_TO_FINISH, new Integer(0));
+		it4.setAttribute(Project.ESTIMATED_FUNCTIONALITIES, new Integer(5));
+		it4.setAttribute(Project.REALIZED_FUNCTIONALITIES, new Integer(5));
+		
+		Iteration it5 = new Iteration(p.getName(),"Itération 5") ;
+		it5.setAttribute(EstimationElement.START_DATE,new SoapDate(5,01,2005));
+		it5.setAttribute(EstimationElement.END_DATE, new SoapDate(22,01,2005));
+		it5.setAttribute(EstimationElement.ELAPSED_HOURS, new Integer(20));
+		it5.setAttribute(EstimationElement.ESTIMATED_HOURS, new Integer(45));
+		it5.setAttribute(EstimationElement.REMAINED_HOURS_TO_FINISH, new Integer(26));
+		it5.setAttribute(Project.ESTIMATED_FUNCTIONALITIES, new Integer(4));
+		it5.setAttribute(Project.REALIZED_FUNCTIONALITIES, new Integer(1));
+	
 		ListTask listTask1 = it1.new ListTask(p.getName(),"Liste des tâches");
 		Member m1 = new Member("SCARAVETTI","Florent");
 		Member m2 = new Member("NGO THANH","Trung");
@@ -313,9 +328,179 @@ public class SoapMediator implements Serializable
 		task21.setPriority(2);
 		listTask3.addTask(task21);
 		
+		ListTask listTask4 = it4.new ListTask(p.getName(),"Liste des tâches");
+		Task task22 = new Task(p.getName(),"Affiner l'architecture du logiciel");
+		task22.setAttribute(EstimationElement.START_DATE,new SoapDate(13,12,2004));
+		task22.setAttribute(EstimationElement.END_DATE, new SoapDate(14,12,2004));
+		task22.setAttribute(EstimationElement.ELAPSED_HOURS, new Integer(3));
+		task22.setAttribute(EstimationElement.ESTIMATED_HOURS, new Integer(2));
+		task22.setAttribute(EstimationElement.REMAINED_HOURS_TO_FINISH, new Integer(0));
+		task22.setMember(m2);
+		task22.setPriority(1);
+		listTask4.addTask(task22);
+		Task task23 = new Task(p.getName(),"Codage du cas d'utilisation ouverture et sauvegarde");
+		task23.setAttribute(EstimationElement.START_DATE,new SoapDate(16,12,2004));
+		task23.setAttribute(EstimationElement.END_DATE, new SoapDate(29,12,2004));
+		task23.setAttribute(EstimationElement.ELAPSED_HOURS, new Integer(10));
+		task23.setAttribute(EstimationElement.ESTIMATED_HOURS, new Integer(12));
+		task23.setAttribute(EstimationElement.REMAINED_HOURS_TO_FINISH, new Integer(0));
+		task23.setMember(m1);
+		task23.setPriority(1);
+		listTask4.addTask(task23);
+		Task task24 = new Task(p.getName(),"Codage du cas d'utilisation configuration du logiciel");
+		task24.setAttribute(EstimationElement.START_DATE,new SoapDate(17,12,2004));
+		task24.setAttribute(EstimationElement.END_DATE, new SoapDate(02,01,2005));
+		task24.setAttribute(EstimationElement.ELAPSED_HOURS, new Integer(12));
+		task24.setAttribute(EstimationElement.ESTIMATED_HOURS, new Integer(10));
+		task24.setAttribute(EstimationElement.REMAINED_HOURS_TO_FINISH, new Integer(0));
+		task24.setMember(m2);
+		task24.setPriority(1);
+		listTask4.addTask(task24);
+		Task task25 = new Task(p.getName(),"Evaluer l'itération ");
+		task25.setAttribute(EstimationElement.START_DATE,new SoapDate(01,01,2005));
+		task25.setAttribute(EstimationElement.END_DATE, new SoapDate(03,01,2005));
+		task25.setAttribute(EstimationElement.ELAPSED_HOURS, new Integer(4));
+		task25.setAttribute(EstimationElement.ESTIMATED_HOURS, new Integer(3));
+		task25.setAttribute(EstimationElement.REMAINED_HOURS_TO_FINISH, new Integer(0));
+		task25.setMember(m4);
+		task25.setPriority(2);
+		listTask4.addTask(task25);
+		Task task26 = new Task(p.getName(),"Définir l'itération suivante ");
+		task26.setAttribute(EstimationElement.START_DATE,new SoapDate(01,01,2005));
+		task26.setAttribute(EstimationElement.END_DATE, new SoapDate(03,01,2005));
+		task26.setAttribute(EstimationElement.ELAPSED_HOURS, new Integer(3));
+		task26.setAttribute(EstimationElement.ESTIMATED_HOURS, new Integer(2));
+		task26.setAttribute(EstimationElement.REMAINED_HOURS_TO_FINISH, new Integer(0));
+		task26.setMember(m3);
+		task26.setPriority(2);
+		listTask4.addTask(task26);
 		
-	    insertInModel(new Object[]{p, it1,it2,it3, listTask1,listTask2,listTask3}, 
-	            	  new Object[]{listProjects,p,p,p,it1,it2,it3}, null);*/
+		ListTask listTask5 = it1.new ListTask(p.getName(),"Liste des tâches");
+		Task task27 = new Task(p.getName(),"Codage du cas d'utilisation génération des statistiques");
+		task27.setAttribute(EstimationElement.START_DATE,new SoapDate(05,01,2005));
+		task27.setAttribute(EstimationElement.END_DATE, new SoapDate(18,01,2005));
+		task27.setAttribute(EstimationElement.ELAPSED_HOURS, new Integer(9));
+		task27.setAttribute(EstimationElement.ESTIMATED_HOURS, new Integer(10));
+		task27.setAttribute(EstimationElement.REMAINED_HOURS_TO_FINISH, new Integer(3));
+		task27.setMember(m1);
+		task27.setPriority(1);
+		listTask5.addTask(task27);
+		Task task28 = new Task(p.getName(),"Codage partie serveur");
+		task28.setAttribute(EstimationElement.START_DATE,new SoapDate(06,01,2005));
+		task28.setAttribute(EstimationElement.END_DATE, new SoapDate(17,01,2005));
+		task28.setAttribute(EstimationElement.ELAPSED_HOURS, new Integer(6));
+		task28.setAttribute(EstimationElement.ESTIMATED_HOURS, new Integer(13));
+		task28.setAttribute(EstimationElement.REMAINED_HOURS_TO_FINISH, new Integer(6));
+		task28.setMember(m2);
+		task28.setPriority(1);
+		listTask5.addTask(task28);
+		Task task29 = new Task(p.getName(),"Evaluer l'itération ");
+		task29.setAttribute(EstimationElement.START_DATE,new SoapDate(19,01,2005));
+		task29.setAttribute(EstimationElement.END_DATE, new SoapDate(21,01,2005));
+		task29.setAttribute(EstimationElement.ELAPSED_HOURS, new Integer(0));
+		task29.setAttribute(EstimationElement.ESTIMATED_HOURS, new Integer(2));
+		task29.setAttribute(EstimationElement.REMAINED_HOURS_TO_FINISH, new Integer(2));
+		task29.setMember(m4);
+		task29.setPriority(2);
+		listTask5.addTask(task29);
+		Task task30 = new Task(p.getName(),"Définir l'itération suivante ");
+		task30.setAttribute(EstimationElement.START_DATE,new SoapDate(20,01,2005));
+		task30.setAttribute(EstimationElement.END_DATE, new SoapDate(21,01,2005));
+		task30.setAttribute(EstimationElement.ELAPSED_HOURS, new Integer(0));
+		task30.setAttribute(EstimationElement.ESTIMATED_HOURS, new Integer(3));
+		task30.setAttribute(EstimationElement.REMAINED_HOURS_TO_FINISH, new Integer(3));
+		task30.setMember(m3);
+		task30.setPriority(2);
+		listTask5.addTask(task30);
+		
+		IndicatorManager indMan = IndicatorManager.getInstance();
+		indMan.setProperty(p.getName(),"indicator1_"+p.getID(),"30");
+		indMan.setProperty(p.getName(),"indicator2_"+p.getID(),"40");
+		indMan.setProperty(p.getName(),"indicator3_"+p.getID(),"30");
+		indMan.setProperty(p.getName(),"indicator4_"+p.getID(),"70");
+		indMan.setProperty(p.getName(),"indicator1_"+it1.getID(),"100");
+		indMan.setProperty(p.getName(),"indicator2_"+it1.getID(),"90");
+		indMan.setProperty(p.getName(),"indicator3_"+it1.getID(),"100");
+		indMan.setProperty(p.getName(),"indicator4_"+it1.getID(),"0");
+		indMan.setProperty(p.getName(),"indicator1_"+it2.getID(),"100");
+		indMan.setProperty(p.getName(),"indicator2_"+it2.getID(),"100");
+		indMan.setProperty(p.getName(),"indicator3_"+it2.getID(),"100");
+		indMan.setProperty(p.getName(),"indicator4_"+it2.getID(),"0");
+		indMan.setProperty(p.getName(),"indicator1_"+it3.getID(),"100");
+		indMan.setProperty(p.getName(),"indicator2_"+it3.getID(),"105");
+		indMan.setProperty(p.getName(),"indicator3_"+it3.getID(),"100");
+		indMan.setProperty(p.getName(),"indicator4_"+it3.getID(),"0");
+		indMan.setProperty(p.getName(),"indicator1_"+it4.getID(),"100");
+		indMan.setProperty(p.getName(),"indicator2_"+it4.getID(),"95");
+		indMan.setProperty(p.getName(),"indicator3_"+it4.getID(),"100");
+		indMan.setProperty(p.getName(),"indicator4_"+it4.getID(),"0");
+		indMan.setProperty(p.getName(),"indicator1_"+it5.getID(),"70");
+		indMan.setProperty(p.getName(),"indicator2_"+it5.getID(),"80");
+		indMan.setProperty(p.getName(),"indicator3_"+it5.getID(),"60");
+		indMan.setProperty(p.getName(),"indicator4_"+it5.getID(),"40");
+		indMan.setProperty(p.getName(),"indicator1_"+task1.getID(),"100");
+		indMan.setProperty(p.getName(),"indicator2_"+task1.getID(),"105");
+		indMan.setProperty(p.getName(),"indicator1_"+task2.getID(),"100");
+		indMan.setProperty(p.getName(),"indicator2_"+task2.getID(),"90");
+		indMan.setProperty(p.getName(),"indicator1_"+task3.getID(),"100");
+		indMan.setProperty(p.getName(),"indicator2_"+task3.getID(),"100");
+		indMan.setProperty(p.getName(),"indicator1_"+task4.getID(),"100");
+		indMan.setProperty(p.getName(),"indicator2_"+task4.getID(),"95");
+		indMan.setProperty(p.getName(),"indicator1_"+task5.getID(),"100");
+		indMan.setProperty(p.getName(),"indicator2_"+task5.getID(),"110");
+		indMan.setProperty(p.getName(),"indicator1_"+task6.getID(),"100");
+		indMan.setProperty(p.getName(),"indicator2_"+task6.getID(),"105");
+		indMan.setProperty(p.getName(),"indicator1_"+task7.getID(),"100");
+		indMan.setProperty(p.getName(),"indicator2_"+task7.getID(),"90");
+		indMan.setProperty(p.getName(),"indicator1_"+task8.getID(),"100");
+		indMan.setProperty(p.getName(),"indicator2_"+task8.getID(),"100");
+		indMan.setProperty(p.getName(),"indicator1_"+task9.getID(),"100");
+		indMan.setProperty(p.getName(),"indicator2_"+task9.getID(),"95");
+		indMan.setProperty(p.getName(),"indicator1_"+task10.getID(),"100");
+		indMan.setProperty(p.getName(),"indicator2_"+task10.getID(),"110");
+		indMan.setProperty(p.getName(),"indicator1_"+task11.getID(),"100");
+		indMan.setProperty(p.getName(),"indicator2_"+task11.getID(),"90");
+		indMan.setProperty(p.getName(),"indicator1_"+task12.getID(),"100");
+		indMan.setProperty(p.getName(),"indicator2_"+task12.getID(),"95");
+		indMan.setProperty(p.getName(),"indicator1_"+task13.getID(),"100");
+		indMan.setProperty(p.getName(),"indicator2_"+task13.getID(),"105");
+		indMan.setProperty(p.getName(),"indicator1_"+task14.getID(),"100");
+		indMan.setProperty(p.getName(),"indicator2_"+task14.getID(),"95");
+		indMan.setProperty(p.getName(),"indicator1_"+task15.getID(),"100");
+		indMan.setProperty(p.getName(),"indicator2_"+task15.getID(),"90");
+		indMan.setProperty(p.getName(),"indicator1_"+task16.getID(),"100");
+		indMan.setProperty(p.getName(),"indicator2_"+task16.getID(),"105");
+		indMan.setProperty(p.getName(),"indicator1_"+task17.getID(),"100");
+		indMan.setProperty(p.getName(),"indicator2_"+task17.getID(),"110");
+		indMan.setProperty(p.getName(),"indicator1_"+task18.getID(),"100");
+		indMan.setProperty(p.getName(),"indicator2_"+task18.getID(),"90");
+		indMan.setProperty(p.getName(),"indicator1_"+task19.getID(),"100");
+		indMan.setProperty(p.getName(),"indicator2_"+task19.getID(),"105");
+		indMan.setProperty(p.getName(),"indicator1_"+task20.getID(),"100");
+		indMan.setProperty(p.getName(),"indicator2_"+task20.getID(),"110");
+		indMan.setProperty(p.getName(),"indicator1_"+task21.getID(),"100");
+		indMan.setProperty(p.getName(),"indicator2_"+task21.getID(),"95");
+		indMan.setProperty(p.getName(),"indicator1_"+task22.getID(),"100");
+		indMan.setProperty(p.getName(),"indicator2_"+task22.getID(),"85");
+		indMan.setProperty(p.getName(),"indicator1_"+task23.getID(),"100");
+		indMan.setProperty(p.getName(),"indicator2_"+task23.getID(),"95");
+		indMan.setProperty(p.getName(),"indicator1_"+task24.getID(),"100");
+		indMan.setProperty(p.getName(),"indicator2_"+task24.getID(),"100");
+		indMan.setProperty(p.getName(),"indicator1_"+task25.getID(),"100");
+		indMan.setProperty(p.getName(),"indicator2_"+task25.getID(),"105");
+		indMan.setProperty(p.getName(),"indicator1_"+task26.getID(),"100");
+		indMan.setProperty(p.getName(),"indicator2_"+task26.getID(),"105");
+		indMan.setProperty(p.getName(),"indicator1_"+task27.getID(),"75");
+		indMan.setProperty(p.getName(),"indicator2_"+task27.getID(),"90");
+		indMan.setProperty(p.getName(),"indicator1_"+task28.getID(),"35");
+		indMan.setProperty(p.getName(),"indicator2_"+task28.getID(),"30");
+		indMan.setProperty(p.getName(),"indicator1_"+task29.getID(),"0");
+		indMan.setProperty(p.getName(),"indicator2_"+task29.getID(),"0");
+		indMan.setProperty(p.getName(),"indicator1_"+task30.getID(),"0");
+		indMan.setProperty(p.getName(),"indicator2_"+task30.getID(),"0");
+		
+	    insertInModel(new Object[]{p, it1,it2,it3,it4,it5, listTask1,listTask2,listTask3,listTask4,listTask5}, 
+	            	  new Object[]{listProjects,p,p,p,p,p,it1,it2,it3,it4,it5}, null);*/
 	    
 	    insertInModel(new Object[]{p}, 
 	          	  new Object[]{listProjects}, null);
@@ -357,7 +542,7 @@ public class SoapMediator implements Serializable
 	}
 	
 	/**
-	 * Removes a listener previously added with addApesMediatorListener
+	 * Removes a listener previously added with addSoapMediatorListener
 	 * 
 	 * @param l the listener to add
 	 * @return true if the listener can be added, false otherwise
@@ -368,7 +553,7 @@ public class SoapMediator implements Serializable
 	}
 
 	/**
-	 * Clear all current ApesMediator listeners
+	 * Clear all current SoapMediator listeners
 	 */
 	public void clearListeners()
 	{
@@ -401,7 +586,7 @@ public class SoapMediator implements Serializable
 	public void insertInModel (Object[] elements, Object[] parents,Map extras)
 	{
 	    if( parents == null || elements == null || elements.length != parents.length)
-			throw new IllegalArgumentException("ApesMediator.insert : elements and parents length was different!");
+			throw new IllegalArgumentException("SoapMediator.insertInModel : elements and parents length was different!");
 	    SoapEvent event = createInsertEvent(elements, parents, extras) ;
 	    if (event != null)
 	    {
@@ -414,18 +599,17 @@ public class SoapMediator implements Serializable
 	    SoapEvent e = null ;	  
 	    for (int i = 0; i < parents.length; i++)
 	    {
-	        /*{
-	            return null ;
-		    }
-	        if ( ((IPackage)parents[i]).containsModelElement((ModelElement)elements[i]) )
+	        if(elements[i] instanceof ModelElement && parents[i] instanceof IPackage)
 	        {
-	            if(Debug.enabled) Debug.print("duplicate Element "+ ((ModelElement)elements[i]).getName());
-	            return null ;
-	        }*/
-	        if (! verifyInsertElementIntoPackage((ModelElement)elements[i], (IPackage)parents[i]))
+	            if (! verifyInsertElementIntoPackage((ModelElement)elements[i], (IPackage)parents[i]))
+	            {
+	            	return null;
+	            }
+	        }
+	        else
 	        {
-	            	//elements.
-	        } 
+	            return null;
+	        }
 	   }
 	   e = new SoapEvent(elements, null,parents ,extras) ;
 	   return e ;
@@ -433,18 +617,13 @@ public class SoapMediator implements Serializable
 
 	public boolean verifyInsertElementIntoPackage (ModelElement element, IPackage parent)
 	{    
-	    //System.out.println("verifyInsertElementIntoPackage : "+element+" "+ parent);
-	    if (!(element instanceof IPackage))
+	    if (parent instanceof SoapListProjects && ! (element instanceof Project) ||
+	            parent instanceof Project && ! (element instanceof Iteration) ||
+	            	parent instanceof Iteration && ! (element instanceof ListTask) ||
+	            		parent instanceof Task && ! (element instanceof Artifact))
 	    {
-	        if (parent instanceof SoapListProjects && ! (element instanceof Project) ||
-	                parent instanceof Project && ! (element instanceof Iteration) ||
-	                	parent instanceof Iteration && ! (element instanceof Task) ||
-	                		parent instanceof Task && ! (element instanceof Artifact))
-	        {
-	            return false ;
-	        }
+	        return false ;
 	    }
-	    
 	    parent.addModelElement(element) ;
 	    return true ;
 	}
@@ -454,29 +633,42 @@ public class SoapMediator implements Serializable
 	 * Removes elements from the model
 	 *  
 	 * @param elements the elements to removed
-     * @param extras a stored map wich will be returned by the ApesModelEvent
+     * @param extras a stored map wich will be returned by the SoapEvent
 	 */
 	public void removeFromModel(Object[] elements, Map extras)
 	{
-		//if(Debug.enabled) Debug.print( "\n(ApesMediator) -> removeFromModel ");
-	    SoapEvent event = createRemovedEvent(elements, extras) ;
+	    if(elements == null)
+			throw new IllegalArgumentException("SoapMediator.removeFromModel : no elements specified");
+	    SoapEvent event = createRemoveEvent(elements, extras) ;
 	    if (event != null)
 	    {
 	        fireModelChanged( event );
 	    }
 	}
 	
-	public SoapEvent createRemovedEvent (Object[] elements,Map extras)
+	public SoapEvent createRemoveEvent (Object[] elements, Map extras)
 	{
 	    SoapEvent event = null ;
-	    /*for (int i = 0; i < elements.length ; i++)
+	    IPackage parents [] = new IPackage[elements.length];
+	    
+	    for (int i = 0; i < elements.length ; i++)
 	    {
-	        
-	    }*/
+	        if(elements[i] instanceof ModelElement && ((ModelElement)elements[i]).getParent() != null)
+	        {
+	            parents[i] = ((ModelElement)elements[i]).getParent() ;
+	            parents[i].removeModelElement((ModelElement)elements[i]) ;
+	        }
+	        else
+	        {
+	            return null;
+	        }
+	    }
+	    event = new SoapEvent(null, elements, parents, extras);
 	    return event ;
-	}
+	}     
+	
 	/**
-	 * Defines the interface for an object that listens to changes in a ApesMediator
+	 * Defines the interface for an object that listens to changes in a SoapMediator
 	 */
 	public static interface Listener
 	{

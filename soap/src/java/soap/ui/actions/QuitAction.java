@@ -56,5 +56,6 @@ public class QuitAction extends ProjectManagementAction
 				System.exit(0);
 			}
 		}*/
+	    System.exit(0);
 	}
 }

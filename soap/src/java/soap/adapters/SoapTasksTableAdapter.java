@@ -26,8 +26,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 
-import javax.swing.event.TableModelListener;
-import javax.swing.table.TableModel;
+import javax.swing.table.AbstractTableModel;
 
 import soap.Context;
 import soap.model.core.EstimationElement;
@@ -40,7 +39,7 @@ import utils.Percentage;
 import utils.ProjectManager;
 import utils.ResourceManager;
 
-public class SoapTasksTableAdapter implements TableModel, SoapMediator.Listener
+public class SoapTasksTableAdapter extends AbstractTableModel implements SoapMediator.Listener
 {
     private ListTask mListTasks;
     private List mColumnName = new ArrayList(); 
@@ -110,7 +109,7 @@ public class SoapTasksTableAdapter implements TableModel, SoapMediator.Listener
 	    switch(col)
 	    {
 	        case 0 :
-	            return task.toString();
+	            return task;
 	        case 1 :
 	            return task.getAttribute(EstimationElement.START_DATE);
 	        case 2 :
@@ -155,20 +154,6 @@ public class SoapTasksTableAdapter implements TableModel, SoapMediator.Listener
 	    {
 	        return null;
 	    }	    
-	}
-	
-	public void setValueAt(Object obj, int line, int col) 
-	{	
-	}
-
-	
-	public void addTableModelListener(TableModelListener arg0) 
-	{	
-	}
-
-	
-	public void removeTableModelListener(TableModelListener arg0) 
-	{
 	}
 	
 	public void modelChanged(SoapEvent event)

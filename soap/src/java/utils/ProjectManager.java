@@ -31,6 +31,12 @@ public class ProjectManager
 	public static final int ITERATION = 2;
 	public static final int TASK = 4;
 	
+	// indicators
+	public static final String ADVANCEMENT = "indicator1";
+	public static final String CONSUMED_BUDGET = "indicator2";
+	public static final String REALIZED_FUNCTIONS = "indicator3";
+	public static final String REMAINED_FUNCTIONS = "indicator4";
+	
 	// indicators properties
 	public static final int NAME = 0;
 	public static final int MINLIMIT = 1;
@@ -96,11 +102,11 @@ public class ProjectManager
 	
 	public HashMap getIndicatorsName(String projectName, int concerns)
 	{
-	    Enumeration enum = getProperties(projectName).keys();
+	    Enumeration enumeration = getProperties(projectName).keys();
 	    HashMap result = new HashMap();
-        while (enum.hasMoreElements())
+        while (enumeration.hasMoreElements())
         {
-            String key = (String)enum.nextElement();
+            String key = (String)enumeration.nextElement();
             if(key.endsWith(".concerns") && ((getPropertyInteger(projectName,key) & concerns) != 0))
             {
                 result.put(key.substring("indicators.".length(),key.length()-".concerns".length()),

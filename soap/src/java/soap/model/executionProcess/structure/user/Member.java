@@ -28,6 +28,9 @@ public class Member extends ModelElement
 {
     private String mFirstName="" ;
     private String mLastName="" ;
+    private String mEMail="";
+    private String mLogin="";
+    private String mPassword="";
     
     public Member()
     {
@@ -59,6 +62,38 @@ public class Member extends ModelElement
     {
         mLastName = name ;
     }
+    
+    public String getEMail()
+    {
+        return mEMail;
+    }
+    
+    public void setEMail(String email)
+    {
+        mEMail = email;
+    }
+    
+    public String getLogin()
+    {
+        return mLogin;
+    }
+    
+    public void setLogin(String login)
+    {
+        mLogin = login;
+    }
+    
+    public String getPassword()
+    {
+        return mPassword;
+    }
+    
+    public void setPassword(String password)
+    {
+        mPassword = password;
+    }
+    
+    
     public String toString()
     {
         return mFirstName + " " + mLastName;

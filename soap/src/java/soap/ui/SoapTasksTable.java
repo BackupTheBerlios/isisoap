@@ -24,6 +24,8 @@ package soap.ui;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
+import java.util.HashMap;
+import java.util.Iterator;
 
 import javax.swing.JLabel;
 import javax.swing.JTable;
@@ -31,9 +33,12 @@ import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableCellRenderer;
 
 import soap.Context;
+import soap.Identity;
 import soap.adapters.SoapTasksTableAdapter;
 import soap.adapters.SoapTasksTableSorter;
+import soap.model.executionProcess.structure.Task;
 import soap.model.executionProcess.structure.Iteration.ListTask;
+import utils.IndicatorManager;
 import utils.Percentage;
 import utils.ProjectManager;
 
@@ -47,6 +52,7 @@ public class SoapTasksTable extends JTable
         ((SoapTasksTableSorter)getModel()).setTableHeader(getTableHeader());
         setDefaultRenderer(Percentage.class, new PercentageRenderer());
         setDefaultRenderer(Integer.class, new IntegerRenderer());
+        setDefaultRenderer(Task.class, new TaskRenderer());
         setPreferredSize(new Dimension(COLUMN_WIDTH*getColumnCount(), getRowCount()*getRowHeight()));
     }
     
@@ -70,7 +76,7 @@ public class SoapTasksTable extends JTable
               {
                   if(intVal < sMin || intVal > sMax)
                   {
-                      label.setForeground(Color.ORANGE);
+                      label.setForeground(new Color(255,160,0));
                   }
                   else
                   {
@@ -88,6 +94,40 @@ public class SoapTasksTable extends JTable
         {
               JLabel label = (JLabel)super.getTableCellRendererComponent(table,value,isSelected,hasFocus,row,column);
               label.setHorizontalAlignment(SwingConstants.CENTER);
+              return label;
+        }
+    }
+    private class TaskRenderer extends DefaultTableCellRenderer
+    {
+        public Component getTableCellRendererComponent(JTable table, Object value,
+                boolean isSelected, boolean hasFocus, int row, int column)
+        {
+              JLabel label = (JLabel)super.getTableCellRendererComponent(table,value,isSelected,hasFocus,row,column);
+              String projectName = Context.getInstance().getListProjects().getCurrentProject().getName();
+              HashMap indicators = ProjectManager.getInstance().getIndicatorsName(projectName, ProjectManager.TASK);
+              Iterator it = indicators.keySet().iterator();
+              Color color = Color.BLACK;
+              boolean find = false;
+              while(it.hasNext() && !find)
+              {
+                  String key = (String)it.next();
+                  int sMin = ProjectManager.getInstance().getIndicatorPropertyInteger(projectName,key,ProjectManager.MINLIMIT);
+                  int sMax = ProjectManager.getInstance().getIndicatorPropertyInteger(projectName,key,ProjectManager.MAXLIMIT);
+                  int intVal = IndicatorManager.getInstance().getPropertyInteger(projectName,key+"_"+((Identity)value).getID());
+                  if(intVal < sMin*0.95 || intVal > sMax*1.05)
+                  {
+                      color = Color.RED;
+                      find = true;
+                  }
+                  else
+                  {
+                      if(intVal < sMin || intVal > sMax)
+                      {
+                          color = new Color(255,160,0);
+                      }
+                  }
+              }
+              label.setForeground(color);
               return label;
         }
     }

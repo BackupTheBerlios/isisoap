@@ -1,7 +1,7 @@
 /*
- * APES is a Process Engineering Software
- * Copyright (C) 2003-2004 IPSquad
- * team@ipsquad.tuxfamily.org
+ * SOAP Supervising, Observing, Analysing Projects
+ * Copyright (C) 2003-2004 SOAPteam
+ * 
  *
  *
  * This program is free software; you can redistribute it and/or
@@ -19,28 +19,34 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-package soap.ui.actions;
-
-
-import java.awt.event.ActionEvent;
-
-import soap.ui.SoapHelp;
-
+package soap.server;
 
 /**
- * Displays the about box
- *
- * @version $Revision: 1.2 $
+ * @author masahiko
  */
-public class HelpAction extends SoapAction
+public interface TaskServer 
 {
-	public HelpAction()
-	{
-		super("helpHelp", "icons/Empty.gif");
-	}
-
-	public void actionPerformed(ActionEvent e)
-	{
-		SoapHelp fenetre = new SoapHelp();
-	}
+    public final static String IDENTIFY = "IDENTIFY" ;
+    public final static String CREATE_PROJECT = "CREATE_PROJECT" ;
+    public final static String IMPORT_XML = "IMPORT_XML" ;
+    public final static String CREATE_USERS = "CREATE_USERS" ;
+    public final static String LIST_PROJECT = "LIST_PROJECT" ;
+    
+    /*public void identify() ;
+    
+    public void createProject();
+    
+    /**
+     * 
+     *
+     */
+    /*public void createUsers() ;
+    
+    /**
+     * 
+     *
+     */
+    /*public void importXML() ;
+    
+    public void listProject() ;*/
 }

@@ -23,10 +23,10 @@ package soap.processing;
 
 
 import java.io.IOException;
+import java.net.HttpURLConnection;
 
 import soap.server.ConnectionManager;
-import soap.server.TaskServerAttributes;
-import soap.server.ConnectionManager.ConnectionServer;
+import soap.server.Request;
 import soap.ui.dialog.ProcessingTaskServerDialog;
 import utils.MonitoredTaskBase;
 import utils.ResourceManager;
@@ -41,12 +41,12 @@ public class ProcessingTaskServer extends MonitoredTaskBase
 {  
     private ProcessingTaskServerDialog mTaskDialog = null;
     
-    private TaskServerAttributes mTaskAttribute ;
-    private boolean mStatus;
+    private Request mRequest ;
+    private boolean mStatus = false;
             
-    public ProcessingTaskServer (TaskServerAttributes taskAttr) 
+    public ProcessingTaskServer (Request taskAttr) 
     {
-        mTaskAttribute = taskAttr ;
+        mRequest = taskAttr ;
     }
     
     protected Object processingTask()
@@ -66,19 +66,20 @@ public class ProcessingTaskServer extends MonitoredTaskBase
      */
     protected void launch()
 	{
-        
-	    if(mTaskAttribute.getTypeOfTask().equals(ConnectionManager.CONNECTION))
+        ConnectionManager con = ConnectionManager.getConnection() ;
+        mRequest.sendRequest();
+	    if(mRequest.getTypeOfTask().equals(Request.IDENTIFY))
 	    {
 	        connect() ;
 	        return ;
 	    }
-	    
-	    if(mTaskAttribute.getTypeOfTask().equals(ConnectionServer.IMPORT))
+	    if(mRequest.getTypeOfTask().equals(Request.IMPORT_XML))
 	    {
 	        importXML() ;
+	        //loadProject() ;
 	        return ;
-	    }  
-		
+	    }
+	    
 	}
     
     /**
@@ -87,20 +88,24 @@ public class ProcessingTaskServer extends MonitoredTaskBase
 	 * @return the code associated 
 	 */
     private boolean connect()  
-    {	
-        mStatus = true;
-        if (mTaskAttribute.getLogin().equals("" ) && mTaskAttribute.getPassword().equals(""))
+    {		
+        mStatus = false ;
+    	try
         {
-            mStatus = true ;
-            print(ResourceManager.getInstance().getString("connectionEstablished"));
-            return true;
+    	    if(mRequest.getResponseCode() == HttpURLConnection.HTTP_ACCEPTED)
+            {
+                mStatus = true ;
+            }
+            else
+            {
+                print(ResourceManager.getInstance().getString("loginMistaken"));
+            }
         }
-        else
+        catch (IOException e)
         {
-            mStatus = false ;
-            print(ResourceManager.getInstance().getString("loginMistaken"));
-            return false ;
+            print("impossible de se connecter au serveur");
         }
+    	return mStatus ;
     } 
     
     /**
@@ -108,9 +113,36 @@ public class ProcessingTaskServer extends MonitoredTaskBase
 	 * 
 	 * @return the code associated 
 	 */
-    private int importXML()
+    private boolean importXML()
     {
-        return 0 ;
+        mStatus = false ;
+        try
+        {
+    	    if(mRequest.getResponseCode() == HttpURLConnection.HTTP_OK)
+            {
+    	        try
+    	        {
+    	            String xml = mRequest.getContent();
+    	            print("XML récupéré");
+    	            
+    	            print (xml);
+    	        }
+    	        catch (IOException ex)
+    	        {
+    	            print(ResourceManager.getInstance().getString("loginMistaken"));
+    	        }    	        
+                mStatus = true ;
+            }
+            else
+            {
+                print(ResourceManager.getInstance().getString("loginMistaken"));
+            }
+        }
+        catch (IOException e)
+        {
+            print("can't connect to the server");
+        }
+    	return mStatus ;
     }
     
     /**

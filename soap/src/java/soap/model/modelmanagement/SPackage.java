@@ -54,9 +54,9 @@ public class SPackage extends ModelElement implements IPackage
 	 */
 	public boolean addModelElement(ModelElement e)
 	{
-		if(!containsModelElement(e) && e.getParent()==null)
+		if(!containsModelElement(e))
 		{
-			mOwnedElement.add(e);
+			mOwnedElement.add(e); 
 			e.setParent(this);
 			return true;
 		}

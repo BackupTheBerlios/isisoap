@@ -31,11 +31,13 @@ import javax.swing.border.TitledBorder;
 
 import soap.Context;
 import soap.adapters.SoapListDefaultsIndicatorsAdapter;
+import soap.adapters.SoapListDefaultsIndicatorsAdapter.IndicatorsListSelectionListener;
 import soap.model.executionProcess.structure.Project;
 import soap.model.executionProcess.structure.user.Supervisor;
-import soap.ui.panel.SoapGridbagPanel;
 import soap.ui.dialog.SeveralStepsDialog;
 import soap.ui.dialog.SeveralStepsDialog.StepsValidator;
+import soap.ui.panel.SoapGridbagPanel;
+import utils.ProjectManager;
 import utils.ResourceManager;
 
 /**
@@ -77,14 +79,22 @@ public class IndicatorsPanel extends SoapGridbagPanel implements StepsValidator
     public void save()
     {
         NewProjectPanel newProjectPanel = (NewProjectPanel)mDialog.getPanel(0);
+        
         Supervisor supervisor = new Supervisor(newProjectPanel.getSupervisorFirstName(),newProjectPanel.getSupervisorName()) ;
+        supervisor.setEMail("ca@aubryconseil.com");
+        supervisor.setLogin("aubry");
+        supervisor.setPassword("aubry");
+        
         Project project = new Project(newProjectPanel.getProjectName());
         project.setSupervisor(supervisor) ;
         //project.addAttribute("DirectoryPath", mDirectoryPath.getText()) ;
         mListIndicatorsModel.saveDefaultIndicators(project.getName());
         Context.getInstance().getListProjects().addProject(project);
         File project_dir = new File(newProjectPanel.getDirectory()) ;
-        //project_dir.mkdir() ;
+        // save the directory
+        String projectName = Context.getInstance().getListProjects().getCurrentProject().getName();
+		ProjectManager.getInstance().setProperty(projectName,"defaultProjectDirectoryPath",newProjectPanel.getDirectory());
+        project_dir.mkdir() ;
     }
     
     public boolean validateSteps()

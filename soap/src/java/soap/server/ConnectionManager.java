@@ -34,72 +34,26 @@ import utils.ResourceManager;
  */
 
 public class ConnectionManager
-{
-    public static String CONNECTION = "CONNECTION" ; 
-    public static int NOT_CONNECTED = 0;
-    public static int CONNECTED = 1;
-    
+{   
     private static ConnectionManager mConnectionManager = new ConnectionManager();
     private SoapFrame parent = (SoapFrame)soap.Context.getInstance().getTopLevelFrame();
     
     private ProcessingTaskServerDialog mTaskDialog ;
     private ProcessingTaskServer mMonitor = null;   
-    private ConnectionServer mConnection= null ;
-    private TaskServerAttributes mTaskAttr  = new TaskServerAttributes();
+    private String mUrl = "http://localhost:8080/owep/Soap/" ;
+    private Request mRequest = new Request("","");
+    private String mLogin = null;
+    private String mPass = null;
     
    
 
-    public ConnectionManager ()
-    {
-        
-    }
+    public ConnectionManager (){ };
     
-    public static ConnectionManager getInstance()
+    public static ConnectionManager getConnection () 
 	{
 		return mConnectionManager;
 	}
     
-    /**
-     * return a connectionServer which the connection to the server
-     * 
-     * @return the connection to the server
-     */
-    public ConnectionServer getConnection () 
-    {
-       // test if the user is logged 
-       if (mTaskAttr.getLogin() == null || mTaskAttr.getPassword()==null)
-       {
-           // not connected, diplay the dialog which allows the user to enter the login and the password
-           IdentificationDialog identDialog = new IdentificationDialog(ResourceManager.getInstance().getString("identificationDialogTitle")) ;
-           if (identDialog.showIdentificationDialog() == IdentificationDialog.CONNECT)
-           {
-               mTaskAttr.setTypeOfTask(CONNECTION);
-               mTaskAttr.setIdentificationAttribute(identDialog.getLogin(),identDialog.getPassword()) ;
-               mMonitor = new ProcessingTaskServer(mTaskAttr);  				
-               mTaskDialog = new ProcessingTaskServerDialog(parent,mMonitor);
-               mTaskDialog.setName(ResourceManager.getInstance().getString("loading"));	
-               mMonitor.setTask(mTaskDialog);
-               mTaskDialog.setVisible();
-               // if the user is connected to the server
-               if (mMonitor.getResultTask())
-               {
-                   mTaskDialog.dispose() ;
-                   mConnection = new ConnectionServer() ;
-                   return mConnection ;
-               }
-               else
-               {
-                   mTaskAttr.clearAttributes() ;
-               }
-			}
-			else
-			{
-			    mTaskAttr.clearAttributes() ;
-			}
-			
-       }
-       return mConnection ;
-     }   
     
     /**
      * check if the user is connected to the server
@@ -108,66 +62,100 @@ public class ConnectionManager
      */
     public boolean isConnect()
     {
-        if (mTaskAttr.getLogin() == null || mTaskAttr.getPassword()==null)
+        if (mLogin== null || mPass==null)
             return false;
         else
             return true ;
     }
     
+    
+	public boolean identify()
+	{
+        IdentificationDialog identDialog = null ;
+        
+        mRequest.setUrl(mUrl);
+        mRequest.setTypeOfTask(Request.IDENTIFY);
+        if(!isConnect())
+        {
+            identDialog = new IdentificationDialog(ResourceManager.getInstance().getString("identificationDialogTitle")) ;
+            if (identDialog.showIdentificationDialog() != IdentificationDialog.CONNECT)
+            {   
+                 return false ;
+            }  
+            else
+            {
+                mRequest.setIdentificationAttribute(identDialog.getLogin(),identDialog.getPassword()) ;
+                process(true);
+                if (mMonitor.getResultTask() && !isConnect())
+                {
+                    mLogin = identDialog.getLogin() ;
+                    mPass = identDialog.getPassword() ;
+                }
+                return mMonitor.getResultTask() ;
+            }
+        }
+        else
+        {
+            return true ;
+        }
+        
+	}
+    
+    
     /**
-     * class representing the connection to the server
-     *
+     * import the xml
+     * @return  true if it is succeeded
      */
-
-    public class ConnectionServer
+    public boolean updateProject()
     {
-        public final static String IMPORT = "IMPORT" ;
-        public final static String CREATE_USERS = "CREATE_USERS" ;
-      
-        private ProcessingTaskServerDialog mTaskDialog ;
-        private ProcessingTaskServer mMonitor  ;
-        private TaskServerAttributes mTaskAttr ;
+        IdentificationDialog identDialog = null ;
         
-        private ConnectionServer(){};
-        
-        /**
-         * import the xml
-         * @return  true if it is succeeded
-         */
-
-        public boolean importXML()
+        mRequest.setTypeOfTask(Request.IMPORT_XML);
+        mRequest.setUrl(mUrl);
+        if(!isConnect())
         {
-            mTaskAttr = new TaskServerAttributes(IMPORT);
-            mMonitor = new ProcessingTaskServer(mTaskAttr) ;
-            process() ;
-            return mMonitor.getResultTask() ;
+            identDialog = new IdentificationDialog(ResourceManager.getInstance().getString("identificationDialogTitle")) ;
+            if (identDialog.showIdentificationDialog() != IdentificationDialog.CONNECT)
+            {   
+                 return false ;
+            }  
+            else
+            {
+                mRequest.setIdentificationAttribute(identDialog.getLogin(),identDialog.getPassword()) ;
+            }
         }
-        
-        /**
-         * create users
-         * 
-         * @return  true if it is succeeded
-         */
-        public boolean createUsers()
+        process(false);
+        if (mMonitor.getResultTask() && !isConnect())
         {
-            mTaskAttr = new TaskServerAttributes(CREATE_USERS);
-            mMonitor = new ProcessingTaskServer(mTaskAttr) ;
-            process() ;
-            return mMonitor.getResultTask() ;
+            mLogin = identDialog.getLogin() ;
+            mPass = identDialog.getPassword() ;  
         }
-        
-        /**
-         * lauch the monitor
-         * 
-         */
-
-        private void process()
-        {
-    		mTaskDialog = new ProcessingTaskServerDialog(parent,mMonitor);
-    		mTaskDialog.setName(ResourceManager.getInstance().getString("loading"));	
-    		mMonitor.setTask(mTaskDialog);
-    		mTaskDialog.setVisible(true);
-        }
+        return mMonitor.getResultTask() ;
+    }
+    
+    /**
+     * create users
+     * 
+     * @return  true if it is succeeded
+     */
+    public boolean createUsers()
+    {
+        mRequest =  new Request(Request.CREATE_USERS, mUrl);
+        process(true) ;
+        return mMonitor.getResultTask() ;
+    }
+    
+    /**
+     * lauch the monitor
+     * 
+     */
+    private void process(boolean close)
+    {
+		mMonitor = new ProcessingTaskServer(mRequest) ;
+        mTaskDialog = new ProcessingTaskServerDialog(parent,mMonitor,close );
+		mTaskDialog.setName(ResourceManager.getInstance().getString("loading"));	
+		mMonitor.setTask(mTaskDialog);
+		mTaskDialog.setVisible();
     }
     
     

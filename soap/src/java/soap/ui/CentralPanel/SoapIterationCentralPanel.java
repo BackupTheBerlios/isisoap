@@ -23,16 +23,14 @@ package soap.ui.CentralPanel;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
 import java.awt.GridLayout;
-import java.awt.Insets;
 import java.util.HashMap;
 import java.util.Iterator;
 
 import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.border.Border;
 import javax.swing.border.EtchedBorder;
 import javax.swing.border.TitledBorder;
@@ -40,7 +38,9 @@ import javax.swing.border.TitledBorder;
 import soap.Context;
 import soap.model.core.EstimationElement;
 import soap.model.executionProcess.structure.Iteration;
+import soap.ui.panel.SoapGridbagPanel;
 import soap.ui.panel.SoapPanel;
+import soap.ui.panel.innerCentralPanel.StatsPanel;
 import utils.IndicatorManager;
 import utils.ProjectManager;
 import utils.ResourceManager;
@@ -128,30 +128,17 @@ public class SoapIterationCentralPanel extends DefaultCentralPanel
 		}
 		
 		// Add to data panel
-		
-		GridBagLayout gridbag = new GridBagLayout();
-	   	GridBagConstraints c = new GridBagConstraints();
-        mDataPanel.setLayout(gridbag);
-      
-		c.weightx = 1.0;
-		c.weighty = 0 ;
-		c.fill = GridBagConstraints.HORIZONTAL;
-		c.insets = new Insets(10,10,10,10);
-				
-		c.gridwidth = GridBagConstraints.REMAINDER;
-		gridbag.setConstraints(iterationInfoPanel, c);
-		mDataPanel.add(iterationInfoPanel) ;
-		
-		gridbag.setConstraints(realizationInfoPanel, c);
-		mDataPanel.add(realizationInfoPanel) ;
+        SoapGridbagPanel dataPanel = new SoapGridbagPanel();
+      		
+		dataPanel.defaultAddComponent(iterationInfoPanel, SoapGridbagPanel.END) ;
+		dataPanel.defaultAddComponent(realizationInfoPanel, SoapGridbagPanel.END) ;
 		
 		if(indicators.size() != 0)
 		{
-		    gridbag.setConstraints(iteratorsInfoPanel, c);
-			mDataPanel.add(iteratorsInfoPanel) ;
+			dataPanel.defaultAddComponent(iteratorsInfoPanel, SoapGridbagPanel.END) ;
 		}
-		c.weighty = 2.0;
-		SoapPanel.makeLabel(mDataPanel, " ", gridbag, c);
-		
+		dataPanel.addLine(2.0);
+		addTab(resMan.getString("tabbedPaneData"),dataPanel);
+		addTab(resMan.getString("tabbedPaneStats"),new JScrollPane(new StatsPanel(it)));
 	}
 }

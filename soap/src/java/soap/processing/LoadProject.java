@@ -21,11 +21,11 @@
 
 package soap.processing;
 
-import java.io.BufferedInputStream;
 import java.io.DataInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.util.Properties;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
@@ -42,7 +42,6 @@ import utils.MonitoredTaskBase;
 import utils.ProjectManager;
 import utils.ResourceManager;
 import utils.TaskMonitorDialog;
-import JSX.ObjIn;
 
 /**
  * Monitor used to load a project
@@ -112,16 +111,16 @@ public class LoadProject extends MonitoredTaskBase
 	 */
 	protected boolean loadProject(ZipInputStream projectZip) throws IOException, ClassNotFoundException
 	{
-	    //print(mResource.getString("loadSearchProject"));
+//	  print(mResource.getString("loadSearchProject"));
 		
-		DataInputStream data = findData("Project.xml"); 	
+		DataInputStream data = findData("Project.save"); 	
 
 		if( data != null )
 		{
 			print(mResource.getString("loadProject"));
-			ObjIn in = new ObjIn(data);
+			ObjectInputStream in = new ObjectInputStream(data);
 			mProject = (Project)in.readObject();
-			if(!Context.getInstance().getListProjects().existProject(mProject))
+			if(!Context.getInstance().getListProjects().isProjectOpened(mProject))
 			{
 				print(mResource.getString("loadProjectSuccess"));
 				return true;
@@ -210,7 +209,7 @@ public class LoadProject extends MonitoredTaskBase
 		
 		while( zipEntry != null )
 		{
-			DataInputStream data = new DataInputStream( new BufferedInputStream(zipFile) );
+		    DataInputStream data = new DataInputStream(zipFile);
 			
 			
 			if( zipEntry.getName().equals(fileName) )

@@ -31,9 +31,9 @@ import javax.swing.JPasswordField;
 import javax.swing.JRadioButton;
 import javax.swing.JTextField;
 
-import soap.ui.panel.SoapGridbagPanel;
 import soap.ui.dialog.SeveralStepsDialog;
 import soap.ui.dialog.SeveralStepsDialog.StepsValidator;
+import soap.ui.panel.SoapGridbagPanel;
 import utils.ResourceManager;
 
 /**

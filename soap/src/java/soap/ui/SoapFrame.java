@@ -65,7 +65,7 @@ public class SoapFrame extends JFrame implements MainFrameInterface
 		mFrame_split.setOneTouchExpandable(true);
 		mFrame_split.setDividerLocation(150);		
 		mFrame_split.add(new JScrollPane(mTree), JSplitPane.LEFT);
-		JPanel welcomePanel = new JPanel() ;
+		JTabbedPane welcomePanel = new JTabbedPane() ;
 		mFrame_split.add( welcomePanel, JSplitPane.RIGHT);
 		
 		this.setJMenuBar(new SoapMenuBar());
@@ -85,7 +85,7 @@ public class SoapFrame extends JFrame implements MainFrameInterface
     
     public void openCentralPanel(JTabbedPane panel)
     {
-    	mFrame_split.add(new JScrollPane(panel), JSplitPane.RIGHT);
+    	mFrame_split.add(panel, JSplitPane.RIGHT);
     	mFrame_split.setDividerLocation(200);
     }
     public JTree getProjectTree()

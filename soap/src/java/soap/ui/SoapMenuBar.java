@@ -53,9 +53,9 @@ public class SoapMenuBar extends JMenuBar
 		// menu project
 		menu = getMenu(ResourceManager.getInstance().getString("menuProject"));
 		menu.add(context.getAction("ProjectProperties"));
+		menu.add(context.getAction("UpdateProject"));
 		// menu statistics
 		menu = getMenu(ResourceManager.getInstance().getString("menuStatistic"));
-		menu.add(context.getAction("GenerateStatistics"));
 		menu.add(context.getAction("PrintStatistics"));
 		menu = getMenu("?");
 		menu.add(context.getAction("Help"));

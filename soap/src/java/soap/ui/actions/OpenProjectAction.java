@@ -81,7 +81,7 @@ public class OpenProjectAction extends SoapAction
 				mTask = new TaskMonitorDialog(parent,mMonitor);
 				mTask.setName("Loading");	
 				mMonitor.setTask(mTask);
-				mTask.show();
+				mTask.setVisible();
 			}
 		}
 		catch(Throwable t)

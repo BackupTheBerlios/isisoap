@@ -68,10 +68,10 @@ public class SoapListDefaultsIndicatorsAdapter extends AbstractListModel
             mChosenProperties.clear();
             for(int i = 0 ; i < mNbChosenIndicators ; i++)
             {
-                Enumeration enum = mDefaultProperties.keys();
-                while(enum.hasMoreElements())
+                Enumeration enumeration = mDefaultProperties.keys();
+                while(enumeration.hasMoreElements())
                 {
-                    String element = (String)enum.nextElement();
+                    String element = (String)enumeration.nextElement();
                     if(element.startsWith("indicators.indicator"+(selectedIndices[i]+1)))
                     {
                             mChosenProperties.setProperty(element,mDefaultProperties.getProperty(element));  

@@ -7,11 +7,9 @@
 package soap.ui;
 
 import java.awt.Dimension;
-import java.awt.HeadlessException;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.Locale;
 
 import javax.swing.JEditorPane;
 import javax.swing.JFrame;
@@ -20,6 +18,7 @@ import javax.swing.event.HyperlinkEvent;
 import javax.swing.event.HyperlinkListener;
 
 import soap.Context;
+import utils.ConfigManager;
 import utils.ResourceManager;
 
 /**
@@ -27,29 +26,30 @@ import utils.ResourceManager;
  *
  * TODO  claire
  * */
-public class SoapHelp extends JFrame {
+public class SoapHelp extends  JFrame  
+{
 	
-	private static String HELP_INDEX = "/src/help/index_";
 	JEditorPane editor = new JEditorPane();
 
 	/**
 	 * @param title
 	 * @throws java.awt.HeadlessException
 	 */
-	public SoapHelp(String title) throws HeadlessException {
-		
-		String htmlFile = HELP_INDEX+Locale.getDefault().getLanguage()+".html";
-		try {
-			
-			//TODO claire path courant
-			java.net.URL helpURL = new URL("file:///Z:/Eclipse 3/eclipse/workspace/soap"+htmlFile);
+	public SoapHelp()
+	{
+	    super(ResourceManager.getInstance().getString("helpHelp"));
+	    initUI();
+	}
+	
+	protected void initUI()
+	{
+		try 
+		{
+			URL helpURL = getClass().getResource("/" + ConfigManager.getInstance().getProperty("HelpFile"));
 			if (helpURL!=null)
 			{
-					this.setTitle(ResourceManager.getInstance().getString("helpHelp"));
-					this.setSize(new Dimension(700,500));
-					this.setLocation(300,0);
-
-					editor.addHyperlinkListener(new HyperlinkListener(){
+					editor.addHyperlinkListener(new HyperlinkListener()
+					{
 						public void hyperlinkUpdate(HyperlinkEvent e) {
 							if (e.getEventType()==	HyperlinkEvent.EventType.ACTIVATED){
 								try {
@@ -67,8 +67,11 @@ public class SoapHelp extends JFrame {
 					editorScroll.setMinimumSize(new Dimension(10,10));
 					editorScroll.setVisible(true);					
 					
-					getContentPane().add(editorScroll);
-					editor.setPage(helpURL);					
+					this.getContentPane().add(editorScroll);					
+					editor.setPage(helpURL);
+					SoapFrame parent = (SoapFrame)Context.getInstance().getTopLevelFrame();
+					this.setSize(new Dimension(700,500));
+					this.setLocation(parent.getX()+(parent.getWidth()-this.getWidth())/2,parent.getY()+(parent.getHeight()-this.getHeight())/2);
 					this.setVisible(true);
 		
 			}else{

@@ -38,7 +38,6 @@ import javax.swing.JTextArea;
 import javax.swing.Timer;
 
 import soap.processing.ProcessingTaskServer;
-import soap.server.ConnectionManager;
 import soap.ui.SoapDialog;
 import soap.ui.panel.PanelDescription;
 import utils.MonitoredTaskBase;
@@ -56,6 +55,7 @@ public class ProcessingTaskServerDialog extends SoapDialog
 	private JButton mClose = new JButton(ResourceManager.getInstance().getString("close"));
 	private Timer mTimer;
 	private MonitoredTaskBase mTask;
+	private boolean mCloseFrame  ;
 	private String mLastMessage = null;
 	private PanelDescription mPanelDescription = new PanelDescription(ResourceManager.getInstance().getString("connexionDescription"));
 	
@@ -66,10 +66,16 @@ public class ProcessingTaskServerDialog extends SoapDialog
 	 * @param task
 	 * @throws java.awt.HeadlessException
 	 */
-	public ProcessingTaskServerDialog(JFrame owner, MonitoredTaskBase task) throws HeadlessException
+	public ProcessingTaskServerDialog(JFrame owner, MonitoredTaskBase task, boolean closeFrame ) throws HeadlessException
 	{
 		super(owner, true);
+		mCloseFrame = closeFrame ;
 		init(task);
+	}
+	
+	public ProcessingTaskServerDialog(JFrame owner, MonitoredTaskBase task ) throws HeadlessException
+	{
+		this(owner, task ,false);
 	}
 
 	private void init(MonitoredTaskBase task)
@@ -133,7 +139,6 @@ public class ProcessingTaskServerDialog extends SoapDialog
 			
 			if(message!=null && !message.equals(mLastMessage))
 			{
-			    mPanelDescription.setDescription(message) ;
 				mTaskOutput.append(message+NL);
 				mTaskOutput.setCaretPosition(mTaskOutput.getDocument().getLength());
 			}
@@ -147,7 +152,7 @@ public class ProcessingTaskServerDialog extends SoapDialog
 			mClose.setEnabled(true);
 			setDefaultCloseOperation( DISPOSE_ON_CLOSE);
 			Toolkit.getDefaultToolkit().beep();
-			if (((ProcessingTaskServer)mTask).getResultTask())
+			if (((ProcessingTaskServer)mTask).getResultTask() && mCloseFrame)
 			{
 			    this.dispose() ;
 			}
@@ -160,7 +165,6 @@ public class ProcessingTaskServerDialog extends SoapDialog
 		
 		if(message!=null && !message.equals(mLastMessage))
 		{
-		    mPanelDescription.setDescription(message) ;
 			mTaskOutput.append(message+NL);
 			mTaskOutput.setCaretPosition(mTaskOutput.getDocument().getLength());
 			mLastMessage = message;
@@ -179,6 +183,11 @@ public class ProcessingTaskServerDialog extends SoapDialog
 			mProgressBar.setMaximum(length);
 			mProgressBar.setValue(current);
 		}
+	}
+	
+	public void close()
+	{
+	    this.dispose();
 	}
 	
 	public void setVisible()

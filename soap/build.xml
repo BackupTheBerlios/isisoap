@@ -33,6 +33,12 @@
   		<fileset dir="${src}/icons">
   		</fileset>
   	</copy>
+  	
+  	<mkdir dir="${build}/help"/>
+  	  	<copy todir="${build}/help">
+  	  		<fileset dir="${src}/help">
+  	  		</fileset>
+  	  	</copy>
   </target>
   
   <target name="build" depends="init"
@@ -41,8 +47,7 @@
     <javac srcdir="${java}" destdir="${build}" >
     	<classpath>
 			<pathelement location="${src}/lib/jfreechart.jar"/> 
-    		<pathelement location="${src}/lib/jcommon.jar"/> 
-    		<pathelement location="${src}/lib/JSX.jar"/>    		
+    		<pathelement location="${src}/lib/jcommon.jar"/>   		
     	</classpath>
     </javac>
   </target>
@@ -54,8 +59,7 @@
     	<classpath>
     		<pathelement path="${build}"/>
     		<pathelement location="${src}/lib/jfreechart.jar"/>
-    		<pathelement location="${src}/lib/jcommon.jar"/>
-    		<pathelement location="${src}/lib/JSX.jar"/>    		
+    		<pathelement location="${src}/lib/jcommon.jar"/>		
     	</classpath>
   	</java>
   </target>
@@ -63,7 +67,6 @@
   <target name="jar" depends="build,resources"
     description="make soap.jar">
     <!--Make apes.jar-->
-    <unjar src="${src}/lib/JSX.jar" dest="${build}"/>
   	<unjar src="${src}/lib/jcommon.jar" dest="${build}"/>
     <unjar src="${src}/lib/jfreechart.jar" dest="${build}"/>
   	<jar destfile="soap.jar" basedir="${build}">
@@ -79,14 +82,7 @@
 	<mkdir dir="docs/javadoc"/>
   	<javadoc sourcepath="${java}" destdir="docs/javadoc" author="true" version="true" 
   	use="true" packagenames="utils,soap, soap.ui,
-soap.ui.actions,soap.ui.tools,
-soap.adapters,org.ipsquad.apes.spem,
-soap.core,
-org.ipsquad.apes.spem.process.components,org.ipsquad.apes.spem.process.structure,
-org.ipsquad.apes.processing">
-  		<classpath>
-    		<pathelement location="${src}/lib/JSX.jar"/>    		
-    	</classpath>
+soap.ui.actions,soap.ui.tools,soap.adapters,soap.core">
     </javadoc>
   </target>
   

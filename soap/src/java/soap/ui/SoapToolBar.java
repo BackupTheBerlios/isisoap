@@ -38,6 +38,7 @@ public class SoapToolBar extends JToolBar
 		add(context.getAction("NewProject"));
 		add(context.getAction("OpenProject"));
 		add(context.getAction("SaveProject"));
+		add(context.getAction("UpdateProject"));
 	}
 
 }

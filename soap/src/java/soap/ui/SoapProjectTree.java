@@ -232,9 +232,9 @@ public class SoapProjectTree extends JTree implements  TreeModelListener
              if(event.getChildIndices() != null)
              {
                  SoapTreeNode inserted = (SoapTreeNode)getModel().getChild(tabTreeNode[0],event.getChildIndices()[event.getChildIndices().length-1]);
+                 Context.getInstance().getListProjects().setCurrentProject((Project)inserted.getUserObject());
                  SoapCentralPanel centralTabbedPane = associatePanel(inserted);
          		((SoapFrame)Context.getInstance().getTopLevelFrame()).openCentralPanel(centralTabbedPane);
-         		Context.getInstance().getListProjects().setCurrentProject((Project)inserted.getUserObject());
          		setSelectionPath(new TreePath(inserted.getPath()));
              }
         }
@@ -260,6 +260,7 @@ public class SoapProjectTree extends JTree implements  TreeModelListener
             catch (Exception e)
             {
                 //case when it is the root
+                Context.getInstance().getListProjects().setCurrentProject(null);
                 centralTabbedPane = associatePanel((SoapTreeNode)parentPath.getLastPathComponent());
                 ((SoapFrame)Context.getInstance().getTopLevelFrame()).openCentralPanel(centralTabbedPane);
             }

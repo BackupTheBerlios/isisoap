@@ -26,16 +26,19 @@ import java.util.Vector;
 import soap.model.ModelVisitor;
 import soap.model.core.EstimationElement;
 import soap.model.core.ModelElement;
+import soap.model.executionProcess.structure.user.Member;
 import soap.model.executionProcess.structure.user.Supervisor;
 import soap.model.extension.SoapProcess;
 import soap.model.modelmanagement.IPackage;
 
 public class Project extends EstimationElement implements IPackage
 {
+    public static int ESTIMATED_FUNCTIONALITIES = 5; 
+    public static int REALIZED_FUNCTIONALITIES = 6;
     private Vector mListIteration = new Vector();
     private Supervisor mSupervisor = new Supervisor() ;
     private SoapProcess mProcess = new SoapProcess() ;
-
+    private Vector mListMember = new Vector () ;
     
     public Project(String name)
     {
@@ -55,6 +58,7 @@ public class Project extends EstimationElement implements IPackage
     public void setSupervisor(Supervisor s)
 	{
         mSupervisor  = s ;
+        addMember(s);
 	}
     
     
@@ -131,6 +135,36 @@ public class Project extends EstimationElement implements IPackage
     public int modelElementCount()
     {
         return mListIteration.size();
+    }
+    
+    public boolean addMember (Member m)
+    {
+        if (! mListMember.contains(m))
+        {
+            mListMember.add(m) ;
+            return true ;
+        }
+        return false ;
+    }
+    
+    public boolean removeMember (Member m)
+    {
+        return mListMember.remove(m) ;
+    }
+    
+    public boolean containsMember(Member m)
+    {
+        return mListMember.contains(m) ;
+    }
+    
+    public Member getMember(int i)
+    {
+        return (Member)mListMember.get(i);
+    }
+    
+    public int memberCount()
+    {
+        return mListMember.size();
     }
 
 }

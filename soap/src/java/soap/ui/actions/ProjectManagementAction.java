@@ -31,8 +31,8 @@ import javax.swing.JOptionPane;
 import soap.Context;
 import soap.processing.SaveProject;
 import soap.ui.SoapFrame;
-import utils.ConfigManager;
 import utils.ErrorManager;
+import utils.ProjectManager;
 import utils.ResourceManager;
 import utils.SimpleFileFilter;
 import utils.SmartChooser;
@@ -83,15 +83,15 @@ public abstract class ProjectManagementAction extends SoapAction
 	 */
 	protected boolean saveProject()
 	{
-		/*if(context.getFilePath() == null || context.getFilePath().equals(ConfigManager.getInstance().getProperty("WorkspaceTitledefaultPath")))
-		{*/
+		String projectName = Context.getInstance().getListProjects().getCurrentProject().getName();
+	    if(ProjectManager.getInstance().getProperty(projectName,"projectPath") == null)
+		{
 			return saveProjectAs();
-		/*}
+		}
 		else
 		{
-			return saveProject(context.getFilePath());
-		}*/
-	   //return true ;
+			return saveProject(ProjectManager.getInstance().getProperty(projectName,"projectPath"));
+		}
 	}	
 
 	/**
@@ -133,7 +133,8 @@ public abstract class ProjectManagementAction extends SoapAction
 		SmartChooser chooser = SmartChooser.getChooser();
 		chooser.setAcceptAllFileFilterUsed(false);
 		chooser.setFileFilter(filter);
-		chooser.setDirectory(ConfigManager.getInstance().getProperty("WorkspaceDefaultPath"));
+		String projectName = Context.getInstance().getListProjects().getCurrentProject().getName();
+		chooser.setDirectory(ProjectManager.getInstance().getProperty(projectName,"defaultProjectDirectoryPath"));
 		
 		if(chooser.showSaveDialog(((SoapFrame)context.getTopLevelFrame()).getContentPane())==SmartChooser.APPROVE_OPTION)
 		{
@@ -176,6 +177,8 @@ public abstract class ProjectManagementAction extends SoapAction
 				
 				if(choice!=JOptionPane.YES_OPTION) return false;
 			}
+			
+			ProjectManager.getInstance().setProperty(projectName,"projectPath",f.getAbsolutePath());
 			
 			return saveProject(f.getAbsolutePath());
 		}
