@@ -58,6 +58,7 @@ public class SoapMenuBar extends JMenuBar
 		menu.add(context.getAction("GenerateStatistics"));
 		menu.add(context.getAction("PrintStatistics"));
 		menu = getMenu("?");
+		menu.add(context.getAction("Help"));
 		menu.add(context.getAction("About"));
 		/*menu.add(context.getAction("Print"));
 		menu.addSeparator();*/
