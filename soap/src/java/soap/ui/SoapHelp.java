@@ -42,7 +42,7 @@ public class SoapHelp extends JFrame {
 		try {
 			
 			//TODO claire path courant
-			java.net.URL helpURL = new URL("file:///T:/IUP Master 1/BE/soap"+htmlFile);
+			java.net.URL helpURL = new URL("file:///Z:/Eclipse 3/eclipse/workspace/soap"+htmlFile);
 			if (helpURL!=null)
 			{
 					this.setTitle(ResourceManager.getInstance().getString("helpHelp"));
@@ -67,7 +67,7 @@ public class SoapHelp extends JFrame {
 					editorScroll.setMinimumSize(new Dimension(10,10));
 					editorScroll.setVisible(true);					
 					
-					this.add(editorScroll);					
+					getContentPane().add(editorScroll);
 					editor.setPage(helpURL);					
 					this.setVisible(true);
 		
