@@ -22,13 +22,21 @@
 package soap.ui.actions;
 
 
+import java.awt.Component;
 import java.awt.event.ActionEvent;
+
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+
+import soap.Context;
+import utils.IconManager;
+import utils.ResourceManager;
 
 
 /**
  * Displays the about box
  *
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class AboutAction extends SoapAction
 {
@@ -39,12 +47,13 @@ public class AboutAction extends SoapAction
 
 	public void actionPerformed(ActionEvent e)
 	{
-		/*JLabel about = new JLabel(ResourceManager.getInstance().getString("AboutMessage"), JLabel.CENTER);
+		JLabel about = new JLabel(ResourceManager.getInstance().getString("AboutMessage"), JLabel.CENTER);
 
-		JOptionPane.showOptionDialog((Component)Context.getInstance().getTopLevelFrame(),
-		                             about,
-					     ResourceManager.getInstance().getString("helpAbout"),
-					     JOptionPane.OK_OPTION, JOptionPane.PLAIN_MESSAGE,
-					     null, new Object[] {"OK"}, null);*/
+		JOptionPane.showMessageDialog((Component)Context.getInstance().getTopLevelFrame(),
+				about,
+				ResourceManager.getInstance().getString("helpAbout"),
+				JOptionPane.INFORMATION_MESSAGE,
+				IconManager.getInstance().getIcon("icons/LOGO.GIF"));
+
 	}
 }
